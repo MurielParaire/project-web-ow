@@ -8,8 +8,8 @@
             <div class="arrow" :class="{ expanded: visible }"></div>
             <div :class="{ hidden: !visible, visible }">
                 <ul>
-                    <li :class="{ current: item === value }" v-for="item in this.$data.tanks" :key="item"
-                        @click="select(item)"> {{ item }}</li>
+                    <li :class="{ current: dps === value }" v-for="dps in this.$props.AllDPS" :key="dps"
+                        @click="select(dps)"> {{ dps }}</li>
                 </ul>
             </div>
         </div>
@@ -17,19 +17,21 @@
 </template>
   
 <script>
-import { Tanks } from '../assets/enum/Heroes.js'
 
 
+//use support given from parent so no duplicates
 export default {
-    emits: ['setTank'],
+    emits: ['setDPS'],
     data() {
         return {
-            value: 'Select a Tank',
+            value: 'Select a DPS',
             visible: false,
-            tanks: Tanks
         }
     },
     props: {
+        AllDPS: {
+            required: true
+        }
     },
     methods: {
         toggle() {
@@ -37,7 +39,7 @@ export default {
         },
         select(option) {
             this.value = option;
-            this.$emit('setTank', this.$data.value);
+            this.$emit('setDPS', this.$data.value);
         }
     }
 }
