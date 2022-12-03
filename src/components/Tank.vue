@@ -57,7 +57,6 @@ export default {
     border: 1px solid gainsboro;
     background: #F8F8F8;
     position: relative;
-    z-index: 1;
 }
 
 .aselect .selector .arrow {

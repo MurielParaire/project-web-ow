@@ -1,11 +1,12 @@
 <template>
     <ul >
-        <li><Support @setSupport="setSupportA" :AllSupports="AllSupports" ></Support></li>
-        <li><Support @setSupport="setSupportB" :AllSupports="AllSupports" ></Support></li>
-        <li><DPS @setDPS="setDPSA" :AllDPS="AllDPS" ></DPS></li>
-        <li><DPS @setDPS="setDPSB" :AllDPS="AllDPS" ></DPS></li>
+        <li><Support @setSupport="setSupportA" :AllSupports="AllSupports" class="first"></Support></li>
+        <li><Support @setSupport="setSupportB" :AllSupports="AllSupports" class="second"></Support></li>
+        <li><DPS @setDPS="setDPSA" :AllDPS="AllDPS" class="third"></DPS></li>
+        <li><DPS @setDPS="setDPSB" :AllDPS="AllDPS" class="fourth"></DPS></li>
         <li> <Tank @setTank="setTank" ></Tank></li>
     </ul>
+    <button @click="setTeam">Confirm</button>
 </template>
 
 <script>
@@ -15,6 +16,7 @@ import DPS from '../components/DPS.vue'
 import { Supports, DPSs } from '../assets/enum/Heroes.js'
 export default {
   name: 'team',
+  emits: ['setTeam'],
   data() {
     return {
         tank : '',
@@ -79,6 +81,10 @@ export default {
             this.$data.AllDPS.splice(counter, 1)
           }
         }
+    },
+    setTeam() {
+      let team = [this.$data.supportA, this.$data.supportB, this.$data.DPSA, this.$data.DPSB, this.$data.tank];
+      this.$emit('setTeam', team);
     }
   }
 }
@@ -89,5 +95,20 @@ ul {
     list-style: none;
 }
 
+.first .aselect .selector {
+  z-index: 5;
+}
+
+.second .aselect .selector {
+  z-index: 4;
+}
+
+.third .aselect .selector {
+  z-index: 3;
+}
+
+.fourth .aselect .selector {
+  z-index: 2;
+}
 
 </style>

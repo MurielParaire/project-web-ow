@@ -11,7 +11,7 @@
       <li><router-link :to="{ name: 'overSim_home' }" class="router-link">Home</router-link></li>
       <li><router-link :to="{ name: 'Characters' }" class="router-link">Characters</router-link></li>
       <li><router-link :to="{ name: 'Match' }" class="router-link">Match</router-link></li>
-      <li><a href="#">Sign in</a></li>
+      <li><router-link :to="{ name: 'Login' }" class="router-link"><img src="../assets/images/UserLogo.png" alt="User logo for user page" /></router-link></li>
     </ul>
   </div>
 </nav>  
@@ -22,7 +22,7 @@
 /* Navigation Bar */
 .navbar{
   padding: 15px 10px 15px 0px;
-  background-color: #1c8bc6;
+  background-color: #218ffe;
 }
 .navbar-oversim{
   font-size: 30px;
@@ -35,9 +35,16 @@
   color: white;
 }
 
-nav > li > a:hover, .nav > li > a:focus {
-  background-color: #1c8bc6 !important;
+.nav li img {
+  max-width: 50px;
+  max-height: 30px;
+  padding-bottom: 0;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  background-color: #218ffe !important;
   text-decoration: underline !important;
+
 }
 
 </style>

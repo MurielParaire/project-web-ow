@@ -6,6 +6,8 @@ import * as VueRouter from 'vue-router'
 import OverSim from '@/views/OverSim.vue'
 import Characters from '@/views/characters.vue'
 import Match from '@/views/Match.vue'
+import Combat from '@/views/Combat.vue'
+import UserLogin from '@/views/UserLogin.vue'
 import "vue-select/dist/vue-select.css";
 
 
@@ -27,6 +29,17 @@ const router = VueRouter.createRouter({
       path: '/match',
       name: 'Match',
       component: Match
+    },
+    {
+      path: '/combat/',
+      name: 'Combat',
+      component: Combat,
+      props: true
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: UserLogin
     }
     /*,
     {

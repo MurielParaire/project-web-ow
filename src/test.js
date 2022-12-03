@@ -1,7 +1,8 @@
-class Test {
-    constructor() {
-        this.team1 = [{ 'name': 'Ana', 'alive': true }, { 'name': 'Mercy', 'alive': true }, { 'name': 'Soldier 76', 'alive': true }, { 'name': 'Tracer', 'alive': true }, { 'name': 'Reinhardt', 'alive': true }]
-        this.team2 = [{ 'name': 'Kiriko', 'alive': true }, { 'name': 'Zenyatta', 'alive': true }, { 'name': 'Genji', 'alive': true }, { 'name': 'Hanzo', 'alive': true }, { 'name': 'D.Va', 'alive': true }]
+export default class Test {
+    constructor(team1, team2) {
+        this.team1 = team1;
+        this.team2 = team2;
+        this.combat = []
         this.events = [{
             "type": "heal",
             "event": "$1 has fully healed $2"
@@ -53,7 +54,7 @@ class Test {
                 sub = event.substring(index, index + 2)
                 char = this.getChar(sub[1], true, '')
                 event = event.substring(0, index) + char.name + event.substring(index + 2)
-                console.log(event)
+                this.combat.push(event)
             }
             else if (this.events[counter].type === 'protect') {
                 let event = this.events[counter].event.toString()
@@ -64,9 +65,9 @@ class Test {
                 event = event.substring(0, index) + charA.name + event.substring(index + 2)
                 index = event.indexOf('$')
                 sub = event.substring(index, index + 2)
-                let charB = this.getChar(sub[1], false, charA.name) //CHANGE TODO
+                let charB = this.getChar(sub[1], false, '') //CHANGE TODO
                 event = event.substring(0, index) + charB.name + event.substring(index + 2)
-                console.log(event)
+                this.combat.push(event)
             }
             if (counter === this.events.length - 1)
             {
@@ -74,12 +75,25 @@ class Test {
             }
             counter++
         }
+        if (this.countAlive[0] === 0) {
+            this.winner = 'TEAM A ' + this.namesToString(this.team1)
+        }
+        else {
+            this.winner = 'TEAM B ' + this.namesToString(this.team2)
+        }
     }
 
+    namesToString(team) {
+        let names = ''
+        for (let counter = 0; counter < team.length; counter++) {
+            names = names + ' ' + team[counter].name
+        }
+        return names
+    }
 
     getChar(sub, isKilled, name) {
         let char = ''
-        if (sub === '1') {
+        if (sub === '1' && this.team1.length > 0) {
             let rand = Math.floor(Math.random() * this.countAlive[0]);
             char = this.team1[rand]
             while (name === char.name)
@@ -87,7 +101,6 @@ class Test {
                 rand = Math.floor(Math.random() * this.countAlive[0])
                 char = this.team1[rand]
             }
-            
             while (char.alive != true) {
                 if (rand === this.team1.length - 1) {
                     rand = 0
@@ -109,7 +122,8 @@ class Test {
                 this.countAlive[0] = this.countAlive[0] - 1
             }
         }
-        else {
+        else if (this.team2.length > 0) {
+
             let rand = Math.floor(Math.random() * this.countAlive[1])
             char = this.team2[rand]
             while (name === char.name)
@@ -142,8 +156,3 @@ class Test {
         return char
     }
 }
-
-let a = new Test()
-console.log(a.team1)
-console.log(a.team2)
-console.log(a.countAlive)
