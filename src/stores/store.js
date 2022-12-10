@@ -3,6 +3,7 @@ import { reactive } from 'vue'
 export const store = reactive({
   teamA: [],
   teamB: [],
+  character: {'name': 'test'},
   setTeamA(team) {
     for (let counter = 0; counter < team.length; counter++) {
         let char = {'name': team[counter], alive: true}

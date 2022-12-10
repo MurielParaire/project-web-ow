@@ -85,13 +85,13 @@
     },
     {
         "name": "Roadhog",
-        "description": "Roadhog is a durable killer with a Scrap Gun that’s devastating at close range. Few enemies can escape him and his fearsome hook.",
+        "description": "Roadhog is a durable killer with a Scrap Gun that’'s devastating at close range. Few enemies can escape him and his fearsome hook.",
         "role": "Tank",
         "image": "https://blzgdapipro-a.akamaihd.net/hero/roadhog/hero-select-portrait.png"
     },
     {
         "name": "Winston",
-        "description": "A super-intelligent, genetically engineered gorilla, Winston is a brilliant scientist and a champion for humanity's potential. He wields impressive inventions—a jump pack, electricity-blasting Tesla Cannon, portable shield projector, and more—with literal gorilla strength.",
+        "description": "A super-intelligent, genetically engineered gorilla, Winston is a brilliant scientist and a champion for humanity''s potential. He wields impressive inventions—a jump pack, electricity-blasting Tesla Cannon, portable shield projector, and more—with literal gorilla strength.",
         "role": "Tank",
         "image": "https://blzgdapipro-a.akamaihd.net/hero/winston/hero-select-portrait.png"
     },
@@ -139,7 +139,7 @@
     },
     {
         "name": "Sombra",
-        "description": "One of the world's most notorious hackers, Sombra uses information to manipulate those in power. Her stealthy abilities and debilitating attacks make her a powerful infiltrator, as well as a hard target to pin down.",
+        "description": "One of the world''s most notorious hackers, Sombra uses information to manipulate those in power. Her stealthy abilities and debilitating attacks make her a powerful infiltrator, as well as a hard target to pin down.",
         "role": "DPS",
         "image": "https://blzgdapipro-a.akamaihd.net/hero/sombra/hero-select-portrait.png"
     },
@@ -199,7 +199,7 @@
     },
     {
         "name": "Sojourn",
-        "description": "A brilliant tactician and a fierce soldier, Vivian Chase--callsign 'Sojourn'--is an indispensable resource on any battlefield. Her cybernetic augmentations and railgun grant her the speed, precision, and firepower to sway the fight in her favor.",
+        "description": "A brilliant tactician and a fierce soldier, Vivian Chase--callsign ''Sojourn''--is an indispensable resource on any battlefield. Her cybernetic augmentations and railgun grant her the speed, precision, and firepower to sway the fight in her favor.",
         "role": "DPS",
         "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/a53bf7ad9d2f33aaf9199a00989f86d4ba1f67c281ba550312c7d96e70fec4ea.png"
     },
@@ -208,5 +208,11 @@
         "description": "Hammond, the genetically-engineered hamster, rolls across the battlefield in his highly mobile Wrecking Ball mech. With an arsenal of weapons and the power of momentum, he will crush any enemies who get in his way",
         "role": "Tank",
         "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/5c18e39ce567ee8a84078f775b9f76a2ba891de601c059a3d2b46b61ae4afb42.png"
+    },
+    {
+        "name": "Ramattra",
+        "description": "The brutal leader of Null Sector will stop at nothing to see his vision for the world realized.",
+        "role": "Tank",
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/3e0367155e1940a24da076c6f1f065aacede88dbc323631491aa0cd5a51e0b66.png"
     }
 ]

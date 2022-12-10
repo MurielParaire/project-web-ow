@@ -3,7 +3,7 @@
     <div class="aselect" :data-value="value" :data-list="list">
         <div class="selector" @click="toggle()">
             <div class="label">
-                <span><img src="../assets/images/TankLogo.png" alt="Tank logo"/> {{ value }}</span>
+                <span><img src="../assets/images/SupportLogo.png" alt="Tank logo"/> {{ value }}</span>
             </div>
             <div class="arrow" :class="{ expanded: visible }"></div>
             <div :class="{ hidden: !visible, visible }">

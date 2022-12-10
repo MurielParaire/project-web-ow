@@ -8,6 +8,7 @@ import Characters from '@/views/characters.vue'
 import Match from '@/views/Match.vue'
 import Combat from '@/views/Combat.vue'
 import UserLogin from '@/views/UserLogin.vue'
+import CharacterDetail from '@/views/CharacterDetail.vue'
 import "vue-select/dist/vue-select.css";
 
 
@@ -40,6 +41,12 @@ const router = VueRouter.createRouter({
       path: '/login',
       name: 'Login',
       component: UserLogin
+    },
+    {
+      path: '/characters/:name',
+      name: 'CharacterDetail',
+      component: CharacterDetail,
+      props: true
     }
     /*,
     {
