@@ -14,7 +14,24 @@ export default {
     name: "App",
     components: {
       NavBarVue
+    },/*
+    beforeMount() {
+      console.log(sessionStorage);
+      window.addEventListener("load", this.onLoad);
+      window.addEventListener("beforeunload", this.onUnload);
+    },
+    beforeUnmount() {
+      window.removeEventListener("load", this.onLoad);
+      window.removeEventListener("beforeunload", this.onUnload);
+    },
+     methods: {
+      onLoad() {
+        window.sessionStorage.setItem("isMySessionActive", true);
+      },
+      onUnload() {
+        window.sessionStorage.clear()
     }
+  },*/
 }
 </script>
 

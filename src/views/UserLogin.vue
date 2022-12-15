@@ -7,16 +7,57 @@
         <p>Login form </p>
         <div class='form'>
             <form>
-                <input type="text" placeholder='Username' class='text' required><br>
-                <input type="password" placeholder='Password' class='password'><br>
+                <input type="text" placeholder='Username' class='text' required v-model="username"><br>
+                <input type="password" placeholder='Password' class='password' required v-model="password"><br>
                 <a href="#" class='btn-login'>Sign in</a>
                 <a href="#" class='btn-login'>Sign up</a>
                 <a href="#" class='forgot'>Forgot?</a>
+                <a href="#" @click="this.verifyUser()">Submit</a>
             </form>
         </div>
     </section>
 
 </template>
+
+<script>
+import { authstore } from '../stores/auth.js';
+
+
+export default {
+    name: 'UserLogin',
+    methods: {
+        async verifyUser() {
+            let user = {'username': this.username, 'password': this.password}
+            let fetchResult = await fetch("http://localhost:3000/users/verify/", {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            }).catch((err) => console.log(err));
+            let data = await fetchResult.json();
+            if (data === 0) {
+                alert('wrong password or username');
+            }
+            else {
+                sessionStorage.setItem('token', JSON.stringify(data))
+                console.log(authstore)
+                authstore.commit('changeConnectionState')
+                console.log(authstore)
+                this.toHomePage();
+            }
+        },
+        toHomePage() {
+            this.$router.push({
+                name: "UserHome"
+            });
+        }
+    }
+}
+
+
+</script>
 
 <style scoop>
 .login {

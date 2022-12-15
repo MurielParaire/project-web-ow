@@ -1,6 +1,7 @@
 import { reactive } from 'vue'
 
 export const store = reactive({
+  user: '',
   teamA: [],
   teamB: [],
   character: {'name': 'test'},
