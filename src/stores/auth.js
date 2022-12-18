@@ -13,7 +13,7 @@ export const authstore = Vuex.createStore ({
     },
     mutations: {
         logout(state) {
-            localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
             state.connected = false;
         },
         changeConnectionState(state) {

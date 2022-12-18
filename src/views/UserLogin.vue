@@ -1,20 +1,20 @@
 <template>
 
     <section class='login'>
-        <div class='head'>
+        <section class='head'>
             <h1>OverSim2</h1>
-        </div>
+        </section>
         <p>Login form </p>
-        <div class='form'>
+        <section class='form'>
             <form>
-                <input type="text" placeholder='Username' class='text' required v-model="username"><br>
-                <input type="password" placeholder='Password' class='password' required v-model="password"><br>
+                <input type="text" placeholder='username' class='text' required v-model="username"><br>
+                <input type="password" placeholder='password' class='password' required v-model="password"><br>
                 <a href="#" class='btn-login'>Sign in</a>
-                <a href="#" class='btn-login'>Sign up</a>
+                <a href="#" @click="SignUp" class='btn-login'>Sign up</a>
                 <a href="#" class='forgot'>Forgot?</a>
-                <a href="#" @click="this.verifyUser()">Submit</a>
             </form>
-        </div>
+            <button href="#" class='submit' @click="this.verifyUser()">Submit</button>
+        </section>
     </section>
 
 </template>
@@ -52,6 +52,11 @@ export default {
             this.$router.push({
                 name: "UserHome"
             });
+        },
+        SignUp() {
+            this.$router.push({
+                name: "UserSignup"
+            })
         }
     }
 }
@@ -138,5 +143,24 @@ export default {
     color: black;
     float: right;
 }
+
+.submit {
+    text-decoration: none;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: large;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+}
+
+.submit:hover {
+    color:#218ffe;
+    scale: 1.2;
+    transform: 0.7s;
+    transition: 0.7s;
+}
+
 
 </style>

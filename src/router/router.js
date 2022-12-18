@@ -7,6 +7,7 @@ import Combat from '@/views/Combat.vue'
 import UserLogin from '@/views/UserLogin.vue'
 import CharacterDetail from '@/views/CharacterDetail.vue'
 import UserHome from '@/views/UserHome.vue'
+import UserSignup from '@/views/UserSignup.vue'
 
 export const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(),
@@ -47,6 +48,11 @@ export const router = VueRouter.createRouter({
       path: '/home',
       name: 'UserHome',
       component: UserHome
+    },
+    {
+      path: '/signup',
+      name: 'UserSignup',
+      component: UserSignup
     }
   ],
 });
