@@ -19,49 +19,187 @@ after 15 rounds look at all those that haven't done anything and make them do so
 
 */
 
-/*export default*/ class Test {
-    constructor(team1, team2) {
-        this.teams = [team1, team2]
+export default class Test {
+    constructor(a, b) {
+        console.log('here')
+        console.log(a)
+        console.log(b)
+        /*
+        let team1 = [
+            {
+                name: 'Ana',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [
+                    {
+                        type: "immobile",
+                        event: "$1 put $2 to eternal sleep"
+                    },
+                    {
+                        type: "immobile",
+                        event: "$1 put $2 to eternal sleep"
+                    }
+                ]
+            },
+            {
+                name: 'Mercy',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [{
+                    type: "res",
+                    event: "$1 revived $2"
+                }]
+            },
+            {
+                name: 'Tracer',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [{
+                    type: "flee",
+                    event: "$1 ended up at spawn after using her recall"
+                }]
+            },
+            {
+                name: 'Ashe',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [{
+                    type: "Bob",
+                    event: "$1 called Bob for reinforcements."
+                },
+                {
+                    type: "Bob",
+                    event: "$1 asks Bob to help her."
+                }]
+            },
+            {
+                name: 'Reinhardt',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: []
+            }
+        ];
+        let team2 = [
+            {
+                name: 'Kiriko',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [{
+                    type: "help",
+                    event: "$1 cleared $2 of all negative effects"
+                }]
+            },
+            {
+                name: 'Zenyatta',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [{
+                    type: "kill",
+                    event: "$1 kicked $2 off a cliff"
+                }]
+            },
+            {
+                name: 'Genji',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [{
+                    type: "protect",
+                    event: "$1 deflected $2's projectiles."
+                }]
+            },
+            {
+                name: 'Hanzo',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [{
+                    type: "kill",
+                    event: "$1 put an arrow through $2's heart"
+                }]
+            },
+            {
+                name: 'Ramattra',
+                alive: true,
+                immobile: false,
+                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
+                atCombat: true,
+                protected: false,
+                event: [{
+                    type: "protect",
+                    event: "$1 put his barrier in front of $2"
+                }]
+            }
+        ];
+        console.log(team1)
+        console.log(team2)
+        */
+        this.teams = [a, b]
         this.combat = []
         this.events = [{
             "type": "kill",
-            "event": "$1 has executed $2"
+            "description": "$1 has executed $2"
         },
         {
             "type": "kill",
-            "event": "$1 has killed $2"
+            "description": "$1 has killed $2"
         },
         {
             "type": "kill",
-            "event": "$2 has annihilated $1"
+            "description": "$2 has annihilated $1"
         },
         {
             "type": "kill",
-            "event": "$1 has snuck up and killed $2"
+            "description": "$1 has snuck up and killed $2"
         },
         {
             "type": "kill",
-            "event": "$1 has executed $2"
+            "description": "$1 has executed $2"
         },
         {
             "type": "kill",
-            "event": "$1 has killed $2"
+            "description": "$1 has killed $2"
         },
         {
             "type": "kill",
-            "event": "$2 has annihilated $1"
+            "description": "$2 has annihilated $1"
         },
         {
             "type": "kill",
-            "event": "$1 has snuck up and killed $2"
+            "description": "$1 has snuck up and killed $2"
         },
         {
             "type": "kill",
-            "event": "$1 has killed $2"
+            "description": "$1 has killed $2"
         },
         {
             "type": "kill",
-            "event": "$2 has annihilated $1"
+            "description": "$2 has annihilated $1"
         },
         ];
         this.countAlive = [5, 5];
@@ -111,41 +249,42 @@ after 15 rounds look at all those that haven't done anything and make them do so
     playNormalEvent() {
         let counter = Math.floor(Math.random() * this.events.length);
         let normalevent = this.events[counter];
-        let event =  {};
+        let event = {};
         let Iteam = this.getRandom()
         let OTeam = 0;
         if (Iteam === 0) {
             OTeam = 1;
         }
         event.img = [];
-        event.event = normalevent.event.toString();
+        event.chars = [];
+        event.description = normalevent.description.toString();
         let char = this.teams[Iteam][this.getCharacter(Iteam, '', false, false, false, false)];
         event.img.push(char.image)
-        let index =  event.event.indexOf('$');
-        event.event =  event.event.substring(0, index) + char.name +  event.event.substring(index + 2);
+        let index = event.description.indexOf('$');
+        event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
         if (normalevent.type === 'kill') {
-            index =  event.event.indexOf('$');
+            index = event.description.indexOf('$');
             char = this.teams[OTeam][this.getCharacter(OTeam, '', true, false, false, false)];
             if (char.protected === false && char.atCombat === true) {
                 event.img.push(char.image)
-                event.event =  event.event.substring(0, index) + char.name +  event.event.substring(index + 2);
+                event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
         else if (normalevent.type === 'protect' || normalevent.type === 'help') {
-            index =  event.event.indexOf('$');
+            index = event.description.indexOf('$');
             char = this.teams[Iteam][this.getCharacter(Iteam, normalevent.char, false, true, false, false)];
             if (char.protected === false && char.atCombat === true) {
                 event.img.push(char.image)
-                event.event =  event.event.substring(0, index) + char.name +  event.event.substring(index + 2);
+                event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
         else if (normalevent.type === 'flee') {
             this.teams[Iteam][normalevent.counter].atCombat = false;
         }
-        if (this.combat.length > 0 &&  event.event !== this.combat[this.combat.length - 1].event && event.event !== '') {
+        if (this.combat.length > 0 && event.description !== this.combat[this.combat.length - 1].event && event.description !== '') {
             this.combat.push(event);
         }
-        else if (event.event !== '') {
+        else if (event.description !== '') {
             this.combat.push(event);
         }
     }
@@ -174,13 +313,23 @@ after 15 rounds look at all those that haven't done anything and make them do so
                 return 0;
             }
         }
-        event.event = this.teams[Iteam][rand].event;
+        if (this.teams[Iteam][rand].event.length > 0) {
+            if (this.teams[Iteam][rand].event.length > 1) {
+                let random = this.getRandom();
+                event.description = this.teams[Iteam][rand].event[random];
+            }
+            event.description = this.teams[Iteam][rand].event[0];
+        }
+        else {
+            return 0;
+        }
         event.char = this.teams[Iteam][rand].name;
         event.image = this.teams[Iteam][rand].image;
-        if (event.event.type === 'flee') {
+        if (event.description.type === 'flee') {
             this.teams[Iteam][rand].atCombat = false;
         }
         event.counter = rand;
+        console.log(event)
         return event;
     }
 
@@ -192,56 +341,65 @@ after 15 rounds look at all those that haven't done anything and make them do so
         }
         let specialevent = this.getSpecialEvent(Iteam)
         let event = {};
-        event.event = '';
+        event.description = '';
         event.img = [];
-        if (specialevent.event.type === 'kill') {
-            event.event = specialevent.event.event.toString();
+        event.chars = [];
+        if (specialevent.description.type === 'kill') {
+            event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
-            let index = event.event.indexOf('$');
-            event.event = event.event.substring(0, index) + specialevent.char + event.event.substring(index + 2);
-            index = event.event.indexOf('$');
+            event.chars.push(specialevent.char)
+            let index = event.description.indexOf('$');
+            event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
+            index = event.description.indexOf('$');
             let char = this.teams[OTeam][this.getCharacter(OTeam, '', true, false, false, false)];
             if (char.protected === false && char.atCombat === true) {
+                event.chars.push(char.name)
                 event.img.push(char.image)
-                event.event = event.event.substring(0, index) + char.name + event.event.substring(index + 2);
+                event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
-        else if (specialevent.event.type === 'protect' || specialevent.type === 'help') {
-            event.event = specialevent.event.event.toString();
+        else if (specialevent.description.type === 'protect' || specialevent.type === 'help') {
+            event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
-            let index = event.event.indexOf('$');
-            event.event = event.event.substring(0, index) + specialevent.char + event.event.substring(index + 2);
-            index = event.event.indexOf('$');
+            event.chars.push(specialevent.char)
+            let index = event.description.indexOf('$');
+            event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
+            index = event.description.indexOf('$');
             let char = this.teams[Iteam][this.getCharacter(Iteam, specialevent.char, false, true, false, false)];
             if (char.atCombat === true) {
+                event.chars.push(char.name)
                 event.img.push(char.image)
-                event.event = event.event.substring(0, index) + char.name + event.event.substring(index + 2);
+                event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
-        else if (specialevent.event.type === 'flee') {
-            event.event = specialevent.event.event.toString();
+        else if (specialevent.description.type === 'flee') {
+            event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
-            let index = event.event.indexOf('$');
-            event.event = event.event.substring(0, index) + specialevent.char + event.event.substring(index + 2);
+            event.chars.push(specialevent.char)
+            let index = event.description.indexOf('$');
+            event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
         }
-        else if (specialevent.event.type === 'res' && this.countAlive[Iteam] < 5) {
-            event.event = specialevent.event.event.toString();
+        else if (specialevent.description.type === 'res' && this.countAlive[Iteam] < 5) {
+            event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
-            let index = event.event.indexOf('$');
-            event.event = event.event.substring(0, index) + specialevent.char + event.event.substring(index + 2);
-            index = event.event.indexOf('$');
+            event.chars.push(specialevent.char)
+            let index = event.description.indexOf('$');
+            event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
+            index = event.description.indexOf('$');
             let indexchar = this.getDeadCharacter(Iteam);
             if (indexchar !== -1) {
                 let char = this.teams[Iteam][indexchar]
                 event.img.push(char.image)
-                event.event = event.event.substring(0, index) + char.name + event.event.substring(index + 2);
+                event.chars.push(char.name)
+                event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
-        else if (specialevent.event.type === 'Bob') {
-            event.event = specialevent.event.event.toString();
-            let index = event.event.indexOf('$');
-            event.event = event.event.substring(0, index) + specialevent.char + event.event.substring(index + 2);
+        else if (specialevent.description.type === 'Bob') {
+            event.description = specialevent.description.description.toString();
+            let index = event.description.indexOf('$');
+            event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             event.img.push('https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltc6f4b34d356c0754/637da13646a48b0e063e4a8d/ashe-00.jpg?format=webply&quality=90')
+            event.chars.push("Bob")
             this.countAlive[Iteam] = this.countAlive[Iteam] + 1;
             this.teams[Iteam].push({
                 name: 'Bob',
@@ -256,22 +414,24 @@ after 15 rounds look at all those that haven't done anything and make them do so
                 }
             })
         }
-        else if (specialevent.event.type === 'immobile') {
-            event.event = specialevent.event.event.toString();
+        else if (specialevent.description.type === 'immobile') {
+            event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
-            let index = event.event.indexOf('$');
-            event.event = event.event.substring(0, index) + specialevent.char + event.event.substring(index + 2);
-            index = event.event.indexOf('$');
+            event.chars.push(specialevent.char)
+            let index = event.description.indexOf('$');
+            event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
+            index = event.description.indexOf('$');
             let char = this.teams[Iteam][this.getCharacter(Iteam, specialevent.char, false, false, true, false)];
             if (char.atCombat === true) {
+                event.chars.push(char.name)
                 event.img.push(char.image)
-                event.event = event.event.substring(0, index) + char.name + event.event.substring(index + 2);
+                event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
-        if (this.combat.length > 0 &&  event.event !== this.combat[this.combat.length - 1].event && event.event !== '') {
+        if (this.combat.length > 0 && event.description !== this.combat[this.combat.length - 1].event && event.description !== '') {
             this.combat.push(event);
         }
-        else if (event.event !== '') {
+        else if (event.description !== '') {
             this.combat.push(event);
         }
     }
@@ -342,130 +502,5 @@ after 15 rounds look at all those that haven't done anything and make them do so
 }
 
 
-let team1 = [
-    {
-        name: 'Ana',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "immobile",
-            event: "$1 put $2 to eternal sleep"
-        }
-    },
-    {
-        name: 'Mercy',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "res",
-            event: "$1 revived $2"
-        }
-    },
-    {
-        name: 'Tracer',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "flee",
-            event: "$1 ended up at spawn after using her recall"
-        }
-    },
-    {
-        name: 'Ashe',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "Bob",
-            event: "$1 called Bob for reinforcements."
-        }
-    },
-    {
-        name: 'Reinhardt',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "protect",
-            event: "$1 shielded $2"
-        }
-    }
-];
-let team2 = [
-    {
-        name: 'Kiriko',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "help",
-            event: "$1 cleared $2 of all negative effects"
-        }
-    },
-    {
-        name: 'Zenyatta',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "kill",
-            event: "$1 kicked $2 off a cliff"
-        }
-    },
-    {
-        name: 'Genji',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "protect",
-            event: "$1 deflected $2's projectiles."
-        }
-    },
-    {
-        name: 'Hanzo',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "kill",
-            event: "$1 put an arrow through $2's heart"
-        }
-    },
-    {
-        name: 'Ramattra',
-        alive: true,
-        immobile: false,
-        image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-        atCombat: true,
-        protected: false,
-        event: {
-            type: "protect",
-            event: "$1 put his barrier in front of $2"
-        }
-    }
-];
-
-let test = new Test(team1, team2)
-console.log(test.combat)
+//let test = new Test(team1, team2)
+//console.log(test.combat)

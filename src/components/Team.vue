@@ -28,9 +28,6 @@ export default {
         AllDPS: DPSs
     }
   },
-  props() {
-
-  },
   components: {
     Support,
     DPS,

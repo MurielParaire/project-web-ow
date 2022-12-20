@@ -12,22 +12,7 @@
       </section>
       <section id="History">
         <h2>History</h2>
-        <table id="tableHistory">
-                <tr>
-                    <th>Team A</th>
-                    <th>Team B</th>
-                    <th>Winner</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                </tr>
-                <tr>
-                    <td>d</td>
-                    <td>d</td>
-                    <td>d</td>
-                    <td>d</td>
-                    <td>d</td>
-                </tr>
-            </table>
+        <HistoryTable></HistoryTable>
       </section>
     </section>
   </section>
@@ -35,10 +20,13 @@
 </template>
 
 <script>
-
+import HistoryTable from '../components/HistoryTable.vue'
 
 
 export default {
+  components: {
+    HistoryTable
+  },
   data() {
     return {
       user: ''
@@ -46,17 +34,16 @@ export default {
   },
   methods: {
     async getUserInfo(token) {
-      let url = 'http://localhost:3000/token/' + token.toString();
+      let url = 'http://localhost:3000/owapi/users/token/';
       let fetchResult = await fetch(url, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "authorization": token.toString()
         },
       }).catch((err) => console.log(err));
-      console.log(fetchResult)
       let data = await fetchResult.json();
-      console.log(data)
       this.$data.user = data;
     }
   },

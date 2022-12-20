@@ -4,7 +4,6 @@
         <section class='head'>
             <h1>OverSim2</h1>
         </section>
-        <p>Login form </p>
         <section class='form'>
             <form>
                 <input type="text" placeholder='username' class='text' required v-model="username"><br>
@@ -28,7 +27,7 @@ export default {
     methods: {
         async verifyUser() {
             let user = {'username': this.username, 'password': this.password}
-            let fetchResult = await fetch("http://localhost:3000/users/verify/", {
+            let fetchResult = await fetch("http://localhost:3000/owapi/users/verify/", {
                 method: 'POST',
                 headers: {
                 'Accept': 'application/json',
@@ -42,9 +41,7 @@ export default {
             }
             else {
                 sessionStorage.setItem('token', JSON.stringify(data))
-                console.log(authstore)
                 authstore.commit('changeConnectionState')
-                console.log(authstore)
                 this.toHomePage();
             }
         },
@@ -64,7 +61,7 @@ export default {
 
 </script>
 
-<style scoop>
+<style scoped>
 .login {
     margin-top: 10%;
     background-color: rgb(249, 158, 26, .5);

@@ -5,16 +5,26 @@ export const store = reactive({
   teamA: [],
   teamB: [],
   character: {'name': 'test'},
-  setTeamA(team) {
+  async setTeamA(team) {
     for (let counter = 0; counter < team.length; counter++) {
-        let char = {'name': team[counter], alive: true}
-        this.teamA.push(char)
+        let char = {name: team[counter], alive: true};
+        char.event = await this.getImageAndEvent(char.name);
+        char.image = char.event[0].image;
+        this.teamA.push(char);
     }
   },
-  setTeamB(team) {
+  async setTeamB(team) {
     for (let counter = 0; counter < team.length; counter++) {
-        let char = {'name': team[counter], alive: true}
-        this.teamB.push(char)
+        let char = {'name': team[counter], alive: true};
+        char.event = await this.getImageAndEvent(char.name);
+        char.image = char.event[0].image;
+        this.teamB.push(char);
     }
+  },
+  async getImageAndEvent(name) {
+    let url = 'http://localhost:3000/owapi/heroes/event/' + name;
+    let data = await fetch(url).catch((err) => console.log(err));
+    let image = await data.json();
+    return image;
   }
 })

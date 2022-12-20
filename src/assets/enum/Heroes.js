@@ -7,5 +7,5 @@ export const DPSs = [
 ];
 
 export const Tanks = [
-    'D.VA', 'Doomfist', 'Junker Queen', 'Orisa', 'Reinhardt', 'Roadhog', 'Sigma', 'Winston', 'Wrecking Ball', 'Zarya'
+    'D.Va', 'Doomfist', 'Junker Queen', 'Orisa', 'Reinhardt', 'Roadhog', 'Sigma', 'Winston', 'Wrecking Ball', 'Zarya'
 ];
