@@ -12,7 +12,9 @@
       </section>
       <section id="History">
         <h2>History</h2>
-        <HistoryTable></HistoryTable>
+        <section id="Historytable">
+          <HistoryTable :history="user.history"></HistoryTable>
+        </section>
       </section>
     </section>
   </section>
@@ -44,6 +46,21 @@ export default {
         },
       }).catch((err) => console.log(err));
       let data = await fetchResult.json();
+      for (let counter = 0; counter < data.history.length; counter++) {
+        if (data.history[counter].winner === 'A') {
+          data.history[counter].a = 'winner';
+          data.history[counter].b = 'loser';
+        }
+        else {
+          data.history[counter].b = 'winner';
+          data.history[counter].a = 'loser';
+        }
+        //2022-12-19T22:58:31.000Z
+        let date = (data.history[counter].date_time).toString();
+        date = date.replace('T', ' ');
+        date = date.slice(0, 19);
+        data.history[counter].date_time = date;
+      }
       this.$data.user = data;
     }
   },
@@ -63,7 +80,7 @@ export default {
 }
 
 h2 {
-  font-size:x-large;
+  font-size: x-large;
   font-weight: bold;
 }
 
@@ -71,8 +88,14 @@ h2 {
   grid-column: 2;
 }
 
+#Historytable {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .Home {
-  width: 60%;
+  width: 80%;
   margin-left: auto;
   margin-right: auto;
   background-color: rgb(237, 237, 237);

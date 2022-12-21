@@ -19,7 +19,7 @@
                     <div class="error-msg">{{ error.$message }}</div>
                 </div>
             </section>
-            <!-- First and Last Name Row -->
+
             <section class="row">
                 <section class="col-sm-3">
                     <label for="firstname"> First Name :</label>
@@ -28,15 +28,14 @@
                     <input class='text' placeholder="first name" type="text" v-model="v$.form.firstName.$model"
                         name="firstname">
                     <div class="pre-icon os-icon os-icon-user-male-circle"></div>
-                    <!-- Error Message -->
                 </section>
-
             </section>
             <section class="row">
                     <div class="input-errors" v-for="(error, index) of v$.form.firstName.$errors" :key="index">
                         <div class="error-msg">{{ error.$message }}</div>
                     </div>
                 </section>
+    
             <section class="row">
                 <section class="col-sm-3">
                     <label for="lastname">Last Name :</label>
@@ -58,7 +57,6 @@
                 </section>
                 <section class="col-sm-8">
                     <input class='text' placeholder="email" type="email" v-model="v$.form.email.$model" name="email">
-                    <!-- Error Message -->
                 </section>
             </section>
             <section class="row">
@@ -74,10 +72,7 @@
                 <section class="col-sm-8">
                     <input class='password' placeholder="password" type="password" v-model="v$.form.password.$model">
                     <div class="pre-icon os-icon os-icon-fingerprint"></div>
-                    <!-- Error Message -->
-
                 </section>
-
             </section>
             <section class="row">
                 <div class="input-errors" v-for="(error, index) of v$.form.password.$errors" :key="index">
@@ -106,8 +101,6 @@
         <button href="#" class='submit right' @click="this.verifyUser()">Submit</button>
     </section>
 
-
-
 </template>
 
 <script>
@@ -115,15 +108,10 @@ import Vuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
 import { validName, validUsername, validPassword } from '../assets/verifications.js'
 
-
-
-
 export default {
-
     setup() {
         return { v$: Vuelidate() }
     },
-
     data() {
         return {
             form: {

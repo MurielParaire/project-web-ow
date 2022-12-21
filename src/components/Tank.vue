@@ -29,8 +29,6 @@ export default {
             tanks: Tanks
         }
     },
-    props: {
-    },
     methods: {
         toggle() {
             this.visible = !this.visible;
