@@ -24,6 +24,7 @@
 <script>
 import { store } from '@/stores/store.js';
 import { useRoute } from 'vue-router'
+import { getCharacterDetails } from '../database/Character.js';
 
 export default {
     name: 'CharacterDetail',
@@ -55,14 +56,11 @@ export default {
                 else {
                     name = name.charAt(0).toUpperCase() + name.slice(1);
                 }
-                let url = 'http://localhost:3000/character/name/' + name;
-                let data = await fetch(url).catch((err) => console.log(err));
-                let char = await data.json();
+                let char = await getCharacterDetails(name)
                 if (char.length > 0)
                     store.character = char[0];
             }
             this.$data.character = store.character
-            console.log(this.$data.character)
         }
     },
     async mounted() {

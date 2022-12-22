@@ -1,13 +1,16 @@
 import * as VueRouter from 'vue-router'
 
 import OverSim from '@/views/OverSim.vue'
-import Characters from '@/views/characters.vue'
+import Characters from '@/views/Characters.vue'
 import Match from '@/views/Match.vue'
 import Combat from '@/views/Combat.vue'
 import UserLogin from '@/views/UserLogin.vue'
 import CharacterDetail from '@/views/CharacterDetail.vue'
 import UserHome from '@/views/UserHome.vue'
 import UserSignup from '@/views/UserSignup.vue'
+import Forgot from '@/views/Forgot.vue'
+
+import {authstore} from '../stores/auth.js'
 
 export const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(),
@@ -47,12 +50,25 @@ export const router = VueRouter.createRouter({
     {
       path: '/home',
       name: 'UserHome',
-      component: UserHome
+      component: UserHome,
+      beforeEnter: (to, from, next) => {
+        if(authstore.getters.isConnected === false) {
+            next(false);
+        } else {
+            next();
+        }
+    }
+
     },
     {
       path: '/signup',
       name: 'UserSignup',
       component: UserSignup
+    },
+    {
+      path: '/login/forgot',
+      name: 'Forgot',
+      component: Forgot
     }
   ],
 });

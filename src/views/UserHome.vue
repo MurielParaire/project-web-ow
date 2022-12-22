@@ -23,7 +23,7 @@
 
 <script>
 import HistoryTable from '../components/HistoryTable.vue'
-
+import { getUserInformation } from '../database/User.js';
 
 export default {
   components: {
@@ -35,17 +35,8 @@ export default {
     }
   },
   methods: {
-    async getUserInfo(token) {
-      let url = 'http://localhost:3000/owapi/users/token/';
-      let fetchResult = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          "authorization": token.toString()
-        },
-      }).catch((err) => console.log(err));
-      let data = await fetchResult.json();
+    async getUserInfo() {
+      let data = await getUserInformation();
       for (let counter = 0; counter < data.history.length; counter++) {
         if (data.history[counter].winner === 'A') {
           data.history[counter].a = 'winner';
@@ -55,7 +46,6 @@ export default {
           data.history[counter].b = 'winner';
           data.history[counter].a = 'loser';
         }
-        //2022-12-19T22:58:31.000Z
         let date = (data.history[counter].date_time).toString();
         date = date.replace('T', ' ');
         date = date.slice(0, 19);
@@ -65,7 +55,7 @@ export default {
     }
   },
   mounted() {
-    this.$data.user = this.getUserInfo(JSON.parse(sessionStorage.getItem('token')));
+    this.$data.user = this.getUserInfo();
   }
 }
 </script>

@@ -42,6 +42,7 @@
 <script>
 import { store } from '../stores/store.js';
 import Character from '../components/Character.vue'
+import { getAllCharacters } from '../database/Character.js';
 
 export default {
   name: 'Characters',
@@ -57,8 +58,7 @@ export default {
   },
   methods: {
     async getCharacters() {
-      let fetchResult = await fetch("http://localhost:3000/characters/").catch((err) => console.log(err));
-      let data = await fetchResult.json();
+      let data = await getAllCharacters()
       for (let counter = 0; counter < data.length; counter++) {
         if (data[counter].role === 'Support') {
           this.$data.SupportList.push(data[counter])

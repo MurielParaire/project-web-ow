@@ -16,13 +16,8 @@ export const authstore = Vuex.createStore ({
             sessionStorage.removeItem('token');
             state.connected = false;
         },
-        changeConnectionState(state) {
-            if (state.connected === false) {
-                state.connected = true;
-            }
-            else {
-                state.connected = false;
-            }
+        setConnected(state) {
+            state.connected = true;
         }
     }
     

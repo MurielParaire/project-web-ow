@@ -6,11 +6,13 @@
         </section>
         <section class='form'>
             <form>
-                <input type="text" placeholder='username' class='text' required v-model="username"><br>
-                <input type="password" placeholder='password' class='password' required v-model="password"><br>
-                <a href="#" class='btn-login'>Sign in</a>
-                <a href="#" @click="SignUp" class='btn-login'>Sign up</a>
-                <a href="#" class='forgot' @click="forgot">Forgot?</a>
+                <section class="row email">
+                    <input type="email" placeholder='email' class='text' name="email" required v-model="email">
+                </section>
+                <section class="row">
+                    <a href="#" class='btn-login' @click="toLoginPage">Sign in</a>
+                    <a href="#" @click="SignUp" class='btn-login'>Sign up</a>
+                </section>
             </form>
             <button href="#" class='submit' @click="this.verifyUser()">Submit</button>
         </section>
@@ -19,39 +21,17 @@
 </template>
 
 <script>
-import { authstore } from '../stores/auth.js';
-import { verifyUser } from '../database/User.js';
-
 export default {
-    name: 'UserLogin',
+    name: 'Forgot',
     methods: {
-        async verifyUser() {
-            let user = {'username': this.username, 'password': this.password};
-            let data = await verifyUser(user);
-            console.log(data);
-            if (data === 0) {
-                alert('wrong password or username');
-            }
-            
-            else {
-                sessionStorage.setItem('token', JSON.stringify(data))
-                authstore.commit('setConnected')
-                this.toHomePage();
-            }
-        },
-        toHomePage() {
+        toLoginPage() {
             this.$router.push({
-                name: "UserHome"
+                name: "Login"
             });
         },
         SignUp() {
             this.$router.push({
                 name: "UserSignup"
-            })
-        },
-        forgot() {
-            this.$router.push({
-                name: "Forgot"
             })
         }
     }
@@ -60,7 +40,11 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
+.email {
+    padding-bottom: 20px;
+}
+
 .login {
     margin-top: 10%;
     background-color: rgb(249, 158, 26, .5);
@@ -72,11 +56,6 @@ export default {
     border-radius: 8px;
     padding: 50px;
     width: 30%;
-}
-
-.form>section>section {
-    display: flex;
-    justify-content: left;
 }
 
 .login .head {
@@ -98,15 +77,6 @@ export default {
     outline: none;
 }
 
-.email input[type=email].text {
-    border: none;
-    background: none;
-    box-shadow: 0px 2px 0px 0px black;
-    width: 100%;
-    font-size: 1em;
-    outline: none;
-}
-
 .login .form .text::placeholder {
     color: black;
 }
@@ -119,6 +89,8 @@ export default {
     color: black;
     font-size: 1em;
     outline: none;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .login .form .password::placeholder {
@@ -154,6 +126,9 @@ export default {
 
 .submit {
     text-decoration: none;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
     font-size: large;
     background-color: transparent;
     cursor: pointer;
@@ -167,18 +142,12 @@ export default {
     transition: 0.7s;
 }
 
-.row {
-    padding-top: 15px;
+input[type=email].text {
+    border: none;
+    background: none;
+    box-shadow: 0px 2px 0px 0px black;
+    width: 100%;
+    font-size: 1em;
+    outline: none;
 }
-
-.signin {
-    display: flex;
-    justify-content: right;
-    text-align: right;
-}
-
-label {
-    text-align: left;
-}
-
 </style>

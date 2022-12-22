@@ -98,7 +98,7 @@
             </section>
         </form>
         <a href="#" class='btn-login signin' @click="SignIn">Sign in</a>
-        <button href="#" class='submit right' @click="this.verifyUser()">Submit</button>
+        <button href="#" class='submit right' @click="this.createUser()">Submit</button>
     </section>
 
 </template>
@@ -107,6 +107,7 @@
 import Vuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
 import { validName, validUsername, validPassword } from '../assets/verifications.js'
+import {createUser} from '../database/User.js'
 
 export default {
     setup() {
@@ -129,6 +130,27 @@ export default {
             this.$router.push({
                 name: "Login"
             })
+        },
+        async createUser() {
+            let user = {
+                username: this.form.username,
+                firstname:  this.form.firstName,
+                lastname:  this.form.lastName,
+                email:  this.form.email,
+                password:  this.form.password,
+            }
+            let res = await createUser(user);
+            if (res !== 200) {
+                alert('There was an error creating your account.')
+            }
+            else {
+                this.$router.push({
+                name: "UserHome"
+            })
+            }
+        },
+        validPw() {
+            return validPassword(this.form.password, this.form.confirmPassword)
         }
     },
     validations() {
@@ -149,8 +171,8 @@ export default {
                 email: { required, email },
                 password: { required, min: minLength(6) },
                 confirmPassword: { required, validPassword:  {
-                    $validator: validPassword,
-                    $message: 'Passwords must be the same'
+                    $validator: this.validPw,
+                    $message: 'Passwords must be the same.'
                 } },
                 username: { 
                     required, min: minLength(3), name_validation: {

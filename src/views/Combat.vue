@@ -10,8 +10,10 @@
 
 <script>
 import Test from '../test';
-import { store } from '../stores/store';
+import { store } from '../stores/store.js';
 import Event from '../components/Event.vue';
+import { authstore } from '../stores/auth.js';
+import { createUserHistory } from '../database/User.js';
 
 export default {
     name: "Combat",
@@ -30,17 +32,20 @@ export default {
             this.winner = test.winner;
         },
         async getWinner() {
-            let history = { "team_a": this.getTeamString(store.teamA), "team_b": this.getTeamString(store.teamB), "winner": this.winner, "date_time": this.getDate() };
-            await fetch("http://localhost:3000/owapi/users/history/new/", {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json",
-                    "authorization": sessionStorage.getItem("token")
-                },
-                body: JSON.stringify(history)
-            }).catch((err) => { console.log(err); });
-            alert("AND THE WINNER ARE " + this.winner);
+            if (authstore.getters.isConnected === true) {
+                let history = { "team_a": this.getTeamString(store.teamA), "team_b": this.getTeamString(store.teamB), "winner": this.winner, "date_time": this.getDate() };
+                let res = await createUserHistory(history);
+                if (res === 200) {
+                    alert("AND THE WINNER ARE " + this.winner);
+                }
+                else {
+                    alert("Network error. Could not add this match to your history. \nAND THE WINNER ARE " + this.winner);
+                }
+            }
+            else {
+                alert("AND THE WINNER ARE " + this.winner);
+            }
+            
         },
         getTeamString(team) {
             let final = "";
