@@ -52,6 +52,7 @@ export default {
         data.history[counter].date_time = date;
       }
       this.$data.user = data;
+      console.log(this.$data.user)
     }
   },
   mounted() {

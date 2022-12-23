@@ -15,7 +15,7 @@ export async function createUserHistory(history) {
 
 
 export async function getUserInformation() {
-    let url = 'http://localhost:3000/owapi/users/token/';
+    let url = 'http://localhost:3000/owapi/users/info/';
     let fetchResult = await fetch(url, {
       method: 'GET',
       headers: {

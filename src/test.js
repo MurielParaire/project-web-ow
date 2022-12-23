@@ -1,164 +1,10 @@
-/*
-How to make the match : 
-5v5
-1. set both teams : alive=true, immobile=false, photo=?, atCombat = true (keeps track if characters fled the combat) TOK
-2. get 10 random events with kill => if only 10 events with kill in db, then get all and rand in code TOK
-3. get 1 special event per character TOK
-4. FIGHTPHASE : 
-    IN ROUNDS (5 TURNS)
-    - get random between special / kill => number between 0 and 1
-    - execute that special (attention for rez Mercy since one person needs to be dead, so reroll if on this special for her)
-5. Winner
-*/
-
-/* FIGHTPHASE
-need every character to do something
-after 15 rounds look at all those that haven't done anything and make them do something
-
-
-
-*/
 
 export default class Test {
     constructor(a, b) {
         console.log('here')
         console.log(a)
         console.log(b)
-        /*
-        let team1 = [
-            {
-                name: 'Ana',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [
-                    {
-                        type: "immobile",
-                        event: "$1 put $2 to eternal sleep"
-                    },
-                    {
-                        type: "immobile",
-                        event: "$1 put $2 to eternal sleep"
-                    }
-                ]
-            },
-            {
-                name: 'Mercy',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [{
-                    type: "res",
-                    event: "$1 revived $2"
-                }]
-            },
-            {
-                name: 'Tracer',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [{
-                    type: "flee",
-                    event: "$1 ended up at spawn after using her recall"
-                }]
-            },
-            {
-                name: 'Ashe',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [{
-                    type: "Bob",
-                    event: "$1 called Bob for reinforcements."
-                },
-                {
-                    type: "Bob",
-                    event: "$1 asks Bob to help her."
-                }]
-            },
-            {
-                name: 'Reinhardt',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: []
-            }
-        ];
-        let team2 = [
-            {
-                name: 'Kiriko',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [{
-                    type: "help",
-                    event: "$1 cleared $2 of all negative effects"
-                }]
-            },
-            {
-                name: 'Zenyatta',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [{
-                    type: "kill",
-                    event: "$1 kicked $2 off a cliff"
-                }]
-            },
-            {
-                name: 'Genji',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [{
-                    type: "protect",
-                    event: "$1 deflected $2's projectiles."
-                }]
-            },
-            {
-                name: 'Hanzo',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [{
-                    type: "kill",
-                    event: "$1 put an arrow through $2's heart"
-                }]
-            },
-            {
-                name: 'Ramattra',
-                alive: true,
-                immobile: false,
-                image: 'https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?cs=srgb&dl=pexels-pixabay-45201.jpg&fm=jpg',
-                atCombat: true,
-                protected: false,
-                event: [{
-                    type: "protect",
-                    event: "$1 put his barrier in front of $2"
-                }]
-            }
-        ];
-        console.log(team1)
-        console.log(team2)
-        */
+
         this.teams = [a, b]
         this.combat = []
         this.events = [{
@@ -203,7 +49,9 @@ export default class Test {
         },
         ];
         this.countAlive = [5, 5];
+        this.initCharacters();
         while (this.countAlive[0] > 0 && this.countAlive[1] > 0) {
+            this.initCharactersRound();
             this.playRound()
         }
         if (this.countAlive[0] === 0) {
@@ -230,10 +78,24 @@ export default class Test {
                 counter++
             }
         }
-        this.initCharacters();
     }
 
     initCharacters() {
+        (this.teams[0]).forEach(hero => {
+            hero.immobile = false;
+            hero.protected = false;
+            hero.atCombat = true;
+            hero.alive = true;
+        });
+        (this.teams[1]).forEach(hero => {
+            hero.immobile = false;
+            hero.protected = false;
+            hero.atCombat = true;
+            hero.alive = true;
+        });
+    }
+
+    initCharactersRound() {
         (this.teams[0]).forEach(hero => {
             hero.immobile = false;
             hero.protected = false;
@@ -246,6 +108,7 @@ export default class Test {
         });
     }
 
+
     playNormalEvent() {
         let counter = Math.floor(Math.random() * this.events.length);
         let normalevent = this.events[counter];
@@ -257,7 +120,8 @@ export default class Test {
         }
         event.img = [];
         event.chars = [];
-        event.description = normalevent.description.toString();
+        event.type = normalevent.type
+        event.description = normalevent.description;
         let char = this.teams[Iteam][this.getCharacter(Iteam, '', false, false, false, false)];
         event.img.push(char.image)
         let index = event.description.indexOf('$');
@@ -344,6 +208,7 @@ export default class Test {
         event.description = '';
         event.img = [];
         event.chars = [];
+        event.type = specialevent.type
         if (specialevent.description.type === 'kill') {
             event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
@@ -500,7 +365,156 @@ export default class Test {
     }
 
 }
-
-
+/*
+let team1 = [
+    {
+        "name": "Baptiste",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/f979896f74ba22db2a92a85ae1260124ab0a26665957a624365e0f96e5ac5b5c.png",
+                "name": "Baptiste",
+                "type": "protect",
+                "description": "$1 has protected $2 from certain death with his immobility field"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/f979896f74ba22db2a92a85ae1260124ab0a26665957a624365e0f96e5ac5b5c.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    },
+    {
+        "name": "Kiriko",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/088aff2153bdfa426984b1d5c912f6af0ab313f0865a81be0edd114e9a2f79f9.png",
+                "name": "Kiriko",
+                "type": "help",
+                "description": "$1 cleansed $2 of all negative effects"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/088aff2153bdfa426984b1d5c912f6af0ab313f0865a81be0edd114e9a2f79f9.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    },
+    {
+        "name": "Cassidy",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/6cfb48b5597b657c2eafb1277dc5eef4a07eae90c265fcd37ed798189619f0a5.png"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/6cfb48b5597b657c2eafb1277dc5eef4a07eae90c265fcd37ed798189619f0a5.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    },
+    {
+        "name": "Bastion",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/4d715f722c42215072b5dd0240904aaed7b5285df0b2b082d0a7f1865b5ea992.png"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/4d715f722c42215072b5dd0240904aaed7b5285df0b2b082d0a7f1865b5ea992.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    },
+    {
+        "name": "D.Va",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/ca114f72193e4d58a85c087e9409242f1a31e808cf4058678b8cbf767c2a9a0a.png",
+                "name": "D.Va",
+                "type": "special",
+                "description": "$1 was forced to eject from her Mech"
+            },
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/ca114f72193e4d58a85c087e9409242f1a31e808cf4058678b8cbf767c2a9a0a.png",
+                "name": "D.Va",
+                "type": "kill",
+                "description": "$1 has bombed $2"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/ca114f72193e4d58a85c087e9409242f1a31e808cf4058678b8cbf767c2a9a0a.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    }
+]
+let team2 = [
+    {
+        "name": "Zenyatta",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/71cabc939c577581f66b952f9c70891db779251e8e70f29de3c7bf494edacfe4.png"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/71cabc939c577581f66b952f9c70891db779251e8e70f29de3c7bf494edacfe4.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    },
+    {
+        "name": "Moira",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/000beeb5606e01497897fa9210dd3b1e78e1159ebfd8afdc9e989047d7d3d08f.png"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/000beeb5606e01497897fa9210dd3b1e78e1159ebfd8afdc9e989047d7d3d08f.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    },
+    {
+        "name": "Hanzo",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/aecd8fa677f0093344fab7ccb7c37516c764df3f5ff339a5a845a030a27ba7e0.png"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/aecd8fa677f0093344fab7ccb7c37516c764df3f5ff339a5a845a030a27ba7e0.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    },
+    {
+        "name": "Echo",
+        "alive": false,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/f086bf235cc6b7f138609594218a8385c8e5f6405a39eceb0deb9afb429619fe.png"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/f086bf235cc6b7f138609594218a8385c8e5f6405a39eceb0deb9afb429619fe.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    },
+    {
+        "name": "Doomfist",
+        "alive": true,
+        "event": [
+            {
+                "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/13750471c693c1a360eb19d5ace229c8599a729cd961d72ebee0e157657b7d18.png"
+            }
+        ],
+        "image": "https://d15f34w2p8l1cc.cloudfront.net/overwatch/13750471c693c1a360eb19d5ace229c8599a729cd961d72ebee0e157657b7d18.png",
+        "immobile": false,
+        "protected": false,
+        "atCombat": true
+    }
+]
+*/
 //let test = new Test(team1, team2)
 //console.log(test.combat)

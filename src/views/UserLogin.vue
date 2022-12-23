@@ -28,7 +28,6 @@ export default {
         async verifyUser() {
             let user = {'username': this.username, 'password': this.password};
             let data = await verifyUser(user);
-            console.log(data);
             if (data === 0) {
                 alert('wrong password or username');
             }
