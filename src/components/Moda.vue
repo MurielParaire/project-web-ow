@@ -3,9 +3,10 @@
     <transition name="modal">
         <section class="modal-mask modal-wrapper">
             <section class="modal-container">
-                <button class="right" @click="$emit('close')">
-                        Close
-                    </button>
+                <section class="x">
+                    <img src="../assets/images/x.png" alt="X to close the window" class="right"
+                        @click="$emit('close')" />
+                </section>
                 <section class="modal-header">
                     <slot name="header">
                         <h1>{{ this.information.title }}</h1>
@@ -21,12 +22,11 @@
                                         <label for="username"> {{ attribute.name }} : </label>
                                     </section>
                                     <section class="col-sm-8">
-                                        <input class='text' :placeholder="attribute.name" type="text"
+                                        <input class='text' :placeholder="attribute.placeholder" type="text"
                                             :name="attribute.name" v-model="attribute.value"
                                             v-if="attribute.input === 'input'">
-                                        <textarea v-else class="text" :placeholder="attribute.name"
-                                            :name="attribute.name" rows="5" cols="30"
-                                            v-model="attribute.value">
+                                        <textarea v-else class="text" :placeholder="attribute.placeholder"
+                                            :name="attribute.name" rows="5" cols="30" v-model="attribute.value">
                                         </textarea>
                                     </section>
                                 </section>
@@ -71,7 +71,7 @@ export default {
         }
     },
     methods: {
-
+        
     },
     props: {
         information: {
@@ -88,17 +88,31 @@ export default {
         }
     },
     mounted() {
+        console.log(this.information)
+        /*
         this.$data.form.attr = [];
         for (let counter = 0; counter < this.information.attributes.length; counter++) {
             this.$data.form.attr.push('');
-        }
+        }*/
     }
 }
 
 </script>
 
 
-<style>
+<style scoped>
+h1 {
+    margin-top: 0;
+}
+.x {
+    display: flex;
+    justify-content: right;
+}
+img {
+    max-width: 20px;
+    max-height: 20px;
+}
+
 .modal-footer {
     text-align: center;
 }

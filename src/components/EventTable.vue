@@ -37,7 +37,6 @@ export default {
     },
     methods: {
         async deleteEvent(event) {
-            console.log(event)
             if (confirm('Are you sure you want to delete the event : ' + event.description)) {
                 let result = await deleteEventById(event.event_id);
                 if (result !== 0) {

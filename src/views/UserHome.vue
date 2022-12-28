@@ -6,10 +6,7 @@
     <section class="HomePage">
       <section class="row">
         <section id="User" class="col-sm-4">
-          <h2> {{ this.$data.user.username }}</h2>
-          <p>Last name : {{ this.$data.user.lastname }}</p>
-          <p>First name : {{ this.$data.user.firstname }}</p>
-          <p>Email : {{ this.$data.user.email }}</p>
+          <UserInformation :user="user" @load="getUserInfo"></UserInformation>
         </section>
         <section id="History" class="col-sm-8">
           <h2>History</h2>
@@ -60,6 +57,7 @@ import EventTableVue from '../components/EventTable.vue';
 import { getSomeEvents, createEvent } from '../database/Event.js';
 import {getSomeHeroes, createHero} from '../database/Character.js'
 import HeroTableVue from '../components/HeroTable.vue';
+import UserInformation from '../components/UserInformation.vue'
 
 export default {
   components: {
@@ -67,7 +65,8 @@ export default {
     ModalVue,
     TableVue,
     EventTableVue,
-    HeroTableVue
+    HeroTableVue,
+    UserInformation
   },
   data() {
     return {
@@ -90,24 +89,28 @@ export default {
             name: 'name',
             input: 'input',
             required: true,
+            placeholder: 'Mercy',
             value: ''
           },
           {
             name: 'role',
             input: 'input',
             required: true,
+            placeholder: 'Support',
             value: ''
           },
           {
             name: 'description',
             input: 'textarea',
             required: false,
+            placeholder: 'Mercy is a versatile healer who ...',
             value: ''
           },
           {
             name: 'image',
             input: 'textarea',
             required: false,
+            placeholder: 'https://...',
             value: ''
           }
         ]
@@ -119,18 +122,21 @@ export default {
             name: 'type',
             input: 'input',
             required: true,
+            placeholder: 'kill',
             value: ''
           },
           {
             name: 'description',
             input: 'textarea',
             required: true,
+            placeholder: 'must contain at least one $ followed by a number which specifies the placement of a character \n Example : $1 has killed $2',
             value: ''
           },
           {
             name: 'character',
             input: 'input',
             required: false,
+            placeholder: 'Mercy',
             value: ''
           }
         ]
