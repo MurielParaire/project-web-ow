@@ -111,7 +111,7 @@ export default {
 }
 </script>
 
-<style scoop>
+<style>
 .contentChar {
   display: grid;
   column-gap: 5%;

@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style scoop>
+<style scoped>
 .imgs {
     display: inline-block;
     

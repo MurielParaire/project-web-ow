@@ -71,14 +71,14 @@ export default {
 </script>
 
 
-<style scooped>
+<style scoped>
 @import'~bootstrap/dist/css/bootstrap.css';
 
 .grid {
     display: grid;
     grid-gap: 10px;
-    padding-top: 3em;
 }
+
 
 .row1 {
     grid-row: 1;

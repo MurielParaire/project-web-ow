@@ -7,7 +7,7 @@
 <script>
 
 export default {
-  name: 'HistoryTable',
+  name: 'HistoryLine',
   props: {
     history: {
         required: true

@@ -1,31 +1,41 @@
 <template>
-    <ul >
-        <li><Support @setSupport="setSupportA" :AllSupports="AllSupports" class="first"></Support></li>
-        <li><Support @setSupport="setSupportB" :AllSupports="AllSupports" class="second"></Support></li>
-        <li><DPS @setDPS="setDPSA" :AllDPS="AllDPS" class="third"></DPS></li>
-        <li><DPS @setDPS="setDPSB" :AllDPS="AllDPS" class="fourth"></DPS></li>
-        <li> <Tank @setTank="setTank" ></Tank></li>
-    </ul>
-    <button @click="setTeam">Confirm</button>
+  <ul>
+    <li>
+      <Support @setSupport="setSupportA" :AllSupports="AllSupports" class="first"></Support>
+    </li>
+    <li>
+      <Support @setSupport="setSupportB" :AllSupports="AllSupports" class="second"></Support>
+    </li>
+    <li>
+      <DPS @setDPS="setDPSA" :AllDPS="AllDPS" class="third"></DPS>
+    </li>
+    <li>
+      <DPS @setDPS="setDPSB" :AllDPS="AllDPS" class="fourth"></DPS>
+    </li>
+    <li>
+      <Tank @setTank="setTank"></Tank>
+    </li>
+  </ul>
+  <button @click="setTeam">Confirm</button>
 </template>
 
 <script>
 import Support from '../components/Support.vue'
 import Tank from '../components/Tank.vue'
 import DPS from '../components/DPS.vue'
-import { Supports, DPSs } from '../assets/enum/Heroes.js'
+import {getHeroesByType} from '../database/Character.js'
 export default {
   name: 'team',
   emits: ['setTeam'],
   data() {
     return {
-        tank : '',
-        supportA : '',
-        supportB : '',
-        DPSA : '', 
-        DPSB : '',
-        AllSupports: Supports,
-        AllDPS: DPSs
+      tank: '',
+      supportA: '',
+      supportB: '',
+      DPSA: '',
+      DPSB: '',
+      AllSupports: [],
+      AllDPS: []
     }
   },
   components: {
@@ -35,61 +45,68 @@ export default {
   },
   methods: {
     setTank(tank) {
-        this.$data.tank = tank;
+      this.$data.tank = tank;
     },
     setSupportA(support) {
       if (this.$data.supportA !== '') {
         this.$data.AllSupports.push(this.$data.supportA)
       }
-        this.$data.supportA = support;
-        this.removeSupport(support)
+      this.$data.supportA = support;
+      this.removeSupport(support)
     },
     setSupportB(support) {
       if (this.$data.supportB !== '') {
         this.$data.AllSupports.push(this.$data.supportB)
       }
-        this.$data.supportB = support;
+      this.$data.supportB = support;
       this.removeSupport(support)
     },
     removeSupport(support) {
       for (let counter = 0; counter < this.$data.AllSupports.length; counter++) {
-          if (this.$data.AllSupports[counter] === support) {
-            this.$data.AllSupports.splice(counter, 1)
-          }
+        if (this.$data.AllSupports[counter] === support) {
+          this.$data.AllSupports.splice(counter, 1)
         }
+      }
     },
     setDPSA(dps) {
       if (this.$data.DPSA !== '') {
         this.$data.AllDPS.push(this.$data.DPSA)
       }
-        this.$data.DPSA = dps;
-        this.removeDPS(dps)
+      this.$data.DPSA = dps;
+      this.removeDPS(dps)
     },
     setDPSB(dps) {
       if (this.$data.DPSB !== '') {
         this.$data.AllDPS.push(this.$data.DPSB)
       }
-        this.$data.DPSB = dps;
+      this.$data.DPSB = dps;
       this.removeDPS(dps)
     },
     removeDPS(dps) {
       for (let counter = 0; counter < this.$data.AllDPS.length; counter++) {
-          if (this.$data.AllDPS[counter] === dps) {
-            this.$data.AllDPS.splice(counter, 1)
-          }
+        if (this.$data.AllDPS[counter] === dps) {
+          this.$data.AllDPS.splice(counter, 1)
         }
+      }
     },
     setTeam() {
       let team = [this.$data.supportA, this.$data.supportB, this.$data.DPSA, this.$data.DPSB, this.$data.tank];
       this.$emit('setTeam', team);
     }
+  },
+  async mounted() {
+    this.$data.AllSupports = await getHeroesByType('support');
+    this.$data.AllDPS = await getHeroesByType('dps');
+  },
+  onActivated() {
+    console.log('h')
   }
 }
 </script>
 
 <style>
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 .first .aselect .selector {
@@ -107,5 +124,4 @@ ul {
 .fourth .aselect .selector {
   z-index: 2;
 }
-
 </style>

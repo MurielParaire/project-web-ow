@@ -1,9 +1,33 @@
 <template>
     <h1>The combat</h1>
 
-    <div v-for="(combat, index) in this.$data.combatHistory" :key="index">
-        <Event :event="combat"></Event>
-    </div>
+    <section class="col-sm-3">
+        <h3>Team A :</h3>
+        <ul id="TeamA" class="Teams">
+            <li v-for="hero in this.$data.TeamA" :key="hero.name">
+                <img v-if="hero.alive === true" :src="hero.image" :alt="'image of ' + hero.name" />
+                <img v-else :src="hero.image" :alt="'image of ' + hero.name" class="dead" />
+                <p>{{ hero.name }}</p>
+            </li>
+        </ul>
+    </section>
+
+    <section class="col-sm-6">
+        <div v-for="(combat, index) in this.$data.combatHistory" :key="index">
+            <Event :event="combat"></Event>
+        </div>
+    </section>
+
+    <section class="col-sm-3">
+        <h3>Team B :</h3>
+        <ul id="TeamB" class="Teams">
+            <li v-for="hero in this.$data.TeamB" :key="hero.name">
+                <img v-if="hero.alive === true" :src="hero.image" :alt="'image of ' + hero.name" />
+                <img v-else :src="hero.image" :alt="'image of ' + hero.name" class="dead" />
+                <p>{{ hero.name }}</p>
+            </li>
+        </ul>
+    </section>
 
     <button @click="getWinner">Finish</button>
 </template>
@@ -22,21 +46,25 @@ export default {
     },
     data() {
         return {
-            combatHistory: ""
+            combatHistory: [],
+            TeamA: [],
+            TeamB: []
         };
     },
     methods: {
         getHistory() {
             let test = new Test(store.teamA, store.teamB);
             this.$data.combatHistory = test.combat;
-            this.winner = test.winner;
+            this.$data.TeamA = test.teams[0],
+                this.$data.TeamB = test.teams[1],
+                this.winner = test.winner;
         },
         async getWinner() {
             if (authstore.getters.isConnected === true) {
                 let history = { "team_a": this.getTeamString(store.teamA), "team_b": this.getTeamString(store.teamB), "winner": this.winner, "date_time": this.getDate() };
                 let res = await createUserHistory(history);
                 if (res === 200) {
-                    alert("AND THE WINNER ARE " + this.winner);
+                    alert("And the winner is Team " + this.winner);
                 }
                 else {
                     alert("Network error. Could not add this match to your history. \nAND THE WINNER ARE " + this.winner);
@@ -45,7 +73,7 @@ export default {
             else {
                 alert("AND THE WINNER ARE " + this.winner);
             }
-            
+
         },
         getTeamString(team) {
             let final = "";
@@ -66,3 +94,53 @@ export default {
     components: { Event }
 }
 </script>
+
+<style scoped>
+.dead {
+    filter: grayscale();
+}
+
+h3 {
+    text-align: left;
+}
+
+#TeamA {
+    justify-content: start;
+}
+
+#TeamA>li {
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}
+
+#TeamB {
+    justify-content: end;
+}
+
+#TeamB>li {
+    margin-left: 60%;
+    text-align: left;
+    justify-content: left;
+    align-items: left;
+}
+
+li {
+    margin-top: 10px;
+    display: flex;
+    vertical-align: middle;
+}
+
+p {
+    margin-top: auto;
+    margin-bottom: auto;
+    max-width: fit-content;
+    max-height: fit-content;
+}
+
+img {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+</style>

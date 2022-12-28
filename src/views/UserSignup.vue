@@ -140,14 +140,19 @@ export default {
                 password:  this.form.password,
             }
             let res = await createUser(user);
+            console.log(res)
             if (res !== 200) {
                 alert('There was an error creating your account.')
+            }
+            else if (res === 401) {
+                alert("Sorry but we couldn't create your accound. We only allow a maximum of 10 created accounts. Please refer to an administrator.")
             }
             else {
                 this.$router.push({
                 name: "UserHome"
             })
             }
+            
         },
         validPw() {
             return validPassword(this.form.password, this.form.confirmPassword)
@@ -186,124 +191,6 @@ export default {
 
 </script>
 
-<style scoped>
-.login {
-    margin-top: 10%;
-    background-color: rgb(249, 158, 26, .5);
-    margin: auto;
-    box-shadow:
-        0px 2px 10px rgba(0, 0, 0, 0.2),
-        0px 10px 20px rgba(0, 0, 0, 0.3),
-        0px 30px 60px 1px rgba(0, 0, 0, 0.5);
-    border-radius: 8px;
-    padding: 50px;
-    width: 30%;
-}
+<style>
 
-.form>section>section {
-    display: flex;
-    justify-content: left;
-}
-
-.login .head {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.login p {
-    text-align: center;
-}
-
-.login .form input[type=text].text {
-    border: none;
-    background: none;
-    box-shadow: 0px 2px 0px 0px black;
-    width: 100%;
-    font-size: 1em;
-    outline: none;
-}
-
-.email input[type=email].text {
-    border: none;
-    background: none;
-    box-shadow: 0px 2px 0px 0px black;
-    width: 100%;
-    font-size: 1em;
-    outline: none;
-}
-
-.login .form .text::placeholder {
-    color: black;
-}
-
-.login .form input[type=password].password {
-    border: none;
-    background: none;
-    box-shadow: 0px 2px 0px 0px black;
-    width: 100%;
-    color: black;
-    font-size: 1em;
-    outline: none;
-}
-
-.login .form .password::placeholder {
-    color: black;
-}
-
-.login .form .btn-login {
-    background: none;
-    text-decoration: underline;
-    color: black;
-    border-radius: 3px;
-    padding: 5px 2em;
-    transition: 0.5s;
-}
-
-.login .form .btn-login:hover {
-    color: #218ffe;
-    transform: 0.5s;
-    transition: 0.5s;
-}
-
-.login .forgot:hover {
-    color: #218ffe;
-    transform: 0.5s;
-    transition: 0.5s;
-}
-
-.login .forgot {
-    text-decoration: none;
-    color: black;
-    float: right;
-}
-
-.submit {
-    text-decoration: none;
-    font-size: large;
-    background-color: transparent;
-    cursor: pointer;
-    border: none;
-}
-
-.submit:hover {
-    color: #218ffe;
-    scale: 1.2;
-    transform: 0.7s;
-    transition: 0.7s;
-}
-
-.row {
-    padding-top: 15px;
-}
-
-.signin {
-    display: flex;
-    justify-content: right;
-    text-align: right;
-}
-
-label {
-    text-align: left;
-}
 </style>

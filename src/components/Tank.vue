@@ -18,6 +18,7 @@
   
 <script>
 import { Tanks } from '../assets/enum/Heroes.js'
+import { getHeroesByType } from '../database/Character.js';
 
 
 export default {
@@ -37,6 +38,9 @@ export default {
             this.value = option;
             this.$emit('setTank', this.$data.value);
         }
+    },
+    async mounted() {
+        this.$data.tanks = await getHeroesByType('tank');
     }
 }
 </script>
