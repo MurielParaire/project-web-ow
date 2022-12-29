@@ -1,3 +1,5 @@
+import { verifyResult } from "./general.js";
+
 export async function getSomeEvents(limit, offset) {
     let fetchResult = await fetch("http://localhost:3000/owapi/events/", {
         method: 'GET',
@@ -9,7 +11,7 @@ export async function getSomeEvents(limit, offset) {
         }
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
-    return data;
+    return verifyResult(data);
 }
 
 
@@ -24,18 +26,7 @@ export async function createEvent(event) {
         body: JSON.stringify(event)
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
-    let keys = Object.keys(data);
-    if (keys.length > 0) {
-        keys.forEach(key => {
-            if (key === 'msg') {
-                console.log('here')
-                alert(data.msg)
-                data = 0;
-                
-            }
-        })
-    }   
-    return data;
+    return verifyResult(data);
 }
 
 
@@ -50,5 +41,24 @@ export async function deleteEventById(id) {
       },
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
-    return data;
+    return verifyResult(data);
+}
+
+
+export async function modifyEvent(event) {
+    console.log('event')
+    console.log(event)
+    let url = "http://localhost:3000/owapi/events/" + event.event_id.toString()
+    console.log(url)
+    let fetchResult = await fetch(url, {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'authorization': sessionStorage.getItem('token'),
+        },
+        body: JSON.stringify(event)
+    }).catch((err) => console.log(err));
+    let data = await fetchResult.json();
+    return verifyResult(data);
 }

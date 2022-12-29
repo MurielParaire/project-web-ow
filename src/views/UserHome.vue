@@ -16,33 +16,38 @@
         </section>
       </section>
       <section class="row">
-      <section v-if="this.$data.user === ''">
-        <p>Loading ... </p>
+        <section v-if="this.$data.user === ''">
+          <p>Loading ... </p>
+        </section>
+        <section id="specialrole" v-else>
+          <section id="admin" v-if="this.$data.user.roles.admin === true">
+            <h3>Users : </h3>
+            <button @click="loadUsers">load users</button>
+            <TableVue v-if="showUsers" @load="this.loadUsers" @userprevious="getPreviousUsers" @usernext="getNextUsers"
+              :users="users" @close="showUsers = false"></TableVue>
+          </section>
+          <section id="manager" v-if="this.$data.user.roles.manager === true">
+            <h3>Events : </h3>
+            <button @click="loadEvents">load events</button>
+            <EventTableVue v-if="showEvents" @load="this.loadEvents" @eventprevious="getPreviousEvents"
+              @eventnext="getNextEvents" :events="events" @close="showEvents = false"></EventTableVue>
+            <button @click="showCreateEvent = true">create event</button>
+            <ModalVue v-if="showCreateEvent" @close="showCreateEvent = false" @submit="createEvent"
+              :information="createEventInfo">
+            </ModalVue>
+          </section>
+          <section id="supervisor" v-if="this.$data.user.roles.supervisor === true">
+            <h3>Characters : </h3>
+            <button @click="loadHeroes">load heroes</button>
+            <HeroTableVue @load="this.loadHeroes" v-if="showHeroes" @heroprevious="getPreviousHeroes"
+              @heronext="getNextHeroes" :heroes="heroes" @close="showHeroes = false"></HeroTableVue>
+            <button @click="showCreateHero = true">create character</button>
+            <ModalVue v-if="showCreateHero" @close="showCreateHero = false" @submit="createHero"
+              :information="createHeroInfo">
+            </ModalVue>
+          </section>
+        </section>
       </section>
-      <section id="specialrole" v-else>
-        <section id="admin" v-if="this.$data.user.roles.admin === true">
-          <h3>Users : </h3>
-          <button @click="loadUsers">load users</button>
-          <TableVue v-if="showUsers"  @load="this.loadUsers" @userprevious="getPreviousUsers" @usernext="getNextUsers" :users="users" @close="showUsers = false"></TableVue>
-        </section>
-        <section id="manager" v-if="this.$data.user.roles.manager === true">
-          <h3>Events : </h3>
-          <button @click="loadEvents">load events</button>
-          <EventTableVue v-if="showEvents" @load="this.loadEvents"  @eventprevious="getPreviousEvents" @eventnext="getNextEvents" :events="events" @close="showEvents = false"></EventTableVue>
-          <button @click="showCreateEvent = true">create event</button>
-          <ModalVue v-if="showCreateEvent" @close="showCreateEvent = false" @submit="createEvent" :information="createEventInfo">
-          </ModalVue>
-        </section>
-        <section id="supervisor" v-if="this.$data.user.roles.supervisor === true">
-          <h3>Characters : </h3>
-          <button @click="loadHeroes">load heroes</button>
-          <HeroTableVue @load="this.loadHeroes" v-if="showHeroes"  @heroprevious="getPreviousHeroes" @heronext="getNextHeroes" :heroes="heroes" @close="showHeroes = false"></HeroTableVue>
-          <button @click="showCreateHero = true">create character</button>
-          <ModalVue v-if="showCreateHero" @close="showCreateHero = false" @submit="createHero" :information="createHeroInfo">
-          </ModalVue>
-        </section>
-      </section>
-    </section>
     </section>
   </section>
 
@@ -55,7 +60,7 @@ import ModalVue from '../components/Moda.vue';
 import TableVue from '../components/UserTable.vue';
 import EventTableVue from '../components/EventTable.vue';
 import { getSomeEvents, createEvent } from '../database/Event.js';
-import {getSomeHeroes, createHero} from '../database/Character.js'
+import { getSomeHeroes, createHero } from '../database/Character.js'
 import HeroTableVue from '../components/HeroTable.vue';
 import UserInformation from '../components/UserInformation.vue'
 
@@ -115,7 +120,15 @@ export default {
           }
         ]
       },
-      createEventInfo: {
+      createEventInfo: {},
+      showUsers: false,
+      showEvents: false,
+      showHeroes: false
+    }
+  },
+  methods: {
+    async initEventInfo() {
+      this.$data.createEventInfo = {
         title: 'Create a new Event',
         attributes: [
           {
@@ -140,13 +153,8 @@ export default {
             value: ''
           }
         ]
-      },
-      showUsers: false,
-      showEvents: false,
-      showHeroes: false
-    }
-  },
-  methods: {
+      };
+    },
     async getUserInfo() {
       let data = await getUserInformation();
       for (let counter = 0; counter < data.history.length; counter++) {
@@ -186,7 +194,7 @@ export default {
     },
     getPreviousEvents() {
       this.$data.eventOffset = this.$data.eventOffset - this.$data.eventLimit;
-      if(this.$data.eventOffset < 0) {
+      if (this.$data.eventOffset < 0) {
         this.$data.eventOffset = 0;
       }
       this.loadEvents();
@@ -197,7 +205,7 @@ export default {
     },
     getPreviousUsers() {
       this.$data.userOffset = this.$data.userOffset - this.$data.userLimit;
-      if(this.$data.userOffset < 0) {
+      if (this.$data.userOffset < 0) {
         this.$data.userOffset = 0;
       }
       this.loadUsers();
@@ -208,15 +216,15 @@ export default {
     },
     getPreviousHeroes() {
       this.$data.heroOffset = this.$data.heroOffset - this.$data.heroLimit;
-      if(this.$data.heroOffset < 0) {
+      if (this.$data.heroOffset < 0) {
         this.$data.heroOffset = 0;
       }
       this.loadHeroes();
     },
     async createEvent() {
       let event = {
-        type: this.createEventInfo.attributes[0].value, 
-        description: this.createEventInfo.attributes[1].value, 
+        type: this.createEventInfo.attributes[0].value,
+        description: this.createEventInfo.attributes[1].value,
         character: this.createEventInfo.attributes[2].value
       }
       let res = await createEvent(event);
@@ -226,8 +234,8 @@ export default {
     },
     async createHero() {
       let hero = {
-        name: this.createHeroInfo.attributes[0].value, 
-        role: this.createHeroInfo.attributes[1].value, 
+        name: this.createHeroInfo.attributes[0].value,
+        role: this.createHeroInfo.attributes[1].value,
         description: this.createHeroInfo.attributes[2].value,
         image: this.createHeroInfo.attributes[3].value
       }
@@ -237,16 +245,16 @@ export default {
       if (res !== 0) {
         this.$data.showCreateHero = false;
       }
-    }
+    },
   },
   async mounted() {
     await this.getUserInfo();
+    this.initEventInfo();
   }
 }
 </script>
 
 <style scoped>
-
 h2 {
   font-size: x-large;
   font-weight: bold;

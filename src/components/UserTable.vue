@@ -18,12 +18,13 @@
                     <td>{{ user.lastname }}</td>
                     <td>{{ user.firstname }}</td>
                     <td>{{ user.email }}</td>
-                    <td>
+                    <td class="warning">
                         <ul v-for="role in Object.keys(user.roles)" :key="role">
-                            <li v-if="user.roles[role]"  >{{ role }}
-                                <span v-if="role !== 'public' && role !== 'admin'"
-                                    @click="removeRole(user, role)">-</span> 
-                                </li>
+                            <li v-if="user.roles[role]">{{ role }}
+                                <span v-if="role !== 'public' && role !== 'admin'" @click="removeRole(user, role)">
+                                    <img src="../assets/images/x.png" alt="X to remove a role from a user" class="deleteX" />
+                                </span>
+                            </li>
                         </ul>
                         <select v-model="user.addRole">
                             <option disabled value="">Add a role : </option>
@@ -32,9 +33,9 @@
                             <option>supervisor</option>
                             <option>admin</option>
                         </select>
-                        <span @click="addRole(user)">+</span>
+                        <span @click="addRole(user)"><img src="../assets/images/+.png" alt="plus sign to add a role to the user" class="addX"/></span>
                     </td>
-                    <td class="danger" @click="deleteUser(user)">-</td>
+                    <td class="danger" @click="deleteUser(user)"><img src="../assets/images/x.png" alt="X to delete a user" class="deleteX"/></td>
                 </tr>
             </tbody>
         </table>
@@ -82,7 +83,7 @@ export default {
                 alert('Every user is a public user. You are not allowed to remove that role from anyone.');
                 return 0;
             }
-            let res = await deleteRoleFromUserByUserId(user,role);
+            let res = await deleteRoleFromUserByUserId(user, role);
             if (res !== 1) {
                 this.$emit('load')
                 alert('The role ' + this.$data.role + ' has been successfully removed from the user ' + user.username)

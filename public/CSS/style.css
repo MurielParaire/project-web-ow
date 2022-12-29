@@ -117,3 +117,13 @@
 label {
     text-align: left;
 }
+
+.deleteX {
+    max-width: 10px;
+    max-height: 10px;
+}
+
+.addX {
+    max-width: 20px;
+    max-height: 20px;
+}

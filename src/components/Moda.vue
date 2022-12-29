@@ -86,14 +86,6 @@ export default {
                 }
             }
         }
-    },
-    mounted() {
-        console.log(this.information)
-        /*
-        this.$data.form.attr = [];
-        for (let counter = 0; counter < this.information.attributes.length; counter++) {
-            this.$data.form.attr.push('');
-        }*/
     }
 }
 
