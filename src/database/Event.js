@@ -40,7 +40,6 @@ export async function createEvent(event) {
 
 
 export async function deleteEventById(id) {
-    console.log(id)
     let url = 'http://localhost:3000/owapi/events/' + id.toString();
     let fetchResult = await fetch(url, {
       method: 'DELETE',

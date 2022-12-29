@@ -18,6 +18,7 @@
             <p>{{ this.$data.character.description }}</p>
         </section>
         <img id='charImage' :src="this.$data.character.image" :alt="'image of ' + this.$data.character.name" />
+        <button class="Retour" @click="goBack">Back</button>
     </section>
 </template>
 
@@ -61,6 +62,9 @@ export default {
                     store.character = char[0];
             }
             this.$data.character = store.character
+        },
+        goBack() {
+            this.$router.go(-1);
         }
     },
     async mounted() {

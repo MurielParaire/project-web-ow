@@ -1,7 +1,7 @@
 
 
 export async function createUserHistory(history) {
-  let res = await fetch("http://localhost:3000/owapi/users/history/", {
+  let res = await fetch("http://localhost:3000/owapi/users/history", {
     method: "POST",
     headers: {
       "Accept": "application/json",
@@ -109,5 +109,36 @@ export async function modifyUser(user, id) {
     })
   }
 
+  return data;
+}
+
+
+export async function deleteRoleFromUserByUserId(user, role) {
+  let url = 'http://localhost:3000/owapi/users/' + user.user_id.toString() + '/roles';
+  let fetchResult = await fetch(url, {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      "authorization": sessionStorage.getItem("token"),
+      'role': role
+    },
+  }).catch((err) => console.log(err));
+  let data = await fetchResult.json();
+  return data;
+}
+
+export async function addRoleToUserByUserId(user, role) {
+  let url = 'http://localhost:3000/owapi/users/' + user.user_id.toString() + '/roles';
+  let fetchResult = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      "authorization": sessionStorage.getItem("token"),
+      'role': role
+    },
+  }).catch((err) => console.log(err));
+  let data = await fetchResult.json();
   return data;
 }

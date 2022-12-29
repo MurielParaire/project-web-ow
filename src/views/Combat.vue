@@ -2,7 +2,7 @@
     <h1>The combat</h1>
 
     <section class="col-sm-3">
-        <h3>Team A :</h3>
+        <h3 class="blue">Team A :</h3>
         <ul id="TeamA" class="Teams">
             <li v-for="hero in this.$data.TeamA" :key="hero.name">
                 <img v-if="hero.alive === true" :src="hero.image" :alt="'image of ' + hero.name" />
@@ -19,7 +19,7 @@
     </section>
 
     <section class="col-sm-3">
-        <h3>Team B :</h3>
+        <h3 class="red">Team B :</h3>
         <ul id="TeamB" class="Teams">
             <li v-for="hero in this.$data.TeamB" :key="hero.name">
                 <img v-if="hero.alive === true" :src="hero.image" :alt="'image of ' + hero.name" />
@@ -65,13 +65,16 @@ export default {
                 let res = await createUserHistory(history);
                 if (res === 200) {
                     alert("And the winner is Team " + this.winner);
+                    this.$router.push({
+                        name: "UserHome"
+                    });
                 }
                 else {
                     alert("Network error. Could not add this match to your history. \nAND THE WINNER ARE " + this.winner);
                 }
             }
             else {
-                alert("AND THE WINNER ARE " + this.winner);
+                alert("And the winner is Team " + this.winner);
             }
 
         },
@@ -143,4 +146,13 @@ img {
     max-height: 50px;
 }
 
+.red {
+    color: rgb(255, 95, 95);
+    text-align: end;
+    margin-right: 25%;
+}
+
+.blue {
+    color: rgb(63, 141, 243);
+}
 </style>

@@ -97,9 +97,6 @@ export default {
   async mounted() {
     this.$data.AllSupports = await getHeroesByType('support');
     this.$data.AllDPS = await getHeroesByType('dps');
-  },
-  onActivated() {
-    console.log('h')
   }
 }
 </script>

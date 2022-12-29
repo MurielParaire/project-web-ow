@@ -47,7 +47,6 @@ export default {
             let data = {
                 description: this.getNames()
             };
-            console.log(data)
             this.$router.push({
                 name: "Combat",
                 params: { data }

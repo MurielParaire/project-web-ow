@@ -1,10 +1,6 @@
 
 export default class Test {
     constructor(a, b) {
-        console.log('here')
-        console.log(a)
-        console.log(b)
-
         this.teams = [a, b]
         this.combat = []
         this.events = [{
@@ -108,6 +104,12 @@ export default class Test {
         });
     }
 
+    getColour(Team) {
+        if (Team === 1) {
+            return 'red';
+        }
+        return 'blue'
+    }
 
     playNormalEvent() {
         let counter = Math.floor(Math.random() * this.events.length);
@@ -120,10 +122,12 @@ export default class Test {
         }
         event.img = [];
         event.chars = [];
-        event.type = normalevent.type
+        event.colour = [];
+        event.type = normalevent.type;
         event.description = normalevent.description;
         let char = this.teams[Iteam][this.getCharacter(Iteam, '', false, false, false, false)];
-        event.img.push(char.image)
+        event.img.push(char.image);
+        event.colour.push(this.getColour(Iteam));
         let index = event.description.indexOf('$');
         event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
         if (normalevent.type === 'kill') {
@@ -131,6 +135,7 @@ export default class Test {
             char = this.teams[OTeam][this.getCharacter(OTeam, '', true, false, false, false)];
             if (char.protected === false && char.atCombat === true) {
                 event.img.push(char.image)
+                event.colour.push(this.getColour(OTeam));
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
@@ -139,6 +144,7 @@ export default class Test {
             char = this.teams[Iteam][this.getCharacter(Iteam, normalevent.char, false, true, false, false)];
             if (char.protected === false && char.atCombat === true) {
                 event.img.push(char.image)
+                event.colour.push(this.getColour(Iteam));
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
@@ -193,7 +199,6 @@ export default class Test {
             this.teams[Iteam][rand].atCombat = false;
         }
         event.counter = rand;
-        console.log(event)
         return event;
     }
 
@@ -207,12 +212,14 @@ export default class Test {
         let event = {};
         event.description = '';
         event.img = [];
+        event.colour = [];
         event.chars = [];
-        event.type = specialevent.type
+        event.type = specialevent.type;
         if (specialevent.description.type === 'kill') {
             event.description = specialevent.description.description.toString();
-            event.img.push(specialevent.image)
-            event.chars.push(specialevent.char)
+            event.img.push(specialevent.image);
+            event.colour.push(this.getColour(Iteam));
+            event.chars.push(specialevent.char);
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
@@ -220,12 +227,14 @@ export default class Test {
             if (char.protected === false && char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
+                event.colour.push(this.getColour(OTeam));
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
         else if (specialevent.description.type === 'protect' || specialevent.type === 'help') {
             event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
+            event.colour.push(this.getColour(Iteam));
             event.chars.push(specialevent.char)
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
@@ -234,6 +243,7 @@ export default class Test {
             if (char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
+                event.colour.push(this.getColour(Iteam));
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
@@ -243,6 +253,7 @@ export default class Test {
             }
             event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
+            event.colour.push(this.getColour(Iteam));
             event.chars.push(specialevent.char)
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
@@ -250,6 +261,7 @@ export default class Test {
         else if (specialevent.description.type === 'res' && this.countAlive[Iteam] < 5) {
             event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
+            event.colour.push(this.getColour(Iteam));
             event.chars.push(specialevent.char)
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
@@ -258,6 +270,7 @@ export default class Test {
             if (indexchar !== -1) {
                 let char = this.teams[Iteam][indexchar]
                 event.img.push(char.image)
+                event.colour.push(this.getColour(Iteam));
                 event.chars.push(char.name)
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
@@ -267,7 +280,8 @@ export default class Test {
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             event.img.push('https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltc6f4b34d356c0754/637da13646a48b0e063e4a8d/ashe-00.jpg?format=webply&quality=90')
-            event.chars.push("Bob")
+            event.colour.push(this.getColour(Iteam));
+            event.chars.push("Bob");
             this.countAlive[Iteam] = this.countAlive[Iteam] + 1;
             this.teams[Iteam].push({
                 name: 'Bob',
@@ -285,6 +299,7 @@ export default class Test {
         else if (specialevent.description.type === 'immobile') {
             event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
+            event.colour.push(this.getColour(Iteam));
             event.chars.push(specialevent.char)
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
@@ -293,6 +308,7 @@ export default class Test {
             if (char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
+                event.colour.push(this.getColour(Iteam));
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }

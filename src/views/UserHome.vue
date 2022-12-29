@@ -166,14 +166,17 @@ export default {
       this.$data.user = data;
     },
     async loadUsers() {
+      this.$data.users = [];
       this.$data.users = await getSomeUsers(this.$data.userLimit, this.$data.userOffset);
       this.$data.showUsers = true;
     },
     async loadEvents() {
+      this.$data.events = [];
       this.$data.events = await getSomeEvents(this.$data.eventLimit, this.$data.eventOffset);
       this.$data.showEvents = true;
     },
     async loadHeroes() {
+      this.$data.heroes = [];
       this.$data.heroes = await getSomeHeroes(this.$data.heroLimit, this.$data.heroOffset);
       this.$data.showHeroes = true;
     },

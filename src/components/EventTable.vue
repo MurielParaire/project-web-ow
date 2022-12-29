@@ -6,7 +6,8 @@
                 <tr>
                     <th>Type</th>
                     <th>Description</th>
-                    <th>Character</th>
+                    <th>Hero</th>
+                    <th>delete</th>
                 </tr>
             </thead>
             <tbody>

@@ -8,6 +8,7 @@
                     <th>First name</th>
                     <th>Last name</th>
                     <th>email</th>
+                    <th>roles</th>
                     <th>delete</th>
                 </tr>
             </thead>
@@ -17,6 +18,22 @@
                     <td>{{ user.lastname }}</td>
                     <td>{{ user.firstname }}</td>
                     <td>{{ user.email }}</td>
+                    <td>
+                        <ul v-for="role in Object.keys(user.roles)" :key="role">
+                            <li v-if="user.roles[role]"  >{{ role }}
+                                <span v-if="role !== 'public' && role !== 'admin'"
+                                    @click="removeRole(user, role)">-</span> 
+                                </li>
+                        </ul>
+                        <select v-model="user.addRole">
+                            <option disabled value="">Add a role : </option>
+                            <option>public</option>
+                            <option>manager</option>
+                            <option>supervisor</option>
+                            <option>admin</option>
+                        </select>
+                        <span @click="addRole(user)">+</span>
+                    </td>
                     <td class="danger" @click="deleteUser(user)">-</td>
                 </tr>
             </tbody>
@@ -29,10 +46,16 @@
 </template>
 
 <script>
-import {deleteUserById} from '../database/User.js'
+import { deleteUserById, addRoleToUserByUserId, deleteRoleFromUserByUserId } from '../database/User.js'
 
 export default {
     name: "Table",
+    emits: ['load'],
+    data() {
+        return {
+            role: ''
+        }
+    },
     props: {
         users: {
             required: true
@@ -46,6 +69,36 @@ export default {
                     alert(user.username + ' was successfully deleted.');
                 }
                 this.$emit('load');
+            }
+        },
+        async removeRole(user, role) {
+            for (let counter = 0; counter < user.roles.length; counter++) {
+                if (user.role[counter] === 'admin') {
+                    alert('Sorry but you are not allowed to alter the roles of another admin user.');
+                    return 0;
+                }
+            }
+            if (role === 'public') {
+                alert('Every user is a public user. You are not allowed to remove that role from anyone.');
+                return 0;
+            }
+            let res = await deleteRoleFromUserByUserId(user,role);
+            if (res !== 1) {
+                this.$emit('load')
+                alert('The role ' + this.$data.role + ' has been successfully removed from the user ' + user.username)
+            }
+        },
+        async addRole(user) {
+            for (let counter = 0; counter < user.roles.length; counter++) {
+                if (user.role[counter] === 'admin') {
+                    alert('Sorry but you are not allowed to alter the roles of another admin user.');
+                    return 0;
+                }
+            }
+            let res = await addRoleToUserByUserId(user, user.addRole);
+            if (res !== 1) {
+                this.$emit('load');
+                alert('The role ' + this.$data.role + ' has successfully been added to the user ' + user.username)
             }
         }
     }

@@ -32,9 +32,6 @@ export default {
     logout() {
       authstore.commit('logout')
     },
-    a() {
-      console.log(sessionStorage)
-    }
   },
   setup() {
     watch(() => authstore.getters.isConnected, function () {});
