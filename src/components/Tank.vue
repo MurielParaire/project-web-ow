@@ -1,9 +1,9 @@
 <template>
-   
+
     <div class="aselect" :data-value="value" :data-list="list">
         <div class="selector" @click="toggle()">
             <div class="label">
-                <span><img src="../assets/images/TankLogo.png" alt="Tank logo"/> {{ value }}</span>
+                <span><img src="../assets/images/TankLogo.png" alt="Tank logo" /> {{ value }}</span>
             </div>
             <div class="arrow" :class="{ expanded: visible }"></div>
             <div :class="{ hidden: !visible, visible }">
@@ -52,7 +52,7 @@ export default {
 .aselect {
     width: 280px;
     margin-top: 5%;
-    margin-bottom : 5%;
+    margin-bottom: 5%;
 }
 
 .aselect .selector {
@@ -106,9 +106,9 @@ li {
 }
 
 li:hover {
-        color: white;
-        background: seagreen;
-    }
+    color: white;
+    background: seagreen;
+}
 
 .current {
     background: #eaeaea;
@@ -126,5 +126,4 @@ img {
     max-width: 20px;
     max-height: 20px;
 }
-
 </style>

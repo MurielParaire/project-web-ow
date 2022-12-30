@@ -22,7 +22,8 @@
                         <ul v-for="role in Object.keys(user.roles)" :key="role">
                             <li v-if="user.roles[role]">{{ role }}
                                 <span v-if="role !== 'public' && role !== 'admin'" @click="removeRole(user, role)">
-                                    <img src="../assets/images/x.png" alt="X to remove a role from a user" class="deleteX" />
+                                    <img src="../assets/images/x.png" alt="X to remove a role from a user"
+                                        class="deleteX" />
                                 </span>
                             </li>
                         </ul>
@@ -33,9 +34,11 @@
                             <option>supervisor</option>
                             <option>admin</option>
                         </select>
-                        <span @click="addRole(user)"><img src="../assets/images/+.png" alt="plus sign to add a role to the user" class="addX"/></span>
+                        <span @click="addRole(user)"><img src="../assets/images/+.png"
+                                alt="plus sign to add a role to the user" class="addX" /></span>
                     </td>
-                    <td class="danger" @click="deleteUser(user)"><img src="../assets/images/x.png" alt="X to delete a user" class="deleteX"/></td>
+                    <td class="danger" @click="deleteUser(user)"><img src="../assets/images/x.png"
+                            alt="X to delete a user" class="deleteX" /></td>
                 </tr>
             </tbody>
         </table>
@@ -73,14 +76,22 @@ export default {
             }
         },
         async removeRole(user, role) {
-            for (let counter = 0; counter < user.roles.length; counter++) {
-                if (user.role[counter] === 'admin') {
-                    alert('Sorry but you are not allowed to alter the roles of another admin user.');
-                    return 0;
+            let returned = false;
+            Object.keys(user.roles).forEach(role => {
+                if (returned === false) {
+                    if (role === 'admin' && user.roles[role] === true) {
+                        returned = true;
+                        alert('Sorry but you are not allowed to alter the roles of another admin user.');
+                        return 0;
+                    }
+                    if (role === user.addRole && user.roles[role] === true) {
+                        returned = true;
+                        alert('This user already has the role ' + user.addRole);
+                        return 0;
+                    }
                 }
-            }
-            if (role === 'public') {
-                alert('Every user is a public user. You are not allowed to remove that role from anyone.');
+            })
+            if (returned === true) {
                 return 0;
             }
             let res = await deleteRoleFromUserByUserId(user, role);
@@ -90,16 +101,28 @@ export default {
             }
         },
         async addRole(user) {
-            for (let counter = 0; counter < user.roles.length; counter++) {
-                if (user.role[counter] === 'admin') {
-                    alert('Sorry but you are not allowed to alter the roles of another admin user.');
-                    return 0;
+            let returned = false;
+            Object.keys(user.roles).forEach(role => {
+                if (returned === false) {
+                    if (role === 'admin' && user.roles[role] === true) {
+                        returned = true;
+                        alert('Sorry but you are not allowed to alter the roles of another admin user.');
+                        return 0;
+                    }
+                    if (role === user.addRole && user.roles[role] === true) {
+                        returned = true;
+                        alert('This user already has the role ' + user.addRole);
+                        return 0;
+                    }
                 }
+            })
+            if (returned === true) {
+                return 0;
             }
             let res = await addRoleToUserByUserId(user, user.addRole);
             if (res !== 1) {
                 this.$emit('load');
-                alert('The role ' + this.$data.role + ' has successfully been added to the user ' + user.username)
+                alert('The role ' + user.addRole + ' has successfully been added to the user ' + user.username)
             }
         }
     }

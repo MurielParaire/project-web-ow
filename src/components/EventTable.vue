@@ -16,15 +16,18 @@
                     <td>{{ e.type }}</td>
                     <td>{{ e.description }}</td>
                     <td>{{ e.name }}</td>
-                    <td class="warning" @click="openmodifyEvent(e)"><img src="../assets/images/modify.png" alt="png of a pen to modify the event" class="addX"/></td>
-                    <td class="danger" @click="deleteEvent(e)"> <img src="../assets/images/x.png" alt="X to close the window" class="deleteX"/></td>
+                    <td class="warning" @click="openmodifyEvent(e)"><img src="../assets/images/modify.png"
+                            alt="png of a pen to modify the event" class="addX" /></td>
+                    <td class="danger" @click="deleteEvent(e)"> <img src="../assets/images/x.png"
+                            alt="X to close the window" class="deleteX" /></td>
                 </tr>
             </tbody>
         </table>
         <button class="previous" @click="$emit('eventprevious')">Previous</button>
         <button class="next" @click="$emit('eventnext')">Next</button>
         <button class="close" @click="$emit('close')">Hide</button>
-        <ModaVue v-if="showmodifyEvent" @submit="modifyEventJS" :information="modifyEventInfo" @close="this.$data.showmodifyEvent = false"></ModaVue>
+        <ModaVue v-if="showmodifyEvent" @submit="modifyEventJS" :information="modifyEventInfo"
+            @close="this.$data.showmodifyEvent = false"></ModaVue>
     </section>
 
 </template>
@@ -94,7 +97,7 @@ export default {
             this.$data.modifyEventInfo.attributes[2].placeholder = event.name;
         },
         initEventInfo() {
-            this.$data.modifyEventInfo =  {
+            this.$data.modifyEventInfo = {
                 title: 'Modify an Event',
                 attributes: [
                     {

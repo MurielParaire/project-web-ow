@@ -1,4 +1,4 @@
-
+import { verifyResult } from "./general.js";
 
 export async function createUserHistory(history) {
   let res = await fetch("http://localhost:3000/owapi/users/history", {
@@ -25,7 +25,7 @@ export async function getUserInformation() {
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
-  return data;
+  return verifyResult(data, fetchResult.status);
 }
 
 export async function verifyUser(user) {
@@ -38,7 +38,7 @@ export async function verifyUser(user) {
     body: JSON.stringify(user)
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
-  return data;
+  return verifyResult(data, fetchResult.status);
 }
 
 export async function createUser(user) {
@@ -67,7 +67,7 @@ export async function getSomeUsers(limit, offset) {
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
-  return data;
+  return verifyResult(data);
 }
 
 
@@ -82,7 +82,7 @@ export async function deleteUserById(id) {
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
-  return data;
+  return verifyResult(data);
 }
 
 export async function modifyUser(user, id) {
@@ -97,19 +97,7 @@ export async function modifyUser(user, id) {
     body: JSON.stringify(user)
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
-  let keys = Object.keys(data);
-  if (keys.length > 0) {
-    keys.forEach(key => {
-      if (key === 'msg') {
-        console.log('here')
-        alert(data.msg)
-        data = 0;
-
-      }
-    })
-  }
-
-  return data;
+  return verifyResult(data);
 }
 
 
@@ -125,7 +113,7 @@ export async function deleteRoleFromUserByUserId(user, role) {
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
-  return data;
+  return verifyResult(data);
 }
 
 export async function addRoleToUserByUserId(user, role) {
@@ -140,5 +128,5 @@ export async function addRoleToUserByUserId(user, role) {
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
-  return data;
+  return verifyResult(data);
 }

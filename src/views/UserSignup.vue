@@ -31,11 +31,11 @@
                 </section>
             </section>
             <section class="row">
-                    <div class="input-errors" v-for="(error, index) of v$.form.firstName.$errors" :key="index">
-                        <div class="error-msg">{{ error.$message }}</div>
-                    </div>
-                </section>
-    
+                <div class="input-errors" v-for="(error, index) of v$.form.firstName.$errors" :key="index">
+                    <div class="error-msg">{{ error.$message }}</div>
+                </div>
+            </section>
+
             <section class="row">
                 <section class="col-sm-3">
                     <label for="lastname">Last Name :</label>
@@ -107,7 +107,7 @@
 import Vuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
 import { validName, validUsername, validPassword } from '../assets/verifications.js'
-import {createUser} from '../database/User.js'
+import { createUser } from '../database/User.js'
 
 export default {
     setup() {
@@ -134,25 +134,25 @@ export default {
         async createUser() {
             let user = {
                 username: this.form.username,
-                firstname:  this.form.firstName,
-                lastname:  this.form.lastName,
-                email:  this.form.email,
-                password:  this.form.password,
+                firstname: this.form.firstName,
+                lastname: this.form.lastName,
+                email: this.form.email,
+                password: this.form.password,
             }
             let res = await createUser(user);
             console.log(res)
             if (res !== 200) {
+                if (res === 401) {
+                    alert("Sorry but we couldn't create your accound. We only allow a maximum of 10 created accounts. Please refer to an administrator.")
+                }
                 alert('There was an error creating your account.')
-            }
-            else if (res === 401) {
-                alert("Sorry but we couldn't create your accound. We only allow a maximum of 10 created accounts. Please refer to an administrator.")
             }
             else {
                 this.$router.push({
-                name: "UserHome"
-            })
+                    name: "Login"
+                })
             }
-            
+
         },
         validPw() {
             return validPassword(this.form.password, this.form.confirmPassword)
@@ -175,15 +175,18 @@ export default {
                 },
                 email: { required, email },
                 password: { required, min: minLength(6) },
-                confirmPassword: { required, validPassword:  {
-                    $validator: this.validPw,
-                    $message: 'Passwords must be the same.'
-                } },
-                username: { 
+                confirmPassword: {
+                    required, validPassword: {
+                        $validator: this.validPw,
+                        $message: 'Passwords must be the same.'
+                    }
+                },
+                username: {
                     required, min: minLength(3), name_validation: {
-                    $validator: validUsername,
-                    $message: 'Username can only contain letter or dashes'
-                } }
+                        $validator: validUsername,
+                        $message: 'Username can only contain letter or dashes'
+                    }
+                }
             },
         }
     },
