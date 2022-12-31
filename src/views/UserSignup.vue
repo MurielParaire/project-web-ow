@@ -105,13 +105,15 @@
 
 <script>
 import Vuelidate from '@vuelidate/core'
-import { required, email, minLength } from '@vuelidate/validators'
-import { validName, validUsername, validPassword } from '../assets/verifications.js'
+import { required, helpers, email, minLength, maxLength, sameAs } from '@vuelidate/validators'
+import { validName, validUsername } from '../assets/verifications.js'
 import { createUser } from '../database/User.js'
 
 export default {
     setup() {
-        return { v$: Vuelidate() }
+        return {
+            v$: Vuelidate()
+        }
     },
     data() {
         return {
@@ -131,7 +133,17 @@ export default {
                 name: "Login"
             })
         },
+        async checkErrors() {
+            this.v$.$touch()
+            if (this.v$.$invalid) {
+                alert('There are still some input errors left. Please correct them before submitting.');
+                return 0;
+            }
+        },
         async createUser() {
+            if (await this.checkErrors() === 0) {
+                return 0;
+            }
             let user = {
                 username: this.form.username,
                 firstname: this.form.firstName,
@@ -153,36 +165,30 @@ export default {
                 })
             }
 
-        },
-        validPw() {
-            return validPassword(this.form.password, this.form.confirmPassword)
         }
     },
     validations() {
         return {
             form: {
                 firstName: {
-                    required, name_validation: {
+                    required, max: maxLength(20), name_validation: {
                         $validator: validName,
                         $message: 'Name can only contain letters, dashes (-) and spaces'
                     }
                 },
                 lastName: {
-                    required, name_validation: {
+                    required, max: maxLength(20), name_validation: {
                         $validator: validName,
                         $message: 'Name can only contain letters, dashes (-) and spaces'
                     }
                 },
                 email: { required, email },
-                password: { required, min: minLength(6) },
+                password: { required, min: minLength(6), max: maxLength(20) },
                 confirmPassword: {
-                    required, validPassword: {
-                        $validator: this.validPw,
-                        $message: 'Passwords must be the same.'
-                    }
+                    required, sameAs: helpers.withMessage('Passwords need to be the same', sameAs(this.form.password))
                 },
                 username: {
-                    required, min: minLength(3), name_validation: {
+                    required, min: minLength(3), max: maxLength(15), name_validation: {
                         $validator: validUsername,
                         $message: 'Username can only contain letter or dashes'
                     }

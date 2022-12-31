@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import {router} from '../router/router.js'
 
 export const authstore = Vuex.createStore ({
     state() {
@@ -15,6 +16,9 @@ export const authstore = Vuex.createStore ({
         logout(state) {
             sessionStorage.removeItem('token');
             state.connected = false;
+            router.push({
+                name: 'Login'
+            });
         },
         setConnected(state) {
             state.connected = true;

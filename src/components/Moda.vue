@@ -23,7 +23,7 @@
                                     </section>
                                     <section class="col-sm-8">
                                         <input class='text' :placeholder="attribute.placeholder" type="text"
-                                            :name="attribute.name" v-model="attribute.value"
+                                            :name="attribute.name" v-model="attribute.value" :maxlength="attribute.max" 
                                             v-if="attribute.input === 'input'">
                                         <textarea v-else class="text" :placeholder="attribute.placeholder"
                                             :name="attribute.name" rows="5" cols="30" v-model="attribute.value">
@@ -31,8 +31,8 @@
                                     </section>
                                 </section>
                                 <section v-if="attribute.required === true" class="row">
-                                    <div class="input-errors" v-for="(error, index) of v$.form.req.$errors"
-                                        :key="index">
+                                    <div class="input-errors" v-for="(error, index) of v$.form.$errors"
+                                        :key="index">here
                                         <div class="error-msg">{{ error.$message }}</div>
                                     </div>
                                 </section>
@@ -56,7 +56,8 @@
 
 <script>
 import Vuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { maxLength, required } from '@vuelidate/validators'
+//import {validLength} from '../assets/verifications.js'
 
 export default {
     emits: ['submit'],
@@ -83,7 +84,8 @@ export default {
             form: {
                 req: {
                     required
-                }
+                },
+                max: maxLength(1)
             }
         }
     }

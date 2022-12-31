@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style scoop>
+<style scoped>
 h2 {
   font-size: medium;
 }

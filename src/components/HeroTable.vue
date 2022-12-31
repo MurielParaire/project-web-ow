@@ -109,28 +109,32 @@ export default {
             input: 'input',
             required: true,
             placeholder: 'Mercy',
-            value: ''
+            value: '',
+            max: 20
           },
           {
             name: 'role',
             input: 'input',
             required: true,
             placeholder: 'Support',
-            value: ''
+            value: '',
+            max: 8
           },
           {
             name: 'description',
             input: 'textarea',
             required: false,
             placeholder: 'Mercy is a versatile healer who ...',
-            value: ''
+            value: '',
+            max: 350
           },
           {
             name: 'image',
             input: 'textarea',
             required: false,
             placeholder: 'https://...',
-            value: ''
+            value: '',
+            max: 200
           }
         ]
             }

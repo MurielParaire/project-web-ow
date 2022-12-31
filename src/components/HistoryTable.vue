@@ -1,5 +1,4 @@
 <template>
-
     <section class="table-responsive tab">
         <table id="tableHistory" class="table mb-0">
             <thead>
@@ -11,16 +10,21 @@
             </thead>
             <tbody>
                 <tr v-for="history in this.history" :key="history.date_time">
-                    <HistoryLine :history="history"></HistoryLine>
+                    <td :class="history.a">{{ history.team_a }}</td>
+                    <td :class="history.b">{{ history.team_b }}</td>
+                    <td>{{ history.date_time }}</td>
                 </tr>
             </tbody>
         </table>
+        <button class="previous" @click="$emit('historyprevious')">Previous</button>
+        <button class="next" @click="$emit('historynext')">Next</button>
+        <button class='close' @click="$emit('close')">Hide</button>
     </section>
 
 </template>
 
 <script>
-import HistoryLine from './HistoryLine.vue';
+
 
 
 export default {
@@ -30,7 +34,6 @@ export default {
             required: true
         }
     },
-    components: { HistoryLine }
 }
 </script>
 
@@ -53,5 +56,13 @@ th {
 
 td {
     background-color: whitesmoke;
+}
+
+.winner {
+    background-color: rgb(198, 242, 198);
+}
+
+.loser {
+    background-color: rgb(243, 148, 148);
 }
 </style>

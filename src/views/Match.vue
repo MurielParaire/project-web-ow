@@ -15,7 +15,7 @@
         </section>
         
         <div >
-            <button @click="handleClick">Start Match</button>
+            <button @click="startMatch">Start Match</button>
         </div>
     </section>
 </template>
@@ -28,8 +28,8 @@ export default {
     name: 'match',
     data() {
         return {
-            teamA: [],
-            teamB: [],
+            teamA: ['', '', '','',''],
+            teamB: ['', '', '','',''],
             names: ''
         }
     },
@@ -38,12 +38,37 @@ export default {
     },
     methods: {
         setTeamA(team) {
-            store.setTeamA(team)
+            this.teamA = team;
         },
         setTeamB(team) {
-            store.setTeamB(team)
+            this.teamB = team;
         },
-        handleClick() {
+        verifyTeamIntegrity(team) {
+            if (team.length < 5) {
+                alert('Please select all heroes on both teams to continue.')
+                return 0;
+            }
+            team.forEach(hero => {
+                if (hero.length < 3) {
+                    alert('Please select all heroes on both teams to continue.')
+                    return 0;
+                }
+            });
+            return 1;
+        },
+        getTeam(team) {
+            return [team.supportA, team.supportB, team.DPSA, team.DPSB, team.tank];
+        },
+        async startMatch() {
+            let TeamA = this.getTeam(this.$data.teamA);
+            let TeamB = this.getTeam(this.$data.teamB);
+           
+            if (this.verifyTeamIntegrity(TeamA) === 0 || this.verifyTeamIntegrity(TeamB) === 0) {
+                return 0;
+            }
+            await store.setTeamA(TeamA)
+            await store.setTeamB(TeamB)
+            console.log('hi')
             let data = {
                 description: this.getNames()
             };

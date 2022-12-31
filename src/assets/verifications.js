@@ -15,10 +15,3 @@ export function validUsername(username) {
     }
     return false;
 }
-
-export function validPassword(password, confirmPassword) {
-    if (password === confirmPassword) {
-        return true;
-    }
-    return false;
-}

@@ -1,74 +1,34 @@
+import Team from './TeamClass.js'
+
 
 export default class Test {
     constructor(a, b, events) {
-        console.log('events')
-        console.log(events)
-        console.log('a')
-        console.log(a)
-        console.log('b')
-        console.log(b)
-        this.teams = [a, b]
+        let teamA = new Team(a);
+        let teamB = new Team(b)
+        this.teams = [teamA, teamB]
         this.combat = []
-        this.events = [{
-            "type": "kill",
-            "description": "$1 has executed $2"
-        },
-        {
-            "type": "kill",
-            "description": "$1 has killed $2"
-        },
-        {
-            "type": "kill",
-            "description": "$2 has annihilated $1"
-        },
-        {
-            "type": "kill",
-            "description": "$1 has snuck up and killed $2"
-        },
-        {
-            "type": "kill",
-            "description": "$1 has executed $2"
-        },
-        {
-            "type": "kill",
-            "description": "$1 has killed $2"
-        },
-        {
-            "type": "kill",
-            "description": "$2 has annihilated $1"
-        },
-        {
-            "type": "kill",
-            "description": "$1 has snuck up and killed $2"
-        },
-        {
-            "type": "kill",
-            "description": "$1 has killed $2"
-        },
-        {
-            "type": "kill",
-            "description": "$2 has annihilated $1"
-        },
-        ];
         this.events = events;
-        this.countAlive = [5, 5];
-        this.initCharacters();
-        while (this.countAlive[0] > 0 && this.countAlive[1] > 0) {
+        console.log('ta')
+        console.log(this.teams)
+        console.log('countALives')
+        while (this.teams[0].countAlive > 0 && this.teams[1].countAlive > 0) {
             this.initCharactersRound();
             this.playRound()
         }
-        if (this.countAlive[0] === 0) {
-            this.winner = 'A';
+        if (this.teams[0].countAlive === 0) {
+            this.winner = 'B';
         }
         else {
-            this.winner = 'B';
+            this.winner = 'A';
         }
     }
 
     playRound() {
         for (let counter = 0; counter < 4; counter++) {
-            if (this.countAlive[0] > 0 && this.countAlive[1] > 0) {
+            console.log('counter')
+            if (this.teams[0].countAlive > 0 && this.teams[1].countAlive > 0) {
                 let rand = this.getRandom();
+                console.log("rand")
                 if (rand === 0) {
                     this.playNormalEvent();
                 }
@@ -83,28 +43,13 @@ export default class Test {
         }
     }
 
-    initCharacters() {
-        (this.teams[0]).forEach(hero => {
-            hero.immobile = false;
-            hero.protected = false;
-            hero.atCombat = true;
-            hero.alive = true;
-        });
-        (this.teams[1]).forEach(hero => {
-            hero.immobile = false;
-            hero.protected = false;
-            hero.atCombat = true;
-            hero.alive = true;
-        });
-    }
-
     initCharactersRound() {
-        (this.teams[0]).forEach(hero => {
+        (this.teams[0].team).forEach(hero => {
             hero.immobile = false;
             hero.protected = false;
             hero.atCombat = true;
         });
-        (this.teams[1]).forEach(hero => {
+        (this.teams[1].team).forEach(hero => {
             hero.immobile = false;
             hero.protected = false;
             hero.atCombat = true;
@@ -132,23 +77,26 @@ export default class Test {
         event.colour = [];
         event.type = normalevent.type;
         event.description = normalevent.description;
-        let char = this.teams[Iteam][this.getCharacter(Iteam, '', false, false, false, false)];
+        let char = this.teams[Iteam].team[this.getCharacter(Iteam, '', false, false, false, false)];
         event.img.push(char.image);
         event.colour.push(this.getColour(Iteam));
         let index = event.description.indexOf('$');
         event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
         if (normalevent.type === 'kill') {
             index = event.description.indexOf('$');
-            char = this.teams[OTeam][this.getCharacter(OTeam, '', true, false, false, false)];
+            char = this.teams[OTeam].team[this.getCharacter(OTeam, '', true, false, false, false)];
             if (char.protected === false && char.atCombat === true) {
                 event.img.push(char.image)
                 event.colour.push(this.getColour(OTeam));
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
-        else if (normalevent.type === 'protect' || normalevent.type === 'help') {
+        else if (normalevent.type === 'protect' || normalevent.type === 'help' || normalevent.type === 'heal') {
             index = event.description.indexOf('$');
-            char = this.teams[Iteam][this.getCharacter(Iteam, normalevent.char, false, true, false, false)];
+            char = this.teams[Iteam].team[this.getCharacter(Iteam, normalevent.char, false, true, false, false)];
+            if (char.role === 1 || (normalevent.type === 'protect' && char.role !== 2) || (normalevent.type === 'heal' && char.role !== 0)) {
+                return 0;
+            }
             if (char.protected === false && char.atCombat === true) {
                 event.img.push(char.image)
                 event.colour.push(this.getColour(Iteam));
@@ -156,7 +104,7 @@ export default class Test {
             }
         }
         else if (normalevent.type === 'flee') {
-            this.teams[Iteam][normalevent.counter].atCombat = false;
+            this.teams[Iteam].team[normalevent.counter].atCombat = false;
         }
         if (this.combat.length > 0 && event.description !== this.combat[this.combat.length - 1].event && event.description !== '') {
             this.combat.push(event);
@@ -177,10 +125,10 @@ export default class Test {
     getSpecialEvent(Iteam) {
         let counter = 0;
         let event = {};
-        counter = Math.floor(Math.random() * this.teams[Iteam].length);
+        counter = Math.floor(Math.random() * this.teams[Iteam].team.length);
         let rand = counter;
-        while (this.teams[Iteam][rand].alive !== true || this.teams[Iteam][rand].immobile === true) {
-            if (rand === this.teams[Iteam].length - 1) {
+        while (this.teams[Iteam].team[rand].alive !== true || this.teams[Iteam].team[rand].immobile === true) {
+            if (rand === this.teams[Iteam].team.length - 1) {
                 rand = 0;
             }
             else {
@@ -190,20 +138,21 @@ export default class Test {
                 return 0;
             }
         }
-        if (this.teams[Iteam][rand].event.length > 0) {
-            if (this.teams[Iteam][rand].event.length > 1) {
+
+        if (this.teams[Iteam].team[rand].event.length > 0) {
+            if (this.teams[Iteam].team[rand].event.length > 1) {
                 let random = this.getRandom();
-                event.description = this.teams[Iteam][rand].event[random];
+                event.description = this.teams[Iteam].team[rand].event[random];
             }
-            event.description = this.teams[Iteam][rand].event[0];
+            event.description = this.teams[Iteam].team[rand].event[0];
         }
         else {
             return 0;
         }
-        event.char = this.teams[Iteam][rand].name;
-        event.image = this.teams[Iteam][rand].image;
+        event.char = this.teams[Iteam].team[rand].name;
+        event.image = this.teams[Iteam].team[rand].image;
         if (event.description.type === 'flee') {
-            this.teams[Iteam][rand].atCombat = false;
+            this.teams[Iteam].team[rand].atCombat = false;
         }
         event.counter = rand;
         return event;
@@ -230,7 +179,7 @@ export default class Test {
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
-            let char = this.teams[OTeam][this.getCharacter(OTeam, '', true, false, false, false)];
+            let char = this.teams[OTeam].team[this.getCharacter(OTeam, '', true, false, false, false)];
             if (char.protected === false && char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
@@ -238,7 +187,7 @@ export default class Test {
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
-        else if (specialevent.description.type === 'protect' || specialevent.type === 'help') {
+        else if (specialevent.description.type === 'protect' || specialevent.type === 'help' || specialevent.type === 'heal') {
             event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
             event.colour.push(this.getColour(Iteam));
@@ -246,7 +195,7 @@ export default class Test {
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
-            let char = this.teams[Iteam][this.getCharacter(Iteam, specialevent.char, false, true, false, false)];
+            let char = this.teams[Iteam].team[this.getCharacter(Iteam, specialevent.char, false, true, false, false)];
             if (char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
@@ -262,7 +211,7 @@ export default class Test {
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
         }
-        else if (specialevent.description.type === 'res' && this.countAlive[Iteam] < 5) {
+        else if (specialevent.description.type === 'res' && this.teams[Iteam].countAlive < 5) {
             event.description = specialevent.description.description.toString();
             event.img.push(specialevent.image)
             event.colour.push(this.getColour(Iteam));
@@ -272,7 +221,7 @@ export default class Test {
             index = event.description.indexOf('$');
             let indexchar = this.getDeadCharacter(Iteam);
             if (indexchar !== -1) {
-                let char = this.teams[Iteam][indexchar]
+                let char = this.teams[Iteam].team[indexchar]
                 event.img.push(char.image)
                 event.colour.push(this.getColour(Iteam));
                 event.chars.push(char.name)
@@ -286,8 +235,8 @@ export default class Test {
             event.img.push('https://images.blz-contentstack.com/v3/assets/blt2477dcaf4ebd440c/bltc6f4b34d356c0754/637da13646a48b0e063e4a8d/ashe-00.jpg?format=webply&quality=90')
             event.colour.push(this.getColour(Iteam));
             event.chars.push("Bob");
-            this.countAlive[Iteam] = this.countAlive[Iteam] + 1;
-            this.teams[Iteam].push({
+            this.teams[Iteam].countAlive = this.teams[Iteam].countAlive + 1;
+            this.teams[Iteam].team.push({
                 name: 'Bob',
                 alive: true,
                 immobile: false,
@@ -308,7 +257,7 @@ export default class Test {
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
-            let char = this.teams[Iteam][this.getCharacter(Iteam, specialevent.char, false, false, true, false)];
+            let char = this.teams[Iteam].team[this.getCharacter(Iteam, specialevent.char, false, false, true, false)];
             if (char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
@@ -327,48 +276,52 @@ export default class Test {
 
     getCharacter(team, not, isKilled, isProtected, isImmobile, hasFled) {
         let rand = 0;
-        if (this.teams[team].length > 0) {
-            rand = Math.floor(Math.random() * this.countAlive[team]);
-            let char = this.teams[team][rand];
+        console.log('h')
+        if (this.teams[team].team.length > 0) {
+            rand = Math.floor(Math.random() * this.teams[team].countAlive);
+            let char = this.teams[team].team[rand];
             for (let counter = 0; counter < 5; counter++) {
                 if (not === char.name || char.alive !== true || char.atCombat === false) {
-                    if (rand === this.teams[team].length - 1) {
+                    if (rand === this.teams[team].team.length - 1) {
                         rand = 0;
                     }
                     else {
                         rand = rand + 1;
                     }
-                    char = this.teams[team][rand];
+                    char = this.teams[team].team[rand];
                 }
             }
             if (char.alive === false) {
                 return 0;
             }
             if (isProtected) {
-                this.teams[team][rand].protected = true;
+                this.teams[team].team[rand].protected = true;
             }
             else {
                 if (isKilled) {
-                    this.teams[team][rand].alive = false;
-                    this.countAlive[team] = this.countAlive[team] - 1;
+                    this.teams[team].team[rand].alive = false;
+                    this.teams[team].countAlive = this.teams[team].countAlive - 1;
                 }
                 if (isImmobile) {
-                    this.teams[team][rand].immobile = true;
+                    this.teams[team].team[rand].immobile = true;
                 }
             }
             if (hasFled) {
-                this.teams[team][rand].atCombat = false;
+                this.teams[team].team[rand].atCombat = false;
             }
         }
-
+        console.log('here')
+        console.log(team)
+        console.log(rand)
+        //console.log(this.teams[team].team[rand].alive)
         return rand;
     }
 
     getDeadCharacter(Iteam) {
         for (let index = 0; index < (this.teams[Iteam]).length; index++) {
-            if (this.teams[Iteam][index].alive === false) {
-                this.teams[Iteam][index].alive = true;
-                this.countAlive[Iteam] = this.countAlive[Iteam] + 1;
+            if (this.teams[Iteam].team[index].alive === false) {
+                this.teams[Iteam].team[index].alive = true;
+                this.teams[Iteam].countAlive = this.teams[Iteam].countAlive + 1;
                 return index;
             }
         }

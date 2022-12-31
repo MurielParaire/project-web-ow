@@ -29,15 +29,18 @@
         </ul>
     </section>
 
-    <button @click="getWinner">Finish</button>
+    <section class="row">
+        <button @click="getWinner">Finish</button>
+    </section>
 </template>
 
 <script>
-import Test from '../test';
+import Test from '../combat/main.js';
 import { store } from '../stores/store.js';
 import Event from '../components/Event.vue';
 import { authstore } from '../stores/auth.js';
 import { createUserHistory } from '../database/User.js';
+import { getEventsByHero} from '../database/Event.js'
 
 export default {
     name: "Combat",
@@ -52,12 +55,20 @@ export default {
         };
     },
     methods: {
-        getHistory() {
-            let test = new Test(store.teamA, store.teamB);
-            this.$data.combatHistory = test.combat;
-            this.$data.TeamA = test.teams[0],
-                this.$data.TeamB = test.teams[1],
+        async getHistory() {
+            try {
+                let events = await getEventsByHero(0);
+                console.log('events')
+                console.log(events)
+                let test = new Test(store.teamA, store.teamB, events);
+                this.$data.combatHistory = test.combat;
+                this.$data.TeamA = test.teams[0].team,
+                this.$data.TeamB = test.teams[1].team,
                 this.winner = test.winner;
+            }
+            catch (err) {
+                alert('Sorry but there was an error.')
+            }
         },
         async getWinner() {
             if (authstore.getters.isConnected === true) {

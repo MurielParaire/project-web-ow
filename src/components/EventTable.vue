@@ -105,21 +105,24 @@ export default {
                         input: 'input',
                         required: true,
                         placeholder: 'kill',
-                        value: ''
+                        value: '',
+                        max: 10
                     },
                     {
                         name: 'description',
                         input: 'textarea',
                         required: true,
                         placeholder: 'must contain at least one $ followed by a number which specifies the placement of a character \n Example : $1 has killed $2',
-                        value: ''
+                        value: '',
+                        max: 200
                     },
                     {
                         name: 'character',
                         input: 'input',
                         required: false,
                         placeholder: 'Mercy',
-                        value: ''
+                        value: '',
+                        max: 20
                     }
                 ]
             }

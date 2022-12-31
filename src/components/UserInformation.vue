@@ -30,28 +30,32 @@ export default {
                         input: 'input',
                         required: false,
                         placeholder: this.user.username,
-                        value: this.user.username
+                        value: this.user.username,
+                        max: 50
                     },
                     {
                         name: 'firstname',
                         input: 'input',
                         required: false,
                         placeholder: this.user.firstname,
-                        value: this.user.firstname
+                        value: this.user.firstname,
+                        max: 20
                     },
                     {
                         name: 'lastname',
                         input: 'input',
                         required: false,
                         placeholder: this.user.lastname,
-                        value: this.user.lastname
+                        value: this.user.lastname,
+                        max: 20
                     },
                     {
                         name: 'email',
                         input: 'email',
                         required: false,
                         placeholder: this.user.email,
-                        value: this.user.email
+                        value: this.user.email,
+                        max: 100
                     }
                 ]
             },

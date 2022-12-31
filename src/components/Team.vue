@@ -16,26 +16,29 @@
       <Tank @setTank="setTank"></Tank>
     </li>
   </ul>
-  <button @click="setTeam">Confirm</button>
 </template>
 
 <script>
 import Support from '../components/Support.vue'
 import Tank from '../components/Tank.vue'
 import DPS from '../components/DPS.vue'
-import {getHeroesByType} from '../database/Character.js'
+import { getHeroesByType } from '../database/Character.js'
+
+
 export default {
   name: 'team',
   emits: ['setTeam'],
   data() {
     return {
-      tank: '',
-      supportA: '',
-      supportB: '',
-      DPSA: '',
-      DPSB: '',
       AllSupports: [],
-      AllDPS: []
+      AllDPS: [],
+      team: {
+        tank: '',
+        supportA: '',
+        supportB: '',
+        DPSA: '',
+        DPSB: '',
+      }
     }
   },
   components: {
@@ -45,20 +48,20 @@ export default {
   },
   methods: {
     setTank(tank) {
-      this.$data.tank = tank;
+      this.$data.team.tank = tank;
     },
     setSupportA(support) {
-      if (this.$data.supportA !== '') {
-        this.$data.AllSupports.push(this.$data.supportA)
+      if (this.$data.team.supportA !== '') {
+        this.$data.AllSupports.push(this.$data.team.supportA)
       }
-      this.$data.supportA = support;
+      this.$data.team.supportA = support;
       this.removeSupport(support)
     },
     setSupportB(support) {
-      if (this.$data.supportB !== '') {
-        this.$data.AllSupports.push(this.$data.supportB)
+      if (this.$data.team.supportB !== '') {
+        this.$data.AllSupports.push(this.$data.team.supportB)
       }
-      this.$data.supportB = support;
+      this.$data.team.supportB = support;
       this.removeSupport(support)
     },
     removeSupport(support) {
@@ -69,17 +72,17 @@ export default {
       }
     },
     setDPSA(dps) {
-      if (this.$data.DPSA !== '') {
-        this.$data.AllDPS.push(this.$data.DPSA)
+      if (this.$data.team.DPSA !== '') {
+        this.$data.AllDPS.push(this.$data.team.DPSA)
       }
-      this.$data.DPSA = dps;
+      this.$data.team.DPSA = dps;
       this.removeDPS(dps)
     },
     setDPSB(dps) {
-      if (this.$data.DPSB !== '') {
-        this.$data.AllDPS.push(this.$data.DPSB)
+      if (this.$data.team.DPSB !== '') {
+        this.$data.AllDPS.push(this.$data.team.DPSB)
       }
-      this.$data.DPSB = dps;
+      this.$data.team.DPSB = dps;
       this.removeDPS(dps)
     },
     removeDPS(dps) {
@@ -90,8 +93,15 @@ export default {
       }
     },
     setTeam() {
-      let team = [this.$data.supportA, this.$data.supportB, this.$data.DPSA, this.$data.DPSB, this.$data.tank];
-      this.$emit('setTeam', team);
+      this.$emit('setTeam', this.$data.team);
+    }
+  },
+  watch: {
+    team: {
+      handler: function (newTeam) {
+        this.$emit('setTeam', newTeam);
+      },
+      deep: true
     }
   },
   async mounted() {

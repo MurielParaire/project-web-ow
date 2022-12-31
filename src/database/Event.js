@@ -62,3 +62,19 @@ export async function modifyEvent(event) {
     let data = await fetchResult.json();
     return verifyResult(data);
 }
+
+
+export async function getEventsByHero(hero) {
+
+    hero = {hero: hero}
+    let fetchResult = await fetch("http://localhost:3000/owapi/events/hero", {
+        method: 'PUT',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(hero)
+    }).catch((err) => console.log(err));
+    let data = await fetchResult.json();
+    return verifyResult(data);
+}

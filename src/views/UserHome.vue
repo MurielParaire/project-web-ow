@@ -22,13 +22,13 @@
         <section id="specialrole" v-else>
           <section id="admin" v-if="this.$data.user.roles.admin === true">
             <h3>Users : </h3>
-            <button @click="loadUsers">load users</button>
+            <button v-if="showUsers === false" @click="loadUsers">load users</button>
             <TableVue v-if="showUsers" @load="this.loadUsers" @userprevious="getPreviousUsers" @usernext="getNextUsers"
               :users="users" @close="showUsers = false"></TableVue>
           </section>
           <section id="manager" v-if="this.$data.user.roles.manager === true">
             <h3>Events : </h3>
-            <button @click="loadEvents">load events</button>
+            <button @click="loadEvents" v-if="showEvents === false" >load events</button>
             <EventTableVue v-if="showEvents" @load="this.loadEvents" @eventprevious="getPreviousEvents"
               @eventnext="getNextEvents" :events="events" @close="showEvents = false"></EventTableVue>
             <button @click="showCreateEvent = true">create event</button>
@@ -38,7 +38,7 @@
           </section>
           <section id="supervisor" v-if="this.$data.user.roles.supervisor === true">
             <h3>Characters : </h3>
-            <button @click="loadHeroes">load heroes</button>
+            <button @click="loadHeroes" v-if="showHeroes === false">load heroes</button>
             <HeroTableVue @load="this.loadHeroes" v-if="showHeroes" @heroprevious="getPreviousHeroes"
               @heronext="getNextHeroes" :heroes="heroes" @close="showHeroes = false"></HeroTableVue>
             <button @click="showCreateHero = true">create character</button>
@@ -87,39 +87,7 @@ export default {
       heroLimit: 10,
       showCreateHero: false,
       showCreateEvent: false,
-      createHeroInfo: {
-        title: 'Create a new Hero',
-        attributes: [
-          {
-            name: 'name',
-            input: 'input',
-            required: true,
-            placeholder: 'Mercy',
-            value: ''
-          },
-          {
-            name: 'role',
-            input: 'input',
-            required: true,
-            placeholder: 'Support',
-            value: ''
-          },
-          {
-            name: 'description',
-            input: 'textarea',
-            required: false,
-            placeholder: 'Mercy is a versatile healer who ...',
-            value: ''
-          },
-          {
-            name: 'image',
-            input: 'textarea',
-            required: false,
-            placeholder: 'https://...',
-            value: ''
-          }
-        ]
-      },
+      createHeroInfo: {},
       createEventInfo: {},
       showUsers: false,
       showEvents: false,
@@ -136,21 +104,63 @@ export default {
             input: 'input',
             required: true,
             placeholder: 'kill',
-            value: ''
+            value: '',
+            max: 10
           },
           {
             name: 'description',
             input: 'textarea',
             required: true,
             placeholder: 'must contain at least one $ followed by a number which specifies the placement of a character \n Example : $1 has killed $2',
-            value: ''
+            value: '',
+            max: 200
           },
           {
             name: 'character',
             input: 'input',
             required: false,
             placeholder: 'Mercy',
-            value: ''
+            value: '',
+            max: 2
+          }
+        ]
+      };
+    },
+    async initHeroInfo() {
+      this.$data.createHeroInfo = {
+        title: 'Create a new Hero',
+        attributes: [
+          {
+            name: 'name',
+            input: 'input',
+            required: true,
+            placeholder: 'Mercy',
+            value: '',
+            max: 20
+          },
+          {
+            name: 'role',
+            input: 'input',
+            required: true,
+            placeholder: 'Support',
+            value: '',
+            max: 8
+          },
+          {
+            name: 'description',
+            input: 'textarea',
+            required: false,
+            placeholder: 'Mercy is a versatile healer who ...',
+            value: '',
+            max: 350
+          },
+          {
+            name: 'image',
+            input: 'textarea',
+            required: false,
+            placeholder: 'https://...',
+            value: '',
+            max: 200
           }
         ]
       };
@@ -193,6 +203,9 @@ export default {
       this.loadEvents();
     },
     getPreviousEvents() {
+      if (this.$data.eventOffset === 0) {
+        return 0;
+      }
       this.$data.eventOffset = this.$data.eventOffset - this.$data.eventLimit;
       if (this.$data.eventOffset < 0) {
         this.$data.eventOffset = 0;
@@ -204,6 +217,9 @@ export default {
       this.loadUsers();
     },
     getPreviousUsers() {
+      if (this.$data.userOffset === 0) {
+        return 0;
+      }
       this.$data.userOffset = this.$data.userOffset - this.$data.userLimit;
       if (this.$data.userOffset < 0) {
         this.$data.userOffset = 0;
@@ -215,6 +231,9 @@ export default {
       this.loadHeroes();
     },
     getPreviousHeroes() {
+      if (this.$data.heroOffset === 0) {
+        return 0;
+      }
       this.$data.heroOffset = this.$data.heroOffset - this.$data.heroLimit;
       if (this.$data.heroOffset < 0) {
         this.$data.heroOffset = 0;
@@ -240,8 +259,6 @@ export default {
         image: this.createHeroInfo.attributes[3].value
       }
       let res = await createHero(hero);
-      console.log('res')
-      console.log(res)
       if (res !== 0) {
         this.$data.showCreateHero = false;
       }
@@ -250,6 +267,7 @@ export default {
   async mounted() {
     await this.getUserInfo();
     this.initEventInfo();
+    this.initHeroInfo();
   }
 }
 </script>
