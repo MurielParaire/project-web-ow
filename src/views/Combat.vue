@@ -58,8 +58,6 @@ export default {
         async getHistory() {
             try {
                 let events = await getEventsByHero(0);
-                console.log('events')
-                console.log(events)
                 let test = new Test(store.teamA, store.teamB, events);
                 this.$data.combatHistory = test.combat;
                 this.$data.TeamA = test.teams[0].team,

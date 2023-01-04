@@ -1,13 +1,14 @@
 import { verifyResult } from "./general.js";
 
 export async function getSomeEvents(limit, offset) {
-    let fetchResult = await fetch("http://localhost:3000/owapi/events/", {
+    let fetchResult = await fetch("http://localhost:3000/owapi/events/?" + new URLSearchParams({
+        limit: limit,
+        offset: offset
+    }), {
         method: 'GET',
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'limit': limit,
-        'offset': offset
         }
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
@@ -21,7 +22,7 @@ export async function createEvent(event) {
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'authorization': sessionStorage.getItem("token"),
+        'auth': sessionStorage.getItem("token"),
         },
         body: JSON.stringify(event)
     }).catch((err) => console.log(err));
@@ -37,7 +38,7 @@ export async function deleteEventById(id) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        "authorization": sessionStorage.getItem("token"),
+        "auth": sessionStorage.getItem("token"),
       },
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
@@ -55,7 +56,7 @@ export async function modifyEvent(event) {
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'authorization': sessionStorage.getItem('token'),
+        'auth': sessionStorage.getItem('token'),
         },
         body: JSON.stringify(event)
     }).catch((err) => console.log(err));
@@ -65,15 +66,19 @@ export async function modifyEvent(event) {
 
 
 export async function getEventsByHero(hero) {
-
-    hero = {hero: hero}
-    let fetchResult = await fetch("http://localhost:3000/owapi/events/hero", {
-        method: 'PUT',
+    try {
+        hero = parseInt(hero);
+    }
+    catch (err) {
+        return 0;
+    }
+    let url = "http://localhost:3000/owapi/events/hero/" + hero.toString();
+    let fetchResult = await fetch(url, {
+        method: 'GET',
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify(hero)
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
     return verifyResult(data);

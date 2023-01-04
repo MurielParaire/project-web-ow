@@ -10,28 +10,18 @@ export const store = reactive({
     for (let counter = 0; counter < team.length; counter++) {
       let char = { name: team[counter], alive: true };
       char.event = await this.getImageAndEvent(char.name);
-      console.log('char')
-      console.log(char)
       char.image = char.event[0].image;
       this.teamA.push(char);
     }    
-    console.log('TEAM 1')
-    console.log(this.teamA)
-
   },
   async setTeamB(team) {
     this.teamB = [];
     for (let counter = 0; counter < team.length; counter++) {
       let char = { 'name': team[counter], alive: true };
       char.event = await this.getImageAndEvent(char.name);
-      console.log('char')
-      console.log(char)
       char.image = char.event[0].image;
       this.teamB.push(char);
     }    
-    console.log('TEAM 2')
-    console.log(this.teamB)
-
   },
   async getImageAndEvent(name) {
     if (name === 'Lucio') {

@@ -22,7 +22,7 @@
 import Support from '../components/Support.vue'
 import Tank from '../components/Tank.vue'
 import DPS from '../components/DPS.vue'
-import { getHeroesByType } from '../database/Character.js'
+import { getHeroesByRole } from '../database/Character.js'
 
 
 export default {
@@ -105,8 +105,8 @@ export default {
     }
   },
   async mounted() {
-    this.$data.AllSupports = await getHeroesByType('support');
-    this.$data.AllDPS = await getHeroesByType('dps');
+    this.$data.AllSupports = await getHeroesByRole('support');
+    this.$data.AllDPS = await getHeroesByRole('dps');
   }
 }
 </script>

@@ -8,9 +8,8 @@ export default class Test {
         this.teams = [teamA, teamB]
         this.combat = []
         this.events = events;
-        console.log('ta')
-        console.log(this.teams)
-        console.log('countALives')
+        console.log('events')
+        console.log(events)
         while (this.teams[0].countAlive > 0 && this.teams[1].countAlive > 0) {
             this.initCharactersRound();
             this.playRound()
@@ -25,10 +24,8 @@ export default class Test {
 
     playRound() {
         for (let counter = 0; counter < 4; counter++) {
-            console.log('counter')
             if (this.teams[0].countAlive > 0 && this.teams[1].countAlive > 0) {
                 let rand = this.getRandom();
-                console.log("rand")
                 if (rand === 0) {
                     this.playNormalEvent();
                 }
@@ -77,14 +74,22 @@ export default class Test {
         event.colour = [];
         event.type = normalevent.type;
         event.description = normalevent.description;
-        let char = this.teams[Iteam].team[this.getCharacter(Iteam, '', false, false, false, false)];
+        let charIndex = this.getCharacter(Iteam, '', false, false, false, false);
+        if (charIndex === -1) {
+            return 0;
+        }
+        let char = this.teams[Iteam].team[charIndex];
         event.img.push(char.image);
         event.colour.push(this.getColour(Iteam));
         let index = event.description.indexOf('$');
         event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
         if (normalevent.type === 'kill') {
             index = event.description.indexOf('$');
-            char = this.teams[OTeam].team[this.getCharacter(OTeam, '', true, false, false, false)];
+            charIndex = this.getCharacter(OTeam, '', true, false, false, false);
+            if (charIndex === -1) {
+                return 0;
+            }
+            char = this.teams[OTeam].team[charIndex];
             if (char.protected === false && char.atCombat === true) {
                 event.img.push(char.image)
                 event.colour.push(this.getColour(OTeam));
@@ -93,14 +98,23 @@ export default class Test {
         }
         else if (normalevent.type === 'protect' || normalevent.type === 'help' || normalevent.type === 'heal') {
             index = event.description.indexOf('$');
-            char = this.teams[Iteam].team[this.getCharacter(Iteam, normalevent.char, false, true, false, false)];
-            if (char.role === 1 || (normalevent.type === 'protect' && char.role !== 2) || (normalevent.type === 'heal' && char.role !== 0)) {
+            charIndex = this.getCharacter(Iteam, char.name, false, true, false, false);
+            if (charIndex === -1) {
                 return 0;
             }
-            if (char.protected === false && char.atCombat === true) {
-                event.img.push(char.image)
+            let char2 = this.teams[Iteam].team[charIndex];
+            console.log(char2.name)
+            console.log(char2.role)
+            if (char.role === 1 || (normalevent.type === 'heal' && char.role !== 0)) {
+                return 0;
+            }
+            if (char2.atCombat === true) {
+                event.img.push(char2.image)
                 event.colour.push(this.getColour(Iteam));
-                event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
+                event.description = event.description.substring(0, index) + char2.name + event.description.substring(index + 2);
+            }
+            else {
+                return 0;
             }
         }
         else if (normalevent.type === 'flee') {
@@ -154,6 +168,7 @@ export default class Test {
         if (event.description.type === 'flee') {
             this.teams[Iteam].team[rand].atCombat = false;
         }
+        
         event.counter = rand;
         return event;
     }
@@ -179,7 +194,11 @@ export default class Test {
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
-            let char = this.teams[OTeam].team[this.getCharacter(OTeam, '', true, false, false, false)];
+            let charIndex = this.getCharacter(OTeam, '', true, false, false, false);
+            if (charIndex === -1) {
+                return 0;
+            }
+            let char = this.teams[OTeam].team[charIndex];
             if (char.protected === false && char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
@@ -195,7 +214,11 @@ export default class Test {
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
-            let char = this.teams[Iteam].team[this.getCharacter(Iteam, specialevent.char, false, true, false, false)];
+            let charIndex = this.getCharacter(Iteam, specialevent.char, false, true, false, false);
+            if (charIndex === -1) {
+                return 0;
+            }
+            let char = this.teams[Iteam].team[charIndex];
             if (char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
@@ -220,6 +243,8 @@ export default class Test {
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
             let indexchar = this.getDeadCharacter(Iteam);
+            console.log('indexchar')
+            console.log(indexchar)
             if (indexchar !== -1) {
                 let char = this.teams[Iteam].team[indexchar]
                 event.img.push(char.image)
@@ -257,11 +282,15 @@ export default class Test {
             let index = event.description.indexOf('$');
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
-            let char = this.teams[Iteam].team[this.getCharacter(Iteam, specialevent.char, false, false, true, false)];
+            let charIndex = this.getCharacter(OTeam, '', false, false, true, false);
+            if (charIndex === -1) {
+                return 0;
+            }
+            let char = this.teams[OTeam].team[charIndex];
             if (char.atCombat === true) {
                 event.chars.push(char.name)
                 event.img.push(char.image)
-                event.colour.push(this.getColour(Iteam));
+                event.colour.push(this.getColour(OTeam));
                 event.description = event.description.substring(0, index) + char.name + event.description.substring(index + 2);
             }
         }
@@ -276,7 +305,6 @@ export default class Test {
 
     getCharacter(team, not, isKilled, isProtected, isImmobile, hasFled) {
         let rand = 0;
-        console.log('h')
         if (this.teams[team].team.length > 0) {
             rand = Math.floor(Math.random() * this.teams[team].countAlive);
             let char = this.teams[team].team[rand];
@@ -292,7 +320,7 @@ export default class Test {
                 }
             }
             if (char.alive === false) {
-                return 0;
+                return -1;
             }
             if (isProtected) {
                 this.teams[team].team[rand].protected = true;
@@ -310,15 +338,13 @@ export default class Test {
                 this.teams[team].team[rand].atCombat = false;
             }
         }
-        console.log('here')
-        console.log(team)
-        console.log(rand)
-        //console.log(this.teams[team].team[rand].alive)
         return rand;
     }
 
     getDeadCharacter(Iteam) {
-        for (let index = 0; index < (this.teams[Iteam]).length; index++) {
+        for (let index = 0; index < (this.teams[Iteam].team).length; index++) {
+            console.log('this.teams[Iteam].team[index]')
+            console.log(this.teams[Iteam].team[index])
             if (this.teams[Iteam].team[index].alive === false) {
                 this.teams[Iteam].team[index].alive = true;
                 this.teams[Iteam].countAlive = this.teams[Iteam].countAlive + 1;

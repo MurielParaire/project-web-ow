@@ -52,10 +52,10 @@ export const router = VueRouter.createRouter({
       name: 'UserHome',
       component: UserHome,
       beforeEnter: (to, from, next) => {
-        if(authstore.getters.isConnected === false) {
-            next(false);
-        } else {
+        if(authstore.getters.isConnected === true) {
             next();
+        } else {
+            next({name: 'Login'});
         }
     }
 

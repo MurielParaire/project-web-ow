@@ -8,23 +8,28 @@ export async function getAllCharacters() {
 
 
 export async function getSomeHeroes(limit, offset) {
-    console.log('limit')
-    console.log(limit)
-    console.log('offset')
-    console.log(offset)
-    let url = 'http://localhost:3000/owapi/heroes/';
-    let fetchResult = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        "authorization": sessionStorage.getItem("token"),
-        'limit': limit,
-        'offset': offset
-      },
-    }).catch((err) => console.log(err));
-    let data = await fetchResult.json();
-    return verifyResult(data);
+    try {
+        let param = new URLSearchParams({
+            "limit": limit,
+            "offset": offset
+        });
+        let url = 'http://localhost:3000/owapi/heroes/?';
+        let fetchResult = await fetch(url + param.toString(), {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            "auth": sessionStorage.getItem("token")
+          },
+        }).catch((err) => console.log(err));
+        let data = await fetchResult.json();
+        console.log(data)
+        return verifyResult(data);
+    }
+    catch (err) {
+        console.log(err)
+    }
+
 }
 
 export async function deleteHeroById(id) {
@@ -34,7 +39,7 @@ export async function deleteHeroById(id) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        "authorization": sessionStorage.getItem("token"),
+        "auth": sessionStorage.getItem("token"),
       },
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
@@ -49,8 +54,8 @@ export async function getCharacterDetails(name) {
     return verifyResult(char);
 }
 
-export async function getHeroesByType(type) {
-    let url = 'http://localhost:3000/owapi/heroes/type/' + type.toString();
+export async function getHeroesByRole(role) {
+    let url = 'http://localhost:3000/owapi/heroes/role/' + role.toString();
     let data = await fetch(url).catch((err) => console.log(err));
     let heroes = await data.json();
     verifyResult(heroes)
@@ -68,7 +73,7 @@ export async function createHero(hero) {
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'authorization': sessionStorage.getItem("token"),
+        'auth': sessionStorage.getItem("token"),
         },
         body: JSON.stringify(hero)
     }).catch((err) => console.log(err));
@@ -87,7 +92,7 @@ export async function modifyHero(hero) {
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'authorization': sessionStorage.getItem('token'),
+        'auth': sessionStorage.getItem('token'),
         },
         body: JSON.stringify(hero)
     }).catch((err) => console.log(err));

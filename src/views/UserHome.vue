@@ -11,7 +11,7 @@
         <section id="History" class="col-sm-8">
           <h2>History</h2>
           <section id="Historytable">
-            <HistoryTable :history="user.history"></HistoryTable>
+            <HistoryTable :history="user.history" @historyprevious="getPreviousHistory" @historynext="getNextHistory" ></HistoryTable>
           </section>
         </section>
       </section>
@@ -55,7 +55,7 @@
 
 <script>
 import HistoryTable from '../components/HistoryTable.vue'
-import { getUserInformation, getSomeUsers } from '../database/User.js';
+import { getUserInformation, getSomeUsers, getUserHistory } from '../database/User.js';
 import ModalVue from '../components/Moda.vue';
 import TableVue from '../components/UserTable.vue';
 import EventTableVue from '../components/EventTable.vue';
@@ -85,6 +85,8 @@ export default {
       userLimit: 5,
       heroOffset: 0,
       heroLimit: 10,
+      historyLimit: 10,
+      historyOffset: 0,
       showCreateHero: false,
       showCreateEvent: false,
       createHeroInfo: {},
@@ -165,23 +167,30 @@ export default {
         ]
       };
     },
-    async getUserInfo() {
-      let data = await getUserInformation();
-      for (let counter = 0; counter < data.history.length; counter++) {
-        if (data.history[counter].winner === 'A') {
-          data.history[counter].a = 'winner';
-          data.history[counter].b = 'loser';
+    async loadHistory() {
+      this.$data.user.history = [];
+      let history = await getUserHistory(this.$data.historyLimit, this.$data.historyOffset);
+      for (let counter = 0; counter < history.length; counter++) {
+        if (history[counter].winner === 'A') {
+          history[counter].a = 'winner';
+          history[counter].b = 'loser';
         }
         else {
-          data.history[counter].b = 'winner';
-          data.history[counter].a = 'loser';
+          history[counter].b = 'winner';
+          history[counter].a = 'loser';
         }
-        let date = (data.history[counter].date_time).toString();
+        let date = (history[counter].date_time).toString();
         date = date.replace('T', ' ');
         date = date.slice(0, 19);
-        data.history[counter].date_time = date;
+        history[counter].date_time = date;
       }
+      this.$data.user.history = history;
+    },
+    async getUserInfo() {
+      let data = await getUserInformation();
+      console.log(data)
       this.$data.user = data;
+      await this.loadHistory();
     },
     async loadUsers() {
       this.$data.users = [];
@@ -197,6 +206,20 @@ export default {
       this.$data.heroes = [];
       this.$data.heroes = await getSomeHeroes(this.$data.heroLimit, this.$data.heroOffset);
       this.$data.showHeroes = true;
+    },
+    getNextHistory() {
+      this.$data.historyOffset = this.$data.historyOffset + this.$data.historyLimit;
+      this.loadHistory();
+    },
+    getPreviousHistory() {
+      if (this.$data.historyOffset === 0) {
+        return 0;
+      }
+      this.$data.historyOffset = this.$data.historyOffset - this.$data.historyLimit;
+      if (this.$data.historyOffset < 0) {
+        this.$data.historyOffset = 0;
+      }
+      this.loadHistory();
     },
     getNextEvents() {
       this.$data.eventOffset = this.$data.eventOffset + this.$data.eventLimit;

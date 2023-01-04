@@ -18,7 +18,6 @@
         </table>
         <button class="previous" @click="$emit('historyprevious')">Previous</button>
         <button class="next" @click="$emit('historynext')">Next</button>
-        <button class='close' @click="$emit('close')">Hide</button>
     </section>
 
 </template>

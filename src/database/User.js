@@ -6,7 +6,7 @@ export async function createUserHistory(history) {
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json",
-      "authorization": sessionStorage.getItem("token")
+      "auth": sessionStorage.getItem("token")
     },
     body: JSON.stringify(history)
   }).catch((err) => { console.log(err); });
@@ -15,17 +15,37 @@ export async function createUserHistory(history) {
 
 
 export async function getUserInformation() {
-  let url = 'http://localhost:3000/owapi/users/info/';
+  let url = 'http://localhost:3000/owapi/users/info';
   let fetchResult = await fetch(url, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "authorization": sessionStorage.getItem("token")
+      "auth": sessionStorage.getItem("token")
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
   return verifyResult(data, fetchResult.status);
+}
+
+export async function getUserHistory(limit, offset) {
+  let url = 'http://localhost:3000/owapi/users/history/?' + new URLSearchParams({
+    limit: limit,
+    offset: offset
+  });
+  let fetchResult = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      "auth": sessionStorage.getItem("token"),
+    },
+  }).catch((err) => console.log(err));
+  let data = await fetchResult.json();
+  if (verifyResult(data, fetchResult.status) === 0) {
+    return 0;
+  }
+  return data;
 }
 
 export async function verifyUser(user) {
@@ -55,15 +75,16 @@ export async function createUser(user) {
 
 
 export async function getSomeUsers(limit, offset) {
-  let url = 'http://localhost:3000/owapi/users/';
+  let url = 'http://localhost:3000/owapi/users/?' + new URLSearchParams({
+    limit: limit,
+    offset: offset
+  });
   let fetchResult = await fetch(url, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "authorization": sessionStorage.getItem("token"),
-      'limit': limit,
-      'offset': offset
+      "auth": sessionStorage.getItem("token"),
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
@@ -78,7 +99,7 @@ export async function deleteUserById(id) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "authorization": sessionStorage.getItem("token"),
+      "auth": sessionStorage.getItem("token"),
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
@@ -92,7 +113,7 @@ export async function modifyUser(user, id) {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "authorization": sessionStorage.getItem("token"),
+      "auth": sessionStorage.getItem("token"),
     },
     body: JSON.stringify(user)
   }).catch((err) => console.log(err));
@@ -102,14 +123,13 @@ export async function modifyUser(user, id) {
 
 
 export async function deleteRoleFromUserByUserId(user, role) {
-  let url = 'http://localhost:3000/owapi/users/' + user.user_id.toString() + '/roles';
+  let url = 'http://localhost:3000/owapi/users/' + user.user_id.toString() + '/roles?' + new URLSearchParams({role: role});
   let fetchResult = await fetch(url, {
     method: 'DELETE',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "authorization": sessionStorage.getItem("token"),
-      'role': role
+      "auth": sessionStorage.getItem("token")
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();
@@ -117,14 +137,13 @@ export async function deleteRoleFromUserByUserId(user, role) {
 }
 
 export async function addRoleToUserByUserId(user, role) {
-  let url = 'http://localhost:3000/owapi/users/' + user.user_id.toString() + '/roles';
+  let url = 'http://localhost:3000/owapi/users/' + user.user_id.toString() + '/roles?' + new URLSearchParams({role: role});
   let fetchResult = await fetch(url, {
     method: 'PUT',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "authorization": sessionStorage.getItem("token"),
-      'role': role
+      "auth": sessionStorage.getItem("token")
     },
   }).catch((err) => console.log(err));
   let data = await fetchResult.json();

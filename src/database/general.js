@@ -6,7 +6,6 @@ export function verifyResult(data) {
         keys.forEach(key => {
             if (key === 'msg') {
                 if (data.status === 401) {
-                    console.log('d')
                     router.push({
                         name: 'Login'
                     });

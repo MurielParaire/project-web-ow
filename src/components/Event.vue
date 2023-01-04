@@ -15,9 +15,6 @@ export default {
         event: {
             required : true
         }
-    },
-    mounted() {
-        console.log(this.event)
     }
 }
 </script>
