@@ -16,6 +16,25 @@ export async function getSomeEvents(limit, offset) {
 }
 
 
+export async function getEventTypes() {
+    let fetchResult = await fetch("http://localhost:3000/owapi/events/type/all", {
+        method: 'GET',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        }
+    }).catch((err) => console.log(err));
+    let data = await fetchResult.json();
+    console.log(data)
+    let types = [];
+    verifyResult(data);
+    for (let counter = 0; counter < data.length; counter++) {
+        types.push(data[counter].type)
+    }
+    return types
+}
+
+
 export async function createEvent(event) {
     let fetchResult = await fetch("http://localhost:3000/owapi/events/", {
         method: 'POST',
@@ -81,5 +100,7 @@ export async function getEventsByHero(hero) {
         },
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
+    console.log('data')
+    console.log(data)
     return verifyResult(data);
 }

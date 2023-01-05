@@ -23,16 +23,21 @@
                                     </section>
                                     <section class="col-sm-8">
                                         <input class='text' :placeholder="attribute.placeholder" type="text"
-                                            :name="attribute.name" v-model="attribute.value" :maxlength="attribute.max" 
+                                            :name="attribute.name" v-model="attribute.value" :maxlength="attribute.max"
                                             v-if="attribute.input === 'input'">
+                                        <select v-else-if="attribute.input === 'dropdown'" v-model="attribute.value">
+                                            <option disabled value=""> {{ attribute.placeholder }} </option>
+                                                <option v-for="option in attribute.options" :key="option">{{ option }}</option>
+                                        </select>
                                         <textarea v-else class="text" :placeholder="attribute.placeholder"
                                             :name="attribute.name" rows="5" cols="30" v-model="attribute.value">
                                         </textarea>
+
                                     </section>
                                 </section>
                                 <section v-if="attribute.required === true" class="row">
-                                    <div class="input-errors" v-for="(error, index) of v$.form.$errors"
-                                        :key="index">here
+                                    <div class="input-errors" v-for="(error, index) of v$.form.$errors" :key="index">
+                                        here
                                         <div class="error-msg">{{ error.$message }}</div>
                                     </div>
                                 </section>
@@ -72,7 +77,7 @@ export default {
         }
     },
     methods: {
-        
+
     },
     props: {
         information: {
@@ -98,10 +103,12 @@ export default {
 h1 {
     margin-top: 0;
 }
+
 .x {
     display: flex;
     justify-content: right;
 }
+
 img {
     max-width: 20px;
     max-height: 20px;

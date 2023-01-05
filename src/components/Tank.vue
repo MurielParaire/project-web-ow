@@ -17,7 +17,6 @@
 </template>
   
 <script>
-import { Tanks } from '../assets/enum/Heroes.js'
 import { getHeroesByRole } from '../database/Character.js';
 
 
@@ -27,7 +26,7 @@ export default {
         return {
             value: 'Select a Tank',
             visible: false,
-            tanks: Tanks
+            tanks: []
         }
     },
     methods: {

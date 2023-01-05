@@ -1,4 +1,5 @@
 <template>
+    <section class="around">
     <section class="table-responsive tab">
         <table id="tableHistory" class="table mb-0">
             <thead>
@@ -16,10 +17,11 @@
                 </tr>
             </tbody>
         </table>
-        <button class="previous" @click="$emit('historyprevious')">Previous</button>
-        <button class="next" @click="$emit('historynext')">Next</button>
-    </section>
 
+    </section>
+    <button class="previous blueoutline" @click="$emit('historyprevious')">Previous</button>
+    <button class="next blueoutline" @click="$emit('historynext')">Next</button>
+    </section>
 </template>
 
 <script>
@@ -49,7 +51,7 @@ th {
 }
 
 .tab {
-    width: 90%;
+    width: 100%;
     border-radius: 10px;
 }
 

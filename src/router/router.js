@@ -1,16 +1,16 @@
 import * as VueRouter from 'vue-router'
 
-import OverSim from '@/views/OverSim.vue'
-import Characters from '@/views/Characters.vue'
-import Match from '@/views/Match.vue'
-import Combat from '@/views/Combat.vue'
-import UserLogin from '@/views/UserLogin.vue'
-import CharacterDetail from '@/views/CharacterDetail.vue'
-import UserHome from '@/views/UserHome.vue'
-import UserSignup from '@/views/UserSignup.vue'
-import Forgot from '@/views/Forgot.vue'
+const OverSim = () => import('@/views/OverSim.vue')
+const Characters = () => import('@/views/Characters.vue')
+const Match = () => import('@/views/Match.vue')
+const Combat = () => import('@/views/Combat.vue')
+const UserLogin = () => import('@/views/UserLogin.vue')
+const CharacterDetail = () => import('@/views/CharacterDetail.vue')
+const UserHome = () => import('@/views/UserHome.vue')
+const UserSignup = () => import('@/views/UserSignup.vue')
 
 import {authstore} from '../stores/auth.js'
+import { matchstore } from '../stores/trans.js'
 
 export const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(),
@@ -34,7 +34,14 @@ export const router = VueRouter.createRouter({
       path: '/combat/',
       name: 'Combat',
       component: Combat,
-      props: true
+      beforeEnter: (to, from, next) => {
+        console.log(matchstore.getters.getTeamA.length)
+        if(matchstore.getters.getTeamA.length < 5) {
+          next({name: 'Match'});
+        } else {
+            next();
+        }
+    }
     },
     {
       path: '/login',
@@ -64,11 +71,6 @@ export const router = VueRouter.createRouter({
       path: '/signup',
       name: 'UserSignup',
       component: UserSignup
-    },
-    {
-      path: '/login/forgot',
-      name: 'Forgot',
-      component: Forgot
     }
   ],
 });

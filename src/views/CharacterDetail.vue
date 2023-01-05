@@ -18,7 +18,7 @@
             <p>{{ this.$data.character.description }}</p>
         </section>
         <img id='charImage' :src="this.$data.character.image" :alt="'image of ' + this.$data.character.name" />
-        <button class="Retour" @click="goBack">Back</button>
+        <button class="blueoutline return" @click="goBack">Back</button>
     </section>
 </template>
 
@@ -74,6 +74,7 @@ export default {
 </script>
 
 <style scoped>
+
 section>div>img {
     max-width: 20px;
     max-height: 20px;
@@ -107,6 +108,8 @@ section>p {
     padding-top: 20px;
 }
 
+
+
 .characterDetails {
     grid-column: 1;
     display: inline-flex;
@@ -115,6 +118,8 @@ section>p {
 
 .charImage {
     grid-column: 2;
+    max-width: 100%;
+    max-height: auto;
 }
 
 #role {
@@ -124,8 +129,31 @@ section>p {
 
 }
 
-
 h1 {
     font-weight: bold;
+}
+
+
+@media (max-width:1200px) {
+    .details {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    section>p {
+        margin-top: 10px;
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    .charImage {
+        width: auto;
+        height: auto;
+    }
+
+    h1 {
+        margin-top: 0;
+    }
 }
 </style>

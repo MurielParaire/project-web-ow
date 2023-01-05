@@ -13,23 +13,21 @@
             <h2>Team B : </h2>
             <Team @setTeam="setTeamB"></Team>
         </section>
-        
-        <div >
-            <button @click="startMatch">Start Match</button>
-        </div>
+
+        <button class="startMatch orangeOutline" @click="startMatch">Start Match</button>
     </section>
 </template>
 
 <script>
 import Team from '../components/Team.vue';
-import {store} from '../stores/store.js'
+import { matchstore } from '../stores/trans.js'
 
 export default {
     name: 'match',
     data() {
         return {
-            teamA: ['', '', '','',''],
-            teamB: ['', '', '','',''],
+            teamA: ['', '', '', '', ''],
+            teamB: ['', '', '', '', ''],
             names: ''
         }
     },
@@ -62,13 +60,14 @@ export default {
         async startMatch() {
             let TeamA = this.getTeam(this.$data.teamA);
             let TeamB = this.getTeam(this.$data.teamB);
-           
+            console.log('TeamB')
+            console.log(TeamB)
             if (this.verifyTeamIntegrity(TeamA) === 0 || this.verifyTeamIntegrity(TeamB) === 0) {
                 return 0;
             }
-            await store.setTeamA(TeamA)
-            await store.setTeamB(TeamB)
-            console.log('hi')
+            await matchstore.dispatch('setTeamA', TeamA);
+            await matchstore.dispatch('setTeamB', TeamB);
+            console.log(matchstore.getters.getTeamA)
             let data = {
                 description: this.getNames()
             };
@@ -78,15 +77,7 @@ export default {
             });
         },
         getNames() {
-            let TA = '';
-            let TB = '';
-            if (store.teamA.length === store.teamB.length) {
-                for(let counter = 0; counter < store.teamA.length; counter++) {
-                    TA = TA + store.teamA[counter].name;
-                    TB = TB + store.teamB[counter].name;
-                }
-            }
-            let final = TA + '&' + TB;
+            let final = matchstore.getters.getNames;
             return final
         }
     }
@@ -114,6 +105,7 @@ export default {
 .col-left {
     grid-row: 2;
     grid-column: 1;
+    
 }
 
 .col-right {
@@ -124,6 +116,28 @@ export default {
 .startMatch {
     grid-row: 3;
     grid-column: span 2;
-    justify-content: center;
+}
+
+
+
+@media (max-width:800px) {
+    .col-right {
+        grid-row: 3;
+        grid-column: 1;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .col-left {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .startMatch {
+        grid-row: 4;
+        grid-column: 1;
+        margin-right: auto;
+        margin-left: auto;
+    }
 }
 </style>

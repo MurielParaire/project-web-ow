@@ -1,5 +1,6 @@
 <template>
-
+<section class="around">
+    <button class="btnclose" @click="$emit('close')">Hide</button>
     <section class="table-responsive tab">
         <table id="tableHistory" class="table striped mb-0">
             <thead>
@@ -23,17 +24,16 @@
                 </tr>
             </tbody>
         </table>
-        <button class="previous" @click="$emit('eventprevious')">Previous</button>
-        <button class="next" @click="$emit('eventnext')">Next</button>
-        <button class="close" @click="$emit('close')">Hide</button>
-        <ModaVue v-if="showmodifyEvent" @submit="modifyEventJS" :information="modifyEventInfo"
-            @close="this.$data.showmodifyEvent = false"></ModaVue>
     </section>
-
+    <button class="previous blueoutline" @click="$emit('eventprevious')">Previous</button>
+    <button class="next blueoutline" @click="$emit('eventnext')">Next</button>
+    <ModaVue v-if="showmodifyEvent" @submit="modifyEventJS" :information="modifyEventInfo"
+        @close="this.$data.showmodifyEvent = false"></ModaVue>
+    </section>
 </template>
 
 <script>
-import { deleteEventById, modifyEvent } from '../database/Event.js'
+import { deleteEventById, modifyEvent, getEventTypes } from '../database/Event.js'
 import ModaVue from './Moda.vue';
 
 export default {
@@ -96,13 +96,15 @@ export default {
             this.$data.modifyEventInfo.attributes[2].value = event.name;
             this.$data.modifyEventInfo.attributes[2].placeholder = event.name;
         },
-        initEventInfo() {
+        async initEventInfo() {
+            let types = await getEventTypes();
             this.$data.modifyEventInfo = {
                 title: 'Modify an Event',
                 attributes: [
                     {
                         name: 'type',
-                        input: 'input',
+                        input: 'dropdown',
+                        options: types,
                         required: true,
                         placeholder: 'kill',
                         value: '',

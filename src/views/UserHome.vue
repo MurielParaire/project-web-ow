@@ -11,7 +11,8 @@
         <section id="History" class="col-sm-8">
           <h2>History</h2>
           <section id="Historytable">
-            <HistoryTable :history="user.history" @historyprevious="getPreviousHistory" @historynext="getNextHistory" ></HistoryTable>
+            <HistoryTable :history="user.history" @historyprevious="getPreviousHistory" @historynext="getNextHistory">
+            </HistoryTable>
           </section>
         </section>
       </section>
@@ -22,26 +23,26 @@
         <section id="specialrole" v-else>
           <section id="admin" v-if="this.$data.user.roles.admin === true">
             <h3>Users : </h3>
-            <button v-if="showUsers === false" @click="loadUsers">load users</button>
+            <button v-if="showUsers === false" @click="loadUsers" class="orangeOutline">Load users</button>
             <TableVue v-if="showUsers" @load="this.loadUsers" @userprevious="getPreviousUsers" @usernext="getNextUsers"
               :users="users" @close="showUsers = false"></TableVue>
           </section>
           <section id="manager" v-if="this.$data.user.roles.manager === true">
             <h3>Events : </h3>
-            <button @click="loadEvents" v-if="showEvents === false" >load events</button>
+            <button @click="loadEvents" v-if="showEvents === false" class="orangeOutline">Load events</button>
             <EventTableVue v-if="showEvents" @load="this.loadEvents" @eventprevious="getPreviousEvents"
               @eventnext="getNextEvents" :events="events" @close="showEvents = false"></EventTableVue>
-            <button @click="showCreateEvent = true">create event</button>
+            <button @click="showCreateEvent = true" class="orangeOutline">Create event</button>
             <ModalVue v-if="showCreateEvent" @close="showCreateEvent = false" @submit="createEvent"
               :information="createEventInfo">
             </ModalVue>
           </section>
           <section id="supervisor" v-if="this.$data.user.roles.supervisor === true">
             <h3>Characters : </h3>
-            <button @click="loadHeroes" v-if="showHeroes === false">load heroes</button>
+            <button @click="loadHeroes" v-if="showHeroes === false" class="orangeOutline">Load heroes</button>
             <HeroTableVue @load="this.loadHeroes" v-if="showHeroes" @heroprevious="getPreviousHeroes"
               @heronext="getNextHeroes" :heroes="heroes" @close="showHeroes = false"></HeroTableVue>
-            <button @click="showCreateHero = true">create character</button>
+            <button @click="showCreateHero = true" class="orangeOutline">Create character</button>
             <ModalVue v-if="showCreateHero" @close="showCreateHero = false" @submit="createHero"
               :information="createHeroInfo">
             </ModalVue>
@@ -59,10 +60,11 @@ import { getUserInformation, getSomeUsers, getUserHistory } from '../database/Us
 import ModalVue from '../components/Moda.vue';
 import TableVue from '../components/UserTable.vue';
 import EventTableVue from '../components/EventTable.vue';
-import { getSomeEvents, createEvent } from '../database/Event.js';
+import { getSomeEvents, createEvent, getEventTypes } from '../database/Event.js';
 import { getSomeHeroes, createHero } from '../database/Character.js'
 import HeroTableVue from '../components/HeroTable.vue';
 import UserInformation from '../components/UserInformation.vue'
+import {roles} from '../assets/enum/info.js'
 
 export default {
   components: {
@@ -89,8 +91,8 @@ export default {
       historyOffset: 0,
       showCreateHero: false,
       showCreateEvent: false,
-      createHeroInfo: {},
-      createEventInfo: {},
+      createHeroInfo: 0,
+      createEventInfo: 0,
       showUsers: false,
       showEvents: false,
       showHeroes: false
@@ -98,12 +100,14 @@ export default {
   },
   methods: {
     async initEventInfo() {
+      let types = await getEventTypes();
       this.$data.createEventInfo = {
         title: 'Create a new Event',
         attributes: [
           {
             name: 'type',
-            input: 'input',
+            input: 'dropdown',
+            options: types,
             required: true,
             placeholder: 'kill',
             value: '',
@@ -142,9 +146,10 @@ export default {
           },
           {
             name: 'role',
-            input: 'input',
+            input: 'dropdown',
+            options: roles,
             required: true,
-            placeholder: 'Support',
+            placeholder: 'Choose a role :',
             value: '',
             max: 8
           },
@@ -303,8 +308,12 @@ h2 {
 
 
 #Historytable {
-  display: flex;
-  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 90%;
+}
+
+#admin {
   width: 100%;
 }
 

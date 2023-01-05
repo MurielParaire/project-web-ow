@@ -10,6 +10,8 @@
         OverSim2 is a text-based combat simulator where you can choose two teams with different characters from all of the playable 
       Overwatch characters and let them fight in a 5v5 text-based elimination style combat.</p>
       </div>
+      <p><i>Disclaimer</i></p>
+        <p>I do not own any rights to any of the characters / heroes or the logo. They are from the game <a href="https://overwatch.blizzard.com/en-us/">Overwatch2.</a> </p>
     </div>
   </div>
 </div>  

@@ -6,10 +6,25 @@
         </section>
         <section class='form'>
             <form>
-                <input @keyup.enter="verifyUser" type="text" placeholder='username' class='text' required v-model="username"><br>
-                <input @keyup.enter="verifyUser" type="password" placeholder='password' class='password' required v-model="password"><br>
+                <section class="row">
+                    <input @keyup.enter="verifyUser" type="text" placeholder='username' class='text' required
+                        v-model="username"><br>
+                </section>
+                <section class="row">
+                    <div class="input-errors" v-for="(error, index) of v$.username.$errors" :key="index">
+                        <div class="error-msg">{{ error.$message }}</div>
+                    </div>
+                </section>
+                <section class="row">
+                    <input @keyup.enter="verifyUser" type="password" placeholder='password' class='password' required
+                        v-model="password"><br>
+                </section>
+                <section class="row">
+                    <div class="input-errors" v-for="(error, index) of v$.password.$errors" :key="index">
+                        <div class="error-msg">{{ error.$message }}</div>
+                    </div>
+                </section>
                 <a href="#" @click="SignUp" class='btn-login signup'>Sign up</a>
-                <a href="#" class='forgot' @click="forgot">Forgot?</a>
             </form>
             <button href="#" class='submit' @click="this.verifyUser()">Submit</button>
         </section>
@@ -59,11 +74,6 @@ export default {
                 name: "UserSignup"
             })
         },
-        forgot() {
-            this.$router.push({
-                name: "Forgot"
-            })
-        },
         async checkErrors() {
             this.v$.$touch()
             if (this.v$.$invalid) {
@@ -102,8 +112,15 @@ label {
 }
 
 .signup {
+    margin-top: 10px;
     display: flex;
     justify-content: left;
     text-align: left;
+    width: fit-content;
+}
+
+input {
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 </style>

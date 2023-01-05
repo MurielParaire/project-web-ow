@@ -8,8 +8,6 @@ export default class Test {
         this.teams = [teamA, teamB]
         this.combat = []
         this.events = events;
-        console.log('events')
-        console.log(events)
         while (this.teams[0].countAlive > 0 && this.teams[1].countAlive > 0) {
             this.initCharactersRound();
             this.playRound()
@@ -103,8 +101,6 @@ export default class Test {
                 return 0;
             }
             let char2 = this.teams[Iteam].team[charIndex];
-            console.log(char2.name)
-            console.log(char2.role)
             if (char.role === 1 || (normalevent.type === 'heal' && char.role !== 0)) {
                 return 0;
             }
@@ -243,8 +239,6 @@ export default class Test {
             event.description = event.description.substring(0, index) + specialevent.char + event.description.substring(index + 2);
             index = event.description.indexOf('$');
             let indexchar = this.getDeadCharacter(Iteam);
-            console.log('indexchar')
-            console.log(indexchar)
             if (indexchar !== -1) {
                 let char = this.teams[Iteam].team[indexchar]
                 event.img.push(char.image)
@@ -343,8 +337,6 @@ export default class Test {
 
     getDeadCharacter(Iteam) {
         for (let index = 0; index < (this.teams[Iteam].team).length; index++) {
-            console.log('this.teams[Iteam].team[index]')
-            console.log(this.teams[Iteam].team[index])
             if (this.teams[Iteam].team[index].alive === false) {
                 this.teams[Iteam].team[index].alive = true;
                 this.teams[Iteam].countAlive = this.teams[Iteam].countAlive + 1;

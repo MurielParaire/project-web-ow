@@ -8,7 +8,7 @@
         0px 30px 60px 1px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     padding: 50px;
-    width: 30%;
+    width: 60%;
 }
 
 .form>section>section {
@@ -126,4 +126,92 @@ label {
 .addX {
     max-width: 20px;
     max-height: 20px;
+}
+
+.return {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.blueoutline {
+    grid-row: 3;
+    grid-column: span 2;
+    border: 2px solid #218ffe;
+    border-radius: 5px;
+    background-color: #e3f1ff;
+    margin-top: 5px;
+    cursor: pointer;
+    border-color: #218ffe;
+    color: #218ffe;
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.blueoutline:hover {
+    background: #218ffe;
+    color: white;
+}
+
+
+.next,
+.previous,
+.close {
+    width: fit-content;
+    height: fit-content;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+
+.under {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+}
+
+.btnclose {
+    margin-right: 30px;
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    text-shadow: 1px;
+    border-radius: 5px;
+    color: rgb(109, 109, 109);
+    cursor: pointer;
+    float: inline-end;
+}
+
+.btnclose:hover {
+    transition: 0.8s;
+    color: black;
+}
+
+.around {
+    width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.orangeOutline {
+    margin-top: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    width: fit-content;
+    border-color: #f99e1a;
+    color: #f99e1a;
+    background-color: #fff7eb;
+    border-radius: 5px;
+}
+
+.orangeOutline:hover {
+    transition: 0.8s;
+    background: #f99e1a;
+    color: white;
+}
+
+@media (max-width:800px) {
+    .login {
+        width: 95%;
+    }
 }

@@ -5,34 +5,31 @@
     <section id="TankList">
       <section id="Tanks">
         <!-- show every support (image, id, name) thanks to v-for -->
-        <article v-for="character in this.$data.TankList" :key="character.id"
-        @click="getCharacterDetail(character)">
-            <section class="containerChar">
-              <Character :character="character"></Character>
-            </section>
+        <article v-for="character in this.$data.TankList" :key="character.id" @click="getCharacterDetail(character)">
+          <section class="containerChar">
+            <Character :character="character"></Character>
+          </section>
         </article>
       </section>
     </section>
-    
+
     <section id="DPSList">
       <section id="DPSs">
         <!-- show every dps (image, id, name) thanks to v-for -->
-        <article v-for="character in this.$data.DPSList" :key="character.id"
-        @click="getCharacterDetail(character)">
-            <section class="containerChar">
-              <Character :character="character"></Character>
-            </section>
+        <article v-for="character in this.$data.DPSList" :key="character.id" @click="getCharacterDetail(character)">
+          <section class="containerChar">
+            <Character :character="character"></Character>
+          </section>
         </article>
       </section>
     </section>
     <section id="SupportList">
       <section id="Supports">
         <!-- show every support (image, id, name) thanks to v-for -->
-        <article v-for="character in this.$data.SupportList" :key="character.id"
-          @click="getCharacterDetail(character)">
-            <section class="containerChar">
-              <Character :character="character"></Character>
-            </section>
+        <article v-for="character in this.$data.SupportList" :key="character.id" @click="getCharacterDetail(character)">
+          <section class="containerChar">
+            <Character :character="character"></Character>
+          </section>
         </article>
       </section>
     </section>
@@ -70,11 +67,11 @@ export default {
           this.$data.TankList.push(data[counter])
         }
       }
-      this.$data.SupportList.sort((a,b) =>
+      this.$data.SupportList.sort((a, b) =>
         a.name.localeCompare(b.name));
-      this.$data.DPSList.sort((a,b) =>
+      this.$data.DPSList.sort((a, b) =>
         a.name.localeCompare(b.name));
-      this.$data.TankList.sort((a,b) =>
+      this.$data.TankList.sort((a, b) =>
         a.name.localeCompare(b.name));
     },
     getCharacterDetail(character) {
@@ -99,8 +96,8 @@ export default {
         name = name.charAt(0).toLowerCase() + name.slice(1);
       }
       this.$router.push({
-          name: "CharacterDetail",
-          params: { name }
+        name: "CharacterDetail",
+        params: { name }
       });
 
     }
@@ -146,7 +143,9 @@ ul article {
   display: inline-flex;
 }
 
-#DPSs, #Supports, #Tanks {
+#DPSs,
+#Supports,
+#Tanks {
   display: inline-flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -156,5 +155,17 @@ ul article {
 h1 {
   padding-top: 30px;
   padding-bottom: 10px;
+}
+
+
+@media (max-width:800px) {
+  .contentChar {
+    width: 95%;
+  }
+
+  h1 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 }
 </style>

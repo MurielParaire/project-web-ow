@@ -1,5 +1,6 @@
 <template>
-
+<section class="around">
+    <button class='btnclose' @click="$emit('close')">Hide</button>
     <section class="table-responsive tab">
         <table id="tableHistory" class="table striped mb-0">
             <thead>
@@ -29,10 +30,9 @@
                         </ul>
                         <select v-model="user.addRole">
                             <option disabled value="">Add a role : </option>
-                            <option>public</option>
-                            <option>manager</option>
-                            <option>supervisor</option>
-                            <option>admin</option>
+                            <option v-if="user.roles.manager === false">manager</option>
+                            <option v-if="user.roles.supervisor === false">supervisor</option>
+                            <option v-if="user.roles.admin === false">admin</option>
                         </select>
                         <span @click="addRole(user)"><img src="../assets/images/+.png"
                                 alt="plus sign to add a role to the user" class="addX" /></span>
@@ -42,11 +42,10 @@
                 </tr>
             </tbody>
         </table>
-        <button class="previous" @click="$emit('userprevious')">Previous</button>
-        <button class="next" @click="$emit('usernext')">Next</button>
-        <button class='close' @click="$emit('close')">Hide</button>
     </section>
-
+    <button class="previous blueoutline" @click="$emit('userprevious')">Previous</button>
+    <button class="next blueoutline" @click="$emit('usernext')">Next</button>
+</section>
 </template>
 
 <script>
@@ -91,6 +90,7 @@ export default {
                     }
                 }
             })
+            console.log(role)
             if (returned === true) {
                 return 0;
             }
@@ -116,6 +116,11 @@ export default {
                     }
                 }
             })
+            if (user.addRole !== 'admin' && user.addRole !== 'manager' && user.addRole !== 'supervisor') {
+                returned = true;
+                alert ('Please choose a role to be added.');
+                return 0;
+            }
             if (returned === true) {
                 return 0;
             }
@@ -134,6 +139,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
+    width: 100%;
 }
 
 .tab>button {
