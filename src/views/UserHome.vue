@@ -55,6 +55,10 @@
 </template>
 
 <script>
+/**
+ * Description: accessible only to connected users; contains all their information and teh tables of the other users, their history, the events and heroes (if they are allowed)
+ * */
+
 import HistoryTable from '../components/HistoryTable.vue'
 import { getUserInformation, getSomeUsers, getUserHistory } from '../database/User.js';
 import ModalVue from '../components/Moda.vue';
@@ -64,7 +68,7 @@ import { getSomeEvents, createEvent, getEventTypes } from '../database/Event.js'
 import { getSomeHeroes, createHero } from '../database/Character.js'
 import HeroTableVue from '../components/HeroTable.vue';
 import UserInformation from '../components/UserInformation.vue'
-import {roles} from '../assets/enum/info.js'
+import { roles } from '../assets/enum/info.js'
 
 export default {
   components: {
@@ -77,7 +81,9 @@ export default {
   },
   data() {
     return {
+      //the information concerning the connected user
       user: '',
+      //information containing the lists of users / events / heroes
       users: [],
       events: [],
       heroes: [],
@@ -99,6 +105,7 @@ export default {
     }
   },
   methods: {
+    //initialise our data
     async initEventInfo() {
       let types = await getEventTypes();
       this.$data.createEventInfo = {
@@ -109,7 +116,7 @@ export default {
             input: 'dropdown',
             options: types,
             required: true,
-            placeholder: 'kill',
+            placeholder: 'Choose a type :',
             value: '',
             max: 10
           },
@@ -127,7 +134,7 @@ export default {
             required: false,
             placeholder: 'Mercy',
             value: '',
-            max: 2
+            max: 20
           }
         ]
       };
@@ -193,7 +200,6 @@ export default {
     },
     async getUserInfo() {
       let data = await getUserInformation();
-      console.log(data)
       this.$data.user = data;
       await this.loadHistory();
     },
@@ -213,8 +219,10 @@ export default {
       this.$data.showHeroes = true;
     },
     getNextHistory() {
-      this.$data.historyOffset = this.$data.historyOffset + this.$data.historyLimit;
-      this.loadHistory();
+      if (this.$data.user.history.length === this.$data.historyLimit) {
+        this.$data.historyOffset = this.$data.historyOffset + this.$data.historyLimit;
+        this.loadHistory();
+      }
     },
     getPreviousHistory() {
       if (this.$data.historyOffset === 0) {
@@ -227,8 +235,10 @@ export default {
       this.loadHistory();
     },
     getNextEvents() {
-      this.$data.eventOffset = this.$data.eventOffset + this.$data.eventLimit;
-      this.loadEvents();
+      if (this.$data.events.length === this.$data.eventLimit) {
+        this.$data.eventOffset = this.$data.eventOffset + this.$data.eventLimit;
+        this.loadEvents();
+      }
     },
     getPreviousEvents() {
       if (this.$data.eventOffset === 0) {
@@ -241,8 +251,10 @@ export default {
       this.loadEvents();
     },
     getNextUsers() {
-      this.$data.userOffset = this.$data.userOffset + this.$data.userLimit;
-      this.loadUsers();
+      if (this.$data.users.length === this.$data.userLimit) {
+        this.$data.userOffset = this.$data.userOffset + this.$data.userLimit;
+        this.loadUsers();
+      }
     },
     getPreviousUsers() {
       if (this.$data.userOffset === 0) {
@@ -255,8 +267,10 @@ export default {
       this.loadUsers();
     },
     getNextHeroes() {
+      if (this.$data.heroes.length === this.$data.heroLimit) {
       this.$data.heroOffset = this.$data.heroOffset + this.$data.heroLimit;
       this.loadHeroes();
+      }
     },
     getPreviousHeroes() {
       if (this.$data.heroOffset === 0) {
@@ -274,9 +288,14 @@ export default {
         description: this.createEventInfo.attributes[1].value,
         character: this.createEventInfo.attributes[2].value
       }
+      if (event.type === '') {
+         await alert('Please select a type.');
+         return 0;
+      }
       let res = await createEvent(event);
       if (res !== 0) {
         this.$data.showCreateEvent = false;
+        this.loadEvents();
       }
     },
     async createHero() {
@@ -285,10 +304,19 @@ export default {
         role: this.createHeroInfo.attributes[1].value,
         description: this.createHeroInfo.attributes[2].value,
         image: this.createHeroInfo.attributes[3].value
+      };
+      if (hero.role === '') {
+         await alert ('please choose a role');
+         return 0;
+      }
+      if (hero.name === '') {
+         await alert ('please input a name');
+         return 0;
       }
       let res = await createHero(hero);
       if (res !== 0) {
         this.$data.showCreateHero = false;
+        this.loadHeroes();
       }
     },
   },

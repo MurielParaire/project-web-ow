@@ -37,7 +37,12 @@
 </template>
 
 <script>
-import { store } from '../stores/store.js';
+/**
+ * Description: the page containing all the heroes
+ * */
+
+
+import { matchstore } from '../stores/store.js';
 import Character from '../components/Character.vue'
 import { getAllCharacters } from '../database/Character.js';
 
@@ -54,6 +59,9 @@ export default {
     }
   },
   methods: {
+    /**
+     * Description: get all characters
+     * */
     async getCharacters() {
       let data = await getAllCharacters()
       for (let counter = 0; counter < data.length; counter++) {
@@ -74,8 +82,14 @@ export default {
       this.$data.TankList.sort((a, b) =>
         a.name.localeCompare(b.name));
     },
+
+    /**
+     * Description: get the character information
+     * Arguments:
+     *      - character : the hero whose information we want to load
+     * */
     getCharacterDetail(character) {
-      store.character = character;
+      matchstore.commit('setCharacter', character);
       let name = character.name;
       if (name === 'Lúcio') {
         name = 'lucio';

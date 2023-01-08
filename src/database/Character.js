@@ -1,19 +1,33 @@
 import { verifyResult } from "./general.js";
 
+
+const servurl = "https://cluster-2022-8.dopolytech.fr/owapi";
+/**
+ * Description: gets All characters
+ * Returns: a list with all the heroes
+ * */
 export async function getAllCharacters() {
-  let fetchResult = await fetch("http://localhost:3000/owapi/heroes/").catch((err) => console.log(err));
+  let url = servurl + "/heroes/"
+  let fetchResult = await fetch(url).catch((err) => console.log(err));
   let data = await fetchResult.json();
   return verifyResult(data);
 }
 
 
+/**
+ * Description: get only some characters
+ * Arguments:
+ *      - limit : the maximal number of characters to get
+ *      - offset : the offset 
+ * Returns: a list with some heroes
+ * */
 export async function getSomeHeroes(limit, offset) {
   try {
     let param = new URLSearchParams({
       "limit": limit,
       "offset": offset
     });
-    let url = 'http://localhost:3000/owapi/heroes/?';
+    let url = servurl + '/heroes/?';
     let fetchResult = await fetch(url + param.toString(), {
       method: 'GET',
       headers: {
@@ -23,7 +37,6 @@ export async function getSomeHeroes(limit, offset) {
       },
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
-    console.log(data)
     return verifyResult(data);
   }
   catch (err) {
@@ -32,8 +45,14 @@ export async function getSomeHeroes(limit, offset) {
 
 }
 
+/**
+ * Description: delete a character
+ * Arguments:
+ *      - id : the id of the character
+ * Returns: 1 if it was successfull, 0 if it wasn't
+ * */
 export async function deleteHeroById(id) {
-  let url = 'http://localhost:3000/owapi/heroes/' + id.toString();
+  let url = servurl + '/heroes/' + id.toString();
   let fetchResult = await fetch(url, {
     method: 'DELETE',
     headers: {
@@ -47,15 +66,28 @@ export async function deleteHeroById(id) {
 }
 
 
+/**
+ * Description: gets the details of one character
+ * Arguments:
+ *      - name : the name of the character
+ * Returns: the character
+ * */
 export async function getCharacterDetails(name) {
-  let url = 'http://localhost:3000/owapi/heroes/name/' + name;
+  let url = servurl +  '/heroes/name/' + name;
   let data = await fetch(url).catch((err) => console.log(err));
   let char = await data.json();
   return verifyResult(char);
 }
 
+
+/**
+ * Description: gets all characters of a specific role
+ * Arguments:
+ *      - role : the role of teh heroes
+ * Returns: a list with all the heroes of that role
+ * */
 export async function getHeroesByRole(role) {
-  let url = 'http://localhost:3000/owapi/heroes/role/' + role.toString();
+  let url = servurl + '/heroes/role/' + role.toString();
   let data = await fetch(url).catch((err) => console.log(err));
   let heroes = await data.json();
   verifyResult(heroes)
@@ -66,8 +98,15 @@ export async function getHeroesByRole(role) {
   return characters;
 }
 
+
+/**
+ * Description: create a new hero
+ * Arguments:
+ *      - hero : the hero with all the information to create a new character
+ * Returns: 1 if it went well, else 0
+ * */
 export async function createHero(hero) {
-  let url = 'http://localhost:3000/owapi/heroes/';
+  let url = servurl + '/heroes/';
   let fetchResult = await fetch(url, {
     method: 'POST',
     headers: {
@@ -82,11 +121,14 @@ export async function createHero(hero) {
 }
 
 
+/**
+ * Description: modify an existing character
+ * Arguments:
+ *      - hero : the hero with the modified information
+ * Returns: 1 if it was successfull, 0 else
+ * */
 export async function modifyHero(hero) {
-  console.log('hero')
-  console.log(hero)
-  let url = "http://localhost:3000/owapi/heroes/" + hero.id_char.toString()
-  console.log(url)
+  let url = servurl + "/heroes/" + hero.id_char.toString()
   let fetchResult = await fetch(url, {
     method: 'PUT',
     headers: {
@@ -100,6 +142,13 @@ export async function modifyHero(hero) {
   return verifyResult(data);
 }
 
+
+/**
+ * Description: gets the special events and image of a hero
+ * Arguments:
+ *      - name : the name of the hero
+ * Returns: a)n object representing an array of events with the image of teh hero or only the image
+ * */
 export async function getImageAndEvent(name) {
   if (name === 'Lucio') {
     name = 'Lúcio';
@@ -119,7 +168,7 @@ export async function getImageAndEvent(name) {
   else {
     name = name.charAt(0).toUpperCase() + name.slice(1);
   }
-  let url = 'http://localhost:3000/owapi/heroes/event/' + name;
+  let url = servurl + '/heroes/event/' + name;
   let data = await fetch(url).catch((err) => console.log(err));
   let image = await data.json();
   return image;

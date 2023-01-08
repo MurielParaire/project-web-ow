@@ -17,9 +17,11 @@
 </template>
   
 <script>
+/**
+ * description : select one Support
+ */
 
 
-//use support given from parent so no duplicates
 export default {
     emits: ['setSupport'],
     data() {
@@ -29,14 +31,22 @@ export default {
         }
     },
     props: {
+        //use support given from parent so no duplicates in the same team
         AllSupports: {
             required: true
         }
     },
     methods: {
+        /**
+         * Description: toggles the visibility of the droddown bar which lets the user choose a hero
+         * */
         toggle() {
             this.visible = !this.visible;
         },
+
+        /**
+         * Description: updates the selected value
+         * */
         select(option) {
             this.value = option;
             this.$emit('setSupport', this.$data.value);

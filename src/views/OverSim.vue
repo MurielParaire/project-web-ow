@@ -21,6 +21,11 @@
 
 
 <script>
+/**
+ * Description: the page containing general information about my application
+ * */
+
+
 export default {
   name: 'overSim_home'
 }

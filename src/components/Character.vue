@@ -6,7 +6,9 @@
 </template>
 
 <script>
-
+/**
+ * description : shows the name and image of a given hero / character
+ */
 export default {
     name: 'Characters',
     props: {

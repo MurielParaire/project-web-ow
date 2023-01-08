@@ -33,6 +33,11 @@
 </template>
 
 <script>
+/**
+ * description : navigation bar
+ */
+
+
 import { authstore } from '../stores/auth.js';
 import { watch } from 'vue';
 import { computed } from 'vue';
@@ -43,6 +48,7 @@ export default {
       authstore.commit('logout')
     },
   },
+  //close the dropdown on mobile
   mounted() {
     document.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
@@ -51,8 +57,8 @@ export default {
     });
   },
   setup() {
+    //to know if the user is allowed to access the user home or not
     watch(() => authstore.getters.isConnected, function () { });
-
     return {
       isConnected: computed(() => authstore.getters.isConnected)
     }

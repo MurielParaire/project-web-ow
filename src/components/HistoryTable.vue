@@ -25,7 +25,9 @@
 </template>
 
 <script>
-
+/**
+ * description : contains the table with all the events
+ */
 
 
 export default {

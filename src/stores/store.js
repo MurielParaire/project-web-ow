@@ -1,50 +1,69 @@
-import { reactive } from 'vue'
+import Vuex from 'vuex'
+import { getImageAndEvent } from '../database/Character.js';
 
-export const store = reactive({
-  user: '',
-  teamA: [],
-  teamB: [],
-  character: { 'name': 'test' },
-  async setTeamA(team) {
-    this.teamA = [];
-    for (let counter = 0; counter < team.length; counter++) {
-      let char = { name: team[counter], alive: true };
-      char.event = await this.getImageAndEvent(char.name);
-      char.image = char.event[0].image;
-      this.teamA.push(char);
-    }    
-  },
-  async setTeamB(team) {
-    this.teamB = [];
-    for (let counter = 0; counter < team.length; counter++) {
-      let char = { 'name': team[counter], alive: true };
-      char.event = await this.getImageAndEvent(char.name);
-      char.image = char.event[0].image;
-      this.teamB.push(char);
-    }    
-  },
-  async getImageAndEvent(name) {
-    if (name === 'Lucio') {
-      name = 'Lúcio';
+
+//the store containing all the information relative to the two teams that fight
+export const matchstore = Vuex.createStore({
+    state() {
+        return {
+            character: { 'name': 'test' },
+            teamA: [],
+            teamB: []
+        }
+    },
+    getters: {
+        getCharacter(state) {
+            return state.character;
+        },
+        getTeamA(state) {
+            return state.teamA;
+        },
+        getTeamB(state) {
+            return state.teamB;
+        },
+        getNames(state) {
+            let TA = '';
+            let TB = '';
+            if (state.teamA.length === state.teamA.length) {
+                for (let counter = 0; counter < state.teamA.length; counter++) {
+                    TA = TA + state.teamA[counter].name;
+                    TB = TB + state.teamB[counter].name;
+                }
+            }
+        }
+    },
+    mutations: {
+        setCharacter(store, character) {
+            store.character = character;
+        },
+        setTeamAMutation(store, team) {
+            store.teamA = team;
+        },
+        setTeamBMutation(store, team) {
+            store.teamB = team;
+        }
+    },
+    actions: {
+        async setTeamA(store, team) {
+            let ta = [];
+            for (let counter = 0; counter < team.length; counter++) {
+                let char = { name: team[counter], alive: true };
+                char.event = await getImageAndEvent(char.name);
+                char.image = char.event[0].image;
+                ta.push(char);
+            }
+            store.commit('setTeamAMutation', ta)
+        },
+        async setTeamB({commit}, team) {
+            let tb = [];
+            for (let counter = 0; counter < team.length; counter++) {
+                let char = { 'name': team[counter], alive: true };
+                char.event = await getImageAndEvent(char.name);
+                char.image = char.event[0].image;
+                tb.push(char);
+            }
+            commit('setTeamBMutation', tb)
+        },
+
     }
-    else if (name === 'Torbjorn') {
-      name = 'Torbjörn';
-    }
-    else if (name === 'Junker-Queen') {
-      name = 'Junker Queen';
-    }
-    else if (name === 'Soldier-76') {
-      name = 'Soldier: 76';
-    }
-    else if (name === 'wrecking-ball') {
-      name = 'Wrecking Ball';
-    }
-    else {
-      name = name.charAt(0).toUpperCase() + name.slice(1);
-    }
-    let url = 'http://localhost:3000/owapi/heroes/event/' + name;
-    let data = await fetch(url).catch((err) => console.log(err));
-    let image = await data.json();
-    return image;
-  }
-})
+});

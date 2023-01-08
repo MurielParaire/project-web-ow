@@ -29,20 +29,27 @@
                                             <option disabled value=""> {{ attribute.placeholder }} </option>
                                                 <option v-for="option in attribute.options" :key="option">{{ option }}</option>
                                         </select>
+                                        <input class='text' :placeholder="attribute.placeholder" type="email" name="email" v-model="attribute.value" :maxlength="attribute.max"
+                                            v-else-if="attribute.input === 'email'">
                                         <textarea v-else class="text" :placeholder="attribute.placeholder"
                                             :name="attribute.name" rows="5" cols="30" v-model="attribute.value">
                                         </textarea>
 
                                     </section>
                                 </section>
-                                <section v-if="attribute.required === true" class="row">
-                                    <div class="input-errors" v-for="(error, index) of v$.form.$errors" :key="index">
-                                        here
+                                <section class="row">
+                                    <section v-if="attribute.required">
+                                      <div class="input-errors" v-for="(error, index) of v$.form.req.$errors" :key="index">
                                         <div class="error-msg">{{ error.$message }}</div>
-                                    </div>
+                                      </div>
+                                    </section>
+                                    <section v-if="attribute.input === 'email'">
+                                      <div  class="input-errors" v-for="(error, index) of v$.form.email.$errors" :key="index">
+                                        <div class="error-msg">{{ error.$message }}</div>
+                                      </div>
+                                    </section>
                                 </section>
                             </section>
-
                         </form>
                     </slot>
                 </section>
@@ -60,8 +67,13 @@
 </template>
 
 <script>
+/**
+ * description : form for create or modify a hero / user / event. Behaves like a pop-up window
+ */
+
+
 import Vuelidate from '@vuelidate/core'
-import { maxLength, required } from '@vuelidate/validators'
+import { required, email } from '@vuelidate/validators'
 //import {validLength} from '../assets/verifications.js'
 
 export default {
@@ -84,13 +96,16 @@ export default {
             required: true
         }
     },
+    //validate all the entries
     validations() {
         return {
             form: {
                 req: {
                     required
                 },
-                max: maxLength(1)
+                email: {
+                    email
+                }
             }
         }
     }

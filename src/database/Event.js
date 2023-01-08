@@ -1,7 +1,16 @@
 import { verifyResult } from "./general.js";
 
+const servurl = "https://cluster-2022-8.dopolytech.fr/owapi";
+/**
+ * Description: get some events
+ * Arguments:
+ *      - limit : the maximul number of events to retrieve
+ *      - offset : the offset of the events
+ * Returns: a list with some events
+ * */
 export async function getSomeEvents(limit, offset) {
-    let fetchResult = await fetch("http://localhost:3000/owapi/events/?" + new URLSearchParams({
+    let url = servurl + "/events/?"
+    let fetchResult = await fetch(url + new URLSearchParams({
         limit: limit,
         offset: offset
     }), {
@@ -16,8 +25,13 @@ export async function getSomeEvents(limit, offset) {
 }
 
 
+/**
+ * Description: get all existing event types
+ * Returns: a list with all event types
+ * */
 export async function getEventTypes() {
-    let fetchResult = await fetch("http://localhost:3000/owapi/events/type/all", {
+    let url = servurl + "/events/type/all";
+    let fetchResult = await fetch(url, {
         method: 'GET',
         headers: {
         'Accept': 'application/json',
@@ -25,7 +39,6 @@ export async function getEventTypes() {
         }
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
-    console.log(data)
     let types = [];
     verifyResult(data);
     for (let counter = 0; counter < data.length; counter++) {
@@ -35,8 +48,15 @@ export async function getEventTypes() {
 }
 
 
+/**
+ * Description: create a new event
+ * Arguments:
+ *      - event : the information about the event
+ * Returns: 1 if it worked, else 0
+ * */
 export async function createEvent(event) {
-    let fetchResult = await fetch("http://localhost:3000/owapi/events/", {
+    let url = servurl + "/events/";
+    let fetchResult = await fetch(url, {
         method: 'POST',
         headers: {
         'Accept': 'application/json',
@@ -50,8 +70,14 @@ export async function createEvent(event) {
 }
 
 
+/**
+ * Description: delete an event by its id
+ * Arguments:
+ *      - id :  the id of the event
+ * Returns: 1 if it worked, else 0
+ * */
 export async function deleteEventById(id) {
-    let url = 'http://localhost:3000/owapi/events/' + id.toString();
+    let url = servurl + '/events/' + id.toString();
     let fetchResult = await fetch(url, {
       method: 'DELETE',
       headers: {
@@ -65,11 +91,14 @@ export async function deleteEventById(id) {
 }
 
 
+/**
+ * Description: modify an event
+ * Arguments:
+ *      - event :  the modified event
+ * Returns: 1 if it worked, else 0
+ * */
 export async function modifyEvent(event) {
-    console.log('event')
-    console.log(event)
-    let url = "http://localhost:3000/owapi/events/" + event.event_id.toString()
-    console.log(url)
+    let url =  servurl + "/events/" + event.event_id.toString()
     let fetchResult = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -84,6 +113,12 @@ export async function modifyEvent(event) {
 }
 
 
+/**
+ * Description: get all events for one hero
+ * Arguments:
+ *      - hero :  the id of the hero
+ * Returns: a list of events
+ * */
 export async function getEventsByHero(hero) {
     try {
         hero = parseInt(hero);
@@ -91,7 +126,7 @@ export async function getEventsByHero(hero) {
     catch (err) {
         return 0;
     }
-    let url = "http://localhost:3000/owapi/events/hero/" + hero.toString();
+    let url = servurl + "/events/hero/" + hero.toString();
     let fetchResult = await fetch(url, {
         method: 'GET',
         headers: {
@@ -100,7 +135,5 @@ export async function getEventsByHero(hero) {
         },
     }).catch((err) => console.log(err));
     let data = await fetchResult.json();
-    console.log('data')
-    console.log(data)
     return verifyResult(data);
 }

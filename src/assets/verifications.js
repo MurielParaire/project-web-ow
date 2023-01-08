@@ -15,3 +15,9 @@ export function validUsername(username) {
     }
     return false;
 }
+
+//verify correct email
+export function validEmail(email) {
+    let validEmailPattern = new RegExp("^[a-z0-9]+@[a-z]+.{2,3}");
+    return validEmailPattern.test(email);
+}

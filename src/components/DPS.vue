@@ -17,7 +17,9 @@
 </template>
   
 <script>
-
+/**
+ * description : select one DPS
+ */
 
 //use support given from parent so no duplicates
 export default {

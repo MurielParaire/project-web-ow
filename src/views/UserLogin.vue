@@ -33,6 +33,11 @@
 </template>
 
 <script>
+/**
+ * Description: login page
+ * */
+
+
 import Vuelidate from '@vuelidate/core'
 import { required, minLength, maxLength } from '@vuelidate/validators'
 import { validUsername } from '../assets/verifications.js'

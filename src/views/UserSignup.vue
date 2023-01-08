@@ -104,6 +104,11 @@
 </template>
 
 <script>
+/**
+ * Description: signup page
+ * */
+
+
 import Vuelidate from '@vuelidate/core'
 import { required, helpers, email, minLength, maxLength, sameAs } from '@vuelidate/validators'
 import { validName, validUsername } from '../assets/verifications.js'
@@ -152,7 +157,6 @@ export default {
                 password: this.form.password,
             }
             let res = await createUser(user);
-            console.log(res)
             if (res !== 200) {
                 if (res === 401) {
                     alert("Sorry but we couldn't create your accound. We only allow a maximum of 10 created accounts. Please refer to an administrator.")

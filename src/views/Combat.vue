@@ -37,8 +37,13 @@
 </template>
 
 <script>
-import Test from '../combat/main.js';
-import { matchstore } from '../stores/trans.js';
+/**
+ * Description: the page containing all the information about the combat
+ * */
+
+
+import Combat from '../combat/main.js';
+import { matchstore } from '../stores/store.js';
 import Event from '../components/Event.vue';
 import { authstore } from '../stores/auth.js';
 import { createUserHistory } from '../database/User.js';
@@ -60,7 +65,7 @@ export default {
         async getHistory() {
             try {
                 let events = await getEventsByHero(0);
-                let test = new Test(matchstore.getters.getTeamA, matchstore.getters.getTeamB, events);
+                let test = new Combat(matchstore.getters.getTeamA, matchstore.getters.getTeamB, events);
                 this.$data.combatHistory = test.combat;
                 this.$data.TeamA = test.teams[0].team,
                     this.$data.TeamB = test.teams[1].team,
@@ -172,6 +177,7 @@ img {
 
 .grid {
     display: grid;
+    padding-left: 20px;
 }
 
 .colTA {
@@ -186,7 +192,7 @@ img {
     grid-column: 3;
 }
 
-@media (max-width:800px) {
+@media (max-width:900px) {
     .grid {
         display: flex;
         flex-direction: column;

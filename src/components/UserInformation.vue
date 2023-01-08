@@ -10,8 +10,13 @@
 </template>
 
 <script>
+/**
+ * description : show the user information
+ */
+
 import ModalVue from '../components/Moda.vue';
-import {modifyUser} from '../database/User.js'
+import { modifyUser } from '../database/User.js';
+import { validName, validUsername, validEmail } from '../assets/verifications.js';
 
 export default {
     components: {
@@ -22,6 +27,7 @@ export default {
     data() {
         return {
             showModifyUser: false,
+            //information for the ModalVue
             modifyUserInformation: {
                 title: 'Modify your information',
                 attributes: [
@@ -31,7 +37,7 @@ export default {
                         required: false,
                         placeholder: this.user.username,
                         value: this.user.username,
-                        max: 50
+                        max: 50,
                     },
                     {
                         name: 'firstname',
@@ -62,19 +68,39 @@ export default {
         }
     },
     methods: {
+        /**
+         * Description: modifies the user template information to match the current users' information
+         * */
         modifyUser() {
             this.$data.modifyUserInformation.attributes[0].placeholder = this.user.username,
-            this.$data.modifyUserInformation.attributes[0].value = this.user.username,
-            this.$data.modifyUserInformation.attributes[1].placeholder = this.user.firstname,
-            this.$data.modifyUserInformation.attributes[1].value = this.user.firstname,
-            this.$data.modifyUserInformation.attributes[2].placeholder = this.user.lastname,
-            this.$data.modifyUserInformation.attributes[2].value = this.user.lastname,
-            this.$data.modifyUserInformation.attributes[3].placeholder = this.user.email,
-            this.$data.modifyUserInformation.attributes[3].value = this.user.email,
-            this.$data.showModifyUser = true
+                this.$data.modifyUserInformation.attributes[0].value = this.user.username,
+                this.$data.modifyUserInformation.attributes[1].placeholder = this.user.firstname,
+                this.$data.modifyUserInformation.attributes[1].value = this.user.firstname,
+                this.$data.modifyUserInformation.attributes[2].placeholder = this.user.lastname,
+                this.$data.modifyUserInformation.attributes[2].value = this.user.lastname,
+                this.$data.modifyUserInformation.attributes[3].placeholder = this.user.email,
+                this.$data.modifyUserInformation.attributes[3].value = this.user.email,
+                this.$data.showModifyUser = true
         },
-        getUser() {
-            let user = {user_id: this.user.user_id};
+
+        /**
+         * Description: sets the users' information
+         * */
+        async getUser() {
+            if (validUsername(this.$data.modifyUserInformation.attributes[0].value) === false) {
+                await alert('username can only contain letters and dashes');
+                return 0;
+            }
+            if (validName(this.$data.modifyUserInformation.attributes[1].value) === false || validName(this.$data.modifyUserInformation.attributes[2].value) === false) {
+                await alert('names are only allowed to contain letters, dashes and spaces');
+                return 0;
+            }
+            if (validEmail(this.$data.modifyUserInformation.attributes[3].value) === false) {
+                await alert('wrong email format');
+                return 0;
+            }
+
+            let user = { user_id: this.user.user_id };
             if (this.$data.modifyUserInformation.attributes[0].placeholder !== this.$data.modifyUserInformation.attributes[0].value && this.$data.modifyUserInformation.attributes[0].value !== '') {
                 user.username = this.$data.modifyUserInformation.attributes[0].value;
             }
@@ -101,8 +127,15 @@ export default {
             }
             return user;
         },
+
+        /**
+         * Description: modifies the users information
+         * */
         async modifyUserInfo() {
-            let user = this.getUser()
+            let user = await this.getUser()
+            if (user === 0) {
+               return 0;
+            }
             let res = await modifyUser(user, this.user.user_id);
             if (res !== 0) {
                 this.showModifyUser = false;
@@ -111,6 +144,7 @@ export default {
         }
     },
     props: {
+        //the currently connected user
         user: {
             required: true
         }

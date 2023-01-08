@@ -17,6 +17,10 @@
 </template>
   
 <script>
+/**
+ * description : select one Tank
+ */
+
 import { getHeroesByRole } from '../database/Character.js';
 
 
@@ -30,15 +34,23 @@ export default {
         }
     },
     methods: {
+        /**
+         * Description: toggles the visibility of the droddown bar which lets the user choose a hero
+         * */
         toggle() {
             this.visible = !this.visible;
         },
+
+        /**
+         * Description: updates the selected value
+         * */
         select(option) {
             this.value = option;
             this.$emit('setTank', this.$data.value);
         }
     },
     async mounted() {
+        //load all tank heroes
         this.$data.tanks = await getHeroesByRole('tank');
     }
 }

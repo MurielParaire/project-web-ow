@@ -23,7 +23,12 @@
 </template>
 
 <script>
-import { store } from '@/stores/store.js';
+/**
+ * Description: the page containing all the information of a hero
+ * */
+
+
+import { matchstore } from '@/stores/store.js';
 import { useRoute } from 'vue-router'
 import { getCharacterDetails } from '../database/Character.js';
 
@@ -35,8 +40,11 @@ export default {
         }
     },
     methods: {
+        /**
+         * Description: set the characger
+         * */
         async setCharacter() {
-            if (store.character.name === 'test') {
+            if (matchstore.getters.getCharacter.name === 'test') {
                 const route = useRoute();
                 let name = route.params.name;
                 if (name === 'Lucio') {
@@ -59,10 +67,14 @@ export default {
                 }
                 let char = await getCharacterDetails(name)
                 if (char.length > 0)
-                    store.character = char[0];
+                    matchstore.commit('setCharacter', char[0]);
             }
-            this.$data.character = store.character
+            this.$data.character = matchstore.getters.getCharacter
         },
+
+        /**
+         * Description: return back to where the user was before
+         * */
         goBack() {
             this.$router.go(-1);
         }

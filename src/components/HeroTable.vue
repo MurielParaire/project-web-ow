@@ -1,6 +1,6 @@
 <template>
     <section class="around">
-        <button class='close' @click="$emit('close')">Hide</button>
+        <button class='btnclose' @click="$emit('close')">Hide</button>
         <section class="table-responsive tab">
             <table id="tableHistory" class="table striped mb-0">
                 <thead>
@@ -36,6 +36,10 @@
 </template>
 
 <script>
+/**
+ * description : contains the table with all the characters
+ */
+
 import { deleteHeroById, modifyHero } from '../database/Character';
 import ModaVue from './Moda.vue';
 import { roles } from '../assets/enum/info.js'
@@ -58,6 +62,11 @@ export default {
         }
     },
     methods: {
+        /**
+         * Description: delete a hero
+         * Arguments:
+         *      - hero : the hero the user wants to delete
+         * */
         async deleteHero(hero) {
             if (confirm('Are you sure you want to delete the hero : ' + hero.name)) {
                 let result = await deleteHeroById(hero.id_char);
@@ -67,11 +76,21 @@ export default {
                 this.$emit('load');
             }
         },
+
+        /**
+         * Description: updates the information which will be given to the vue which lets the user modify a hero
+         * Arguments:
+         *      - hero : the hero the user wants to modify
+         * */
         openmodifyHero(hero) {
             this.$data.selectedHero = hero;
             this.updateHeroInfo(hero);
             this.$data.showmodifyHero = true;
         },
+
+        /**
+         * Description: open the vue to modify an existing hero
+         * */
         async modifyHeroJS() {
             let hero = this.getHero();
             let res = await modifyHero(hero);
@@ -79,6 +98,11 @@ export default {
                 this.$data.showmodifyHero = false;
             }
         },
+
+        /**
+         * Description: gets the updated character info by comparing it to its old info
+         * Returns: the updated hero
+         * */
         getHero() {
             let hero = this.$data.selectedHero;
             if (hero.name !== this.$data.modifyHeroInfo.attributes[0].value && '' !== this.$data.modifyHeroInfo.attributes[0].value) {
@@ -95,6 +119,10 @@ export default {
             }
             return hero;
         },
+
+        /**
+         * Description: updates the hero information for the user to change
+         * */
         updateHeroInfo(hero) {
             this.$data.modifyHeroInfo.attributes[0].value = hero.name;
             this.$data.modifyHeroInfo.attributes[0].placeholder = hero.name;
@@ -105,6 +133,10 @@ export default {
             this.$data.modifyHeroInfo.attributes[3].value = hero.image;
             this.$data.modifyHeroInfo.attributes[3].placeholder = hero.image;
         },
+
+        /**
+         * Description: initializes the hero information
+         * */
         initHeroInfo() {
             this.$data.modifyHeroInfo = {
                 title: 'Create a new Hero',

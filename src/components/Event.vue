@@ -9,6 +9,11 @@
 </template>
 
 <script>
+/**
+ * description : shows one event with the images of both heroes and its description
+ */
+
+
 export default {
     name: 'Event',
     props: {

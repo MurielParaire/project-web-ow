@@ -1,5 +1,6 @@
 import * as VueRouter from 'vue-router'
 
+//lazy loading
 const OverSim = () => import('@/views/OverSim.vue')
 const Characters = () => import('@/views/Characters.vue')
 const Match = () => import('@/views/Match.vue')
@@ -10,8 +11,9 @@ const UserHome = () => import('@/views/UserHome.vue')
 const UserSignup = () => import('@/views/UserSignup.vue')
 
 import {authstore} from '../stores/auth.js'
-import { matchstore } from '../stores/trans.js'
+import { matchstore } from '../stores/store.js'
 
+//defining our router with all the routes
 export const router = VueRouter.createRouter({
     history: VueRouter.createWebHistory(),
     routes: [
@@ -34,9 +36,9 @@ export const router = VueRouter.createRouter({
       path: '/combat/',
       name: 'Combat',
       component: Combat,
+      //If no teams have been selected then we can't start a combat and the user will be redirected to the Match page
       beforeEnter: (to, from, next) => {
-        console.log(matchstore.getters.getTeamA.length)
-        if(matchstore.getters.getTeamA.length < 5) {
+        if(matchstore.getters.getTeamA.length < 5 || matchstore.getters.getTeamB.length < 5) {
           next({name: 'Match'});
         } else {
             next();
@@ -58,6 +60,7 @@ export const router = VueRouter.createRouter({
       path: '/home',
       name: 'UserHome',
       component: UserHome,
+      //only connected users can access their User home page
       beforeEnter: (to, from, next) => {
         if(authstore.getters.isConnected === true) {
             next();

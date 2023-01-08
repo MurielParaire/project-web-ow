@@ -33,8 +33,14 @@
 </template>
 
 <script>
+/**
+ * description : contains the user table
+ */
+
+
 import { deleteEventById, modifyEvent, getEventTypes } from '../database/Event.js'
 import ModaVue from './Moda.vue';
+
 
 export default {
     name: "EventTable",
@@ -54,6 +60,11 @@ export default {
         }
     },
     methods: {
+        /**
+         * Description: delete an event
+         * Arguments:
+         *      - event : the event to delete
+         * */
         async deleteEvent(event) {
             if (confirm('Are you sure you want to delete the event : ' + event.description)) {
                 let result = await deleteEventById(event.event_id);
@@ -63,11 +74,21 @@ export default {
                 this.$emit('load');
             }
         },
+
+        /**
+         * Description: open the vue to modify an existing event
+         * Arguments:
+         *      - event : the event to modify
+         * */
         openmodifyEvent(event) {
             this.$data.selectedEvent = event;
             this.updateEventInfo(event);
             this.$data.showmodifyEvent = true;
         },
+
+        /**
+         * Description: saves the modified event
+         * */
         async modifyEventJS() {
             let event = this.getEvent();
             let res = await modifyEvent(event);
@@ -75,6 +96,11 @@ export default {
                 this.$data.showmodifyEvent = false;
             }
         },
+
+        /**
+         * Description: gets the updated event info by comparing it to its old info
+         * Returns: the updated event
+         * */
         getEvent() {
             let event = this.$data.selectedEvent;
             if (event.type !== this.$data.modifyEventInfo.attributes[0].value && '' !== this.$data.modifyEventInfo.attributes[0].value) {
@@ -88,6 +114,13 @@ export default {
             }
             return event;
         },
+
+        /**
+         * Description: updates the information which will be given to the vue which lets the user modify an event
+         * Arguments:
+         *      - event : the event the user wants to modify
+         * Returns: a string with all the names of the heroes
+         * */
         updateEventInfo(event) {
             this.$data.modifyEventInfo.attributes[0].value = event.type;
             this.$data.modifyEventInfo.attributes[0].placeholder = event.type;
@@ -96,6 +129,10 @@ export default {
             this.$data.modifyEventInfo.attributes[2].value = event.name;
             this.$data.modifyEventInfo.attributes[2].placeholder = event.name;
         },
+
+        /**
+         * Description: initializes the event information
+         * */
         async initEventInfo() {
             let types = await getEventTypes();
             this.$data.modifyEventInfo = {

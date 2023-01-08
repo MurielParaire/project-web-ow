@@ -19,8 +19,13 @@
 </template>
 
 <script>
+/**
+ * Description: the page letting the hero choose both teams
+ * */
+
+
 import Team from '../components/Team.vue';
-import { matchstore } from '../stores/trans.js'
+import { matchstore } from '../stores/store.js'
 
 export default {
     name: 'match',
@@ -60,14 +65,11 @@ export default {
         async startMatch() {
             let TeamA = this.getTeam(this.$data.teamA);
             let TeamB = this.getTeam(this.$data.teamB);
-            console.log('TeamB')
-            console.log(TeamB)
             if (this.verifyTeamIntegrity(TeamA) === 0 || this.verifyTeamIntegrity(TeamB) === 0) {
                 return 0;
             }
             await matchstore.dispatch('setTeamA', TeamA);
             await matchstore.dispatch('setTeamB', TeamB);
-            console.log(matchstore.getters.getTeamA)
             let data = {
                 description: this.getNames()
             };
